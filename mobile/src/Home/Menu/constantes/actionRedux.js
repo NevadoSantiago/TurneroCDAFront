@@ -1,3 +1,11 @@
 export const INICIAR_SESION = "INICIAR_SESION";
 export const CERRAR_SESION = "CERRAR_SESION";
 export const ACTUALIZAR_TURNOS = "ACTUALIZAR_TURNOS"
+
+import {URL_API} from './urlApi'
+
+export const OBTENER_TURNOS = "OBTENER_TURNOS"
+export const LIMPIAR_SESION = "LIMPIAR_SESION"
+
+
+export const CAMBIAR_DIA = "CAMBIAR_DIA"

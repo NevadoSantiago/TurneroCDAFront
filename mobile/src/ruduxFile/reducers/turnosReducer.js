@@ -1,34 +1,50 @@
 import { addons } from "react-native";
-import {CERRAR_SESION, INICIAR_SESION,ACTUALIZAR_TURNOS} from '../../Home/Menu/constantes/actionRedux'
-
+import {OBTENER_TURNOS, LIMPIAR_SESION,CAMBIAR_DIA,ACTUALIZAR_TURNOS} from '../../Home/Menu/constantes/actionRedux'
+import moment from 'moment';
 
 const initialState={
     turnosAsignados: null,
-    idUsuario:null,
-    nuevoTurno:false
+    diaCalendario:moment().format("YYYY-MM-DD"),
+    loading: true
 };
 
 
-const TurnosReducer = (state = initialState, action) => {
-    var datos = action.data
-    var nuevoMail
-    var nuevoId
-    
+const TurnosReducer = (state = initialState, action) => {    
     switch(action.type){   
-        case(INICIAR_SESION):{
-            nuevoId = datos
+        case(OBTENER_TURNOS):{
+            console.log("OBTENER TURNOS")
+            const {data} = action
             return{
                 ...state,
-                idUsuario : nuevoId 
+                turnosAsignados : data,
+                loading : false
+            }
+            
+        }
+        case(CAMBIAR_DIA):{
+            
+            const {data} = action
+            return{
+                ...state,
+                diaCalendario : data,
             }
             
         }
         case(ACTUALIZAR_TURNOS):{
-            const hayNuevoTurno = action.data
+            console.log("LOADING TRUE")
             return{
                 ...state,
-                nuevoTurno : hayNuevoTurno
+                loading : true,
             }
+            
+        }
+        case(LIMPIAR_SESION):{
+            return{
+                ...state,
+                turnosAsignados : null,
+                loading:true
+            }
+            
         }
     }
     return{

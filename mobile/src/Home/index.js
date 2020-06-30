@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, Text, Image, StatusBar,TextInput,StyleSheet } from 'react-native';
+import { View, Text, Image, StatusBar, TextInput, StyleSheet } from 'react-native';
 import { Button, Input } from 'react-native-elements'
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 import { withTheme } from 'react-native-elements';
-import { INICIAR_SESION } from './Menu/constantes/actionRedux'
+import { INICIAR_SESION, OBTENER_TURNOS, LIMPIAR_SESION } from './Menu/constantes/actionRedux'
 import { connect } from 'react-redux';
-import { URL_API_USUARIO } from './Menu/constantes/urlApi'
+import { URL_API_USUARIO, URL_API } from './Menu/constantes/urlApi'
+
 import styled from 'styled-components';
 
 const datosIngresados = {
@@ -33,14 +34,17 @@ const StyledInput = styled(Input).attrs({
     fontFamily: 'Nunito'
   },
 })``;
-
 class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
       id: null,
+      logueado: false
     };
+  }
+  componentDidMount() {
+    console.warn("asddddddddddddddddddddd")
   }
 
   static navigationOptions = {
@@ -60,8 +64,21 @@ class HomeScreen extends React.Component {
   mailIngresado = (mail) => {
     datosIngresados.mail = mail
   }
+  obtenerListadoTurnos = async (id) => {
+    const { guardarTurnos } = this.props
+    await fetch(URL_API + '/api/turno/consultarTurnosCliente/' + id)
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (myJson) {
+        guardarTurnos(myJson)
+      }
+      )
+  }
 
   async realizarLogueo() {
+
+    const { iniciarSesion } = this.props
     await fetch(URL_API_USUARIO + '/api/usuario/ingresar/' + datosIngresados.mail, {
       method: 'POST',
     })
@@ -69,39 +86,39 @@ class HomeScreen extends React.Component {
         return response.json()
       })
       .then(function (myJson) {
-        console.log(myJson)
+        iniciarSesion(myJson)
+        this.obtenerListadoTurnos(myJson)
         this.setState({
-          id: myJson
+          logueado: true
         })
+
       }.bind(this))
   }
 
   render() {
-    //const { theme, updateTheme, replaceTheme } = this.props;
-    const { iniciarSesion, mail } = this.props
-    const state = this.state
-    if (state.id != null) {
-      iniciarSesion(state.id)
+    const { mail, loadingTurnos } = this.props
+    const { logueado } = this.state
+    if (!loadingTurnos && logueado) {
       this.props.navigation.navigate('Turnos')
     }
     return (
-      <View style={{ flex: 1,backgroundColor:"#FFFFFF", alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1, backgroundColor: "#FFFFFF", alignItems: 'center', justifyContent: 'center' }}>
         <StatusBar
-          backgroundColor= 'white' 
+          backgroundColor='white'
           barStyle="dark-content"
         />
-        <Image 
-          style={{ width: 250,marginBottom:100 ,height: 100, flex: 0.25 }}
+        <Image
+          style={{ width: 250, marginBottom: 100, height: 100, flex: 0.25 }}
           source={require('./img/InicioCda.png')}
         />
         <Text style={{ marginLeft: '5%', textAlign: 'left', alignSelf: 'stretch', fontFamily: 'Nunito' }}>Correo electrónico</Text>
-        <StyledInput 
+        <StyledInput
           onChangeText={(h) => this.mailIngresado(h)}
         />
         <Text />
         <Text style={{ marginLeft: '5%', textAlign: 'left', alignSelf: 'stretch', fontFamily: 'Nunito' }}>Contraseña</Text>
-        <StyledInput secureTextEntry = {true} 
-          
+        <StyledInput secureTextEntry={true}
+
         />
         <Text />
         <Button
@@ -118,12 +135,15 @@ class HomeScreen extends React.Component {
 const mapDispatchToProps = dispatch => {
   return {
     iniciarSesion: (id) => dispatch({ type: INICIAR_SESION, data: id }),
+    guardarTurnos: (turnos) => dispatch({ type: OBTENER_TURNOS, data: turnos }),
+    limpiarSesion: () => dispatch({ type: LIMPIAR_SESION }),
   };
 }
 const mapStateToProps = state => {
   return {
     idUsuario: state.user.idUsuario,
-    mail: state.user.mail
+    mail: state.user.mail,
+    turnosAsignados: state.turnos.turnosAsignados
   }
 }
 
