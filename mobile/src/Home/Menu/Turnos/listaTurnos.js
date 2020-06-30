@@ -4,7 +4,7 @@ import { Card, CardItem, Body } from 'native-base';
 import QRCode from 'react-native-qrcode-svg';
 import CheckAlert from "react-native-awesome-alert"
 import { URL_API, URL_API_TIENDA } from '../constantes/urlApi'
-import {ACTUALIZAR_TURNOS} from '../constantes/actionRedux'
+import {OBTENER_TURNOS} from '../constantes/actionRedux'
 import { connect } from 'react-redux';
 import TouchableScale from 'react-native-touchable-scale';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -195,6 +195,18 @@ class ListaTurnos extends Component {
             }.bind(this))
     }
 
+    obtenerListadoTurnos = async (id) => {
+        const {guardarTurnos} = this.props
+        await fetch(URL_API + '/api/turno/consultarTurnosCliente/' + id)
+        .then(function (response) {
+          return response.json()
+        })
+        .then(function (myJson) {
+          guardarTurnos(myJson)
+        }
+      )
+    }
+
     async reservarTurno(turnoId) {
         const idUsuario = this.props.idUsuario
         try {
@@ -203,7 +215,7 @@ class ListaTurnos extends Component {
             })
             console.log(response.status)
             if (response.status == 200) {
-                this.props.actualizarTurnos();
+                this.obtenerListadoTurnos(idUsuario);
                 this.props.navigation.navigate('Turnos')
             } else if(response.status== 226) {
                 
@@ -284,7 +296,7 @@ class ListaTurnos extends Component {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        actualizarTurnos: () => dispatch({ type: ACTUALIZAR_TURNOS, data:true}),
+        guardarTurnos: (turnos) => dispatch({ type: OBTENER_TURNOS, data: turnos }),
     };
 }
 

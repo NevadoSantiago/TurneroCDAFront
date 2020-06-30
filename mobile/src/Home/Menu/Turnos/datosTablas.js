@@ -10,6 +10,7 @@ import { withTheme, Overlay, ListItem, Avatar } from 'react-native-elements';
 import TouchableScale from 'react-native-touchable-scale';
 
 import { Button, ThemeProvider, Text } from 'react-native-elements';
+import { OBTENER_TURNOS,ACTUALIZAR_TURNOS } from '../constantes/actionRedux';
 
 /*import {
     Grayscale,
@@ -106,13 +107,20 @@ class DatosTablas extends Component {
                     style: 'cancel'
                 },
                 {
-                    text: 'SI', onPress: () => {
-                        fetch(url, {
+                    text: 'SI', onPress:async () => {
+                        await fetch(url, {
                             method: "put"
                         })
-                        this.setState({
-                            cancelado: true
-                        })
+                        const {guardarTurnos, actualizar} = this.props
+                            await fetch(URL_API + '/api/turno/consultarTurnosCliente/' + idUsuario)
+                            .then(function (response) {
+                            return response.json()
+                            })
+                            .then(function (myJson) {
+                            actualizar()
+                            guardarTurnos(myJson)
+                            }
+                        )
                     }
                 },
             ]
@@ -142,12 +150,12 @@ class DatosTablas extends Component {
                             {turno.horario.replace('-', ':')}
                         </Text>
                     </Container>
-                    <Container style={{ marginBottom: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Container style={{ marginTop: 20, marginBottom: 40, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{ fontFamily: 'Nunito', color: theme.colors.primary }}>
                             {turno.sucursal}
                         </Text>
                         <Text style={{ fontFamily: 'Nunito_bold', color: theme.colors.primary }}>
-                            {' - ' + this.getDireccionFromSucursalByTiendaNombreSucursal(turno.sucursal)}
+                            {this.getDireccionFromSucursalByTiendaNombreSucursal(turno.sucursal)}
                         </Text>
                     </Container>
                 </View>,
@@ -216,12 +224,12 @@ class DatosTablas extends Component {
                             {turno.horario.replace('-', ':')}
                         </Text>
                     </Container>
-                    <Container style={{ marginBottom: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <Container style={{ marginTop: 20, marginBottom: 40, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{ fontFamily: 'Nunito', color: theme.colors.primary }}>
                             {turno.sucursal}
                         </Text>
                         <Text style={{ fontFamily: 'Nunito_bold', color: theme.colors.primary }}>
-                            {' - ' + this.getDireccionFromSucursalByTiendaNombreSucursal(turno.sucursal)}
+                            {this.getDireccionFromSucursalByTiendaNombreSucursal(turno.sucursal)}
                         </Text>
                     </Container>
                 </View>,
@@ -306,12 +314,8 @@ class DatosTablas extends Component {
         const { data } = this.props
         const { cancelado } = this.state
         const { theme, updateTheme, replaceTheme } = this.props;
-
         this.getSucursales(data.tiendaId)
 
-        if (cancelado) {
-            this.props.cancelar()
-        }
         if (data != null) {
             if (data.length === 0) {
                 return (
@@ -412,6 +416,8 @@ const OverlayExample = () => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        guardarTurnos:(turnos)=> dispatch({ type: OBTENER_TURNOS, data: turnos}),
+        actualizar:()=> dispatch({ type:ACTUALIZAR_TURNOS }),
     };
 }
 const mapStateToProps = state => {
