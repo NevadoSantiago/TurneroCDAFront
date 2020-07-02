@@ -12,6 +12,7 @@ import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
 import { withTheme, ListItem, Text } from 'react-native-elements';
 import moment from 'moment'
+import styles from '../../../../App.scss'
 
 const testIDs = require('./testIDs');
 
@@ -19,16 +20,11 @@ var days = {
 
 }
 
-const theme = {
-    colors: {
-        primary: 'rgb(4, 116, 186)'
-    }
-};
 var date = moment().format("YYYY-MM-DD");
 
-const styles = StyleSheet.create({
+const agendaStyles = StyleSheet.create({
     item: {
-        backgroundColor: 'white',
+        backgroundColor: styles.white.color,
         flex: 1,
         borderRadius: 5,
         padding: 10,
@@ -104,7 +100,7 @@ class ListaTurnos extends Component {
         return (
             <TouchableOpacity
                 testID={testIDs.agenda.ITEM}
-                style={[styles.item, { height: item.height }]}
+                style={[agendaStyles.item, { height: item.height }]}
                 onPress={() => {
                     Alert.alert(
 
@@ -135,7 +131,7 @@ class ListaTurnos extends Component {
 
     renderEmptyDate() {
         return (
-            <View style={styles.emptyDate}>
+            <View style={agendaStyles.emptyDate}>
                 <Text style={{ fontFamily: 'Nunito' }}>No hay turnos disponibles</Text>
             </View>
         );
@@ -154,15 +150,15 @@ class ListaTurnos extends Component {
     static navigationOptions = {
         title: 'Seleccione un turno',
         headerStyle: {
-            backgroundColor: '#FFFFFF',
+            backgroundColor: styles.white.color,
             elevation: 0,
             shadowOpacity: 0,
         },
-        headerTintColor: 'rgb(4, 116, 186)',
+        headerTintColor: styles.primary.color,
         headerTitleStyle: {
             fontWeight: 'normal',
             fontFamily: 'Nunito',
-            color: 'rgb(4, 116, 186)'
+            color: styles.primary.color
         },
     };
 
@@ -179,10 +175,10 @@ class ListaTurnos extends Component {
                     {
                         marked: true,
                         //selected: true,
-                        selectedColor: theme.colors.primary,
+                        selectedColor: styles.primary.color,
                         customStyles: {
                             text: {
-                                color: 'black',
+                                color: styles.black.color,
                                 fontWeight: 'bold'
                             }
                         }
@@ -246,8 +242,8 @@ class ListaTurnos extends Component {
             //const ruta = '../../../../assets/' + '${data.nombreTienda}' + '.jpg';
             if (turnos.length === 0) {
                 return (
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 20, fontFamily: 'Nunito' }}>No hay turnos disponibles</Text>
+                    <View style={ styles['center-flex.light'] }>
+                        <Text style={ styles.text }>No hay turnos disponibles</Text>
                     </View>
                 )
             } else {
@@ -287,8 +283,8 @@ class ListaTurnos extends Component {
         }
         else {
             return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <ActivityIndicator size="large" color="#045ba3" />
+                <View style={ styles['center-flex.light'] }>
+                    <ActivityIndicator size="large" color={ styles.primary.color } />
                 </View>
             )
         }

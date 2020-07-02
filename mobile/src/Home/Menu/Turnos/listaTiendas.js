@@ -9,6 +9,7 @@ import TouchableScale from 'react-native-touchable-scale';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { withTheme, ListItem, Text } from 'react-native-elements';
+import styles from '../../../../App.scss'
 
 function getImageFromIdTienda(idTienda) {
     const url = URL_API_TIENDA + "/api/tienda/imagen/" + idTienda
@@ -28,15 +29,15 @@ class ListaTiendas extends Component {
     static navigationOptions = {
         title: 'Seleccione una tienda',
         headerStyle: {
-            backgroundColor: '#FFFFFF',
+            backgroundColor: styles.white.color,
             elevation: 0,
             shadowOpacity: 0,
         },
-        headerTintColor: 'rgb(4, 116, 186)',
+        headerTintColor: styles.primary.color,
         headerTitleStyle: {
             fontWeight: 'normal',
             fontFamily: 'Nunito',
-            color: 'rgb(4, 116, 186)'
+            color: styles.primary.color
         },
     };
 
@@ -54,12 +55,11 @@ class ListaTiendas extends Component {
 
     render() {
         const { tiendas } = this.state
-        const { theme, updateTheme, replaceTheme } = this.props;
 
         if (tiendas != null) {
             //const ruta = '../../../../assets/' + '${data.nombreTienda}' + '.jpg';
             return (
-                <View style={{ flex: 1, backgroundColor: 'white' }}>
+                <View style={styles['flex.white']}>
                     <ScrollView>
                         {
                             tiendas.map((data, i) => {
@@ -68,17 +68,17 @@ class ListaTiendas extends Component {
                                     case 'Disco':
                                         tiendaColorStart = '#ff554d'
                                         tiendaColorEnd = '#a8120a'
-                                        tiendaColorChevron = 'white'
+                                        tiendaColorChevron = styles.white.color
                                         break;
                                     case 'Easy':
                                         tiendaColorStart = '#fffc40'
                                         tiendaColorEnd = '#ffa900'
-                                        tiendaColorChevron = 'black'
+                                        tiendaColorChevron = styles.black.color
                                         break;
                                     case 'Jumbo':
                                         tiendaColorStart = '#48C774'
                                         tiendaColorEnd = '#319153'
-                                        tiendaColorChevron = 'white'
+                                        tiendaColorChevron = styles.white.color
                                         break;
                                     default:
                                         break;
@@ -122,8 +122,8 @@ class ListaTiendas extends Component {
             )
         } else {
             return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <ActivityIndicator size="large" color="#045ba3" />
+                <View style={ styles['center-flex.white'] }>
+                    <ActivityIndicator size="large" color={ styles.primary.color } />
                 </View>
             )
         }

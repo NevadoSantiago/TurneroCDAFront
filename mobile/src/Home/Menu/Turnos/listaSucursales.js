@@ -18,6 +18,7 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import { withTheme, ListItem, Text } from "react-native-elements";
 import { SearchBar } from "react-native-elements";
 import MapView from "react-native-maps";
+import styles from '../../../../App.scss'
 
 var discoImg = require("../../img/DiscoIcon50.png");
 var jumboImg = require("../../img/JumboIcon50.png");
@@ -36,32 +37,17 @@ class ListaSucursales extends Component {
     static navigationOptions = {
         title: 'Seleccione una sucursal',
         headerStyle: {
-            backgroundColor: '#FFFFFF',
+            backgroundColor: styles.white.color,
             elevation: 0,
             shadowOpacity: 0,
         },
-        headerTintColor: 'rgb(4, 116, 186)',
+        headerTintColor: styles.primary.color,
         headerTitleStyle: {
             fontWeight: 'normal',
             fontFamily: 'Nunito',
-            color: 'rgb(4, 116, 186)'
+            color: styles.primary.color
         },
     };
-
-  static navigationOptions = {
-    title: "Seleccione una sucursal",
-    headerStyle: {
-      backgroundColor: "#FFFFFF",
-      elevation: 0,
-      shadowOpacity: 0,
-    },
-    headerTintColor: 'rgb(4, 116, 186)',
-    headerTitleStyle: {
-      fontWeight: 'normal',
-      fontFamily: 'Nunito',
-      color: 'rgb(4, 116, 186)'
-    },
-  };
 
   async componentDidMount() {
     const { tiendaId } = this.props.navigation.state.params;
@@ -93,10 +79,10 @@ class ListaSucursales extends Component {
               placeholder="Buscar direccion"
               lightTheme="true"
               showsCancelButtonWhileEditing={false}
-              style={{ color: 'white' }}
+              style={ styles.white.color }
             />
             <MapView
-              style={styles.mapStyle}
+              style={mapStyles.mapStyle}
               initialRegion={{
                 latitude: -34.612773,
                 longitude: -58.448894,
@@ -133,7 +119,7 @@ class ListaSucursales extends Component {
               ></MapView.Marker>
             </MapView>
           </View>
-          <View style={{ flex: 1, backgroundColor: "white" }}>
+          <View style={ styles['flex.white'] }>
             <ScrollView>
               {sucursales.map((data, i) => {
                 return (
@@ -157,16 +143,16 @@ class ListaSucursales extends Component {
                     title={data.nombre}
                     subtitle={data.direccion}
                     subtitleStyle={{
-                        color: 'white',
+                        color: styles.white.color,
                         fontFamily: 'Nunito'
                     }}
                     key={data.sucursalId}
                     titleStyle={{
-                      color: "white",
+                      color: styles.white.color,
                       fontFamily: "Nunito_bold",
                       fontSize: 17,
                     }}
-                    chevron={{ color: "white", size: 20 }}
+                    chevron={{ color: styles.white.color, size: 20 }}
                     onPress={(e) => {
                       this.props.navigation.navigate("ListaTurnos", {
                         sucursalId: data.sucursalId,
@@ -182,21 +168,16 @@ class ListaSucursales extends Component {
     } else {
       return (
         <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        style={ styles['center-flex.white'] }
         >
-          <ActivityIndicator size="large" color="#045ba3" />
+          <ActivityIndicator size="large" color={ styles.primary.color } />
         </View>
       );
     }
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+const mapStyles = StyleSheet.create({
+  container: styles['center-flex.white'],
   mapStyle: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height / 3,

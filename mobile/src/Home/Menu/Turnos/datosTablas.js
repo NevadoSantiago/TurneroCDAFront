@@ -11,6 +11,7 @@ import TouchableScale from 'react-native-touchable-scale';
 
 import { Button, ThemeProvider, Text } from 'react-native-elements';
 import { OBTENER_TURNOS,ACTUALIZAR_TURNOS } from '../constantes/actionRedux';
+import styles from '../../../../App.scss'
 
 /*import {
     Grayscale,
@@ -30,10 +31,10 @@ function getImageFromIdTienda(idTienda) {
 }
 
 var turnoColor = {
-    primary: 'black',
-    secondary: 'black',
-    content: 'white',
-    chevron: 'white'
+    primary: styles.black.color,
+    secondary: styles.black.color,
+    content: styles.white.color,
+    chevron: styles.white.color
 }
 
 var turnoSubtitle = null
@@ -134,7 +135,7 @@ class DatosTablas extends Component {
 
         if (turno.estado === 'SIN_CONFIRMAR') {
             this.checkAlert.alert("Detalles del turno",
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <View style={ styles.center }>
                     <Image
                         style={{ width: 250, height: 250, marginTop: -20 }}
                         source={{ uri: urlQR }}
@@ -168,9 +169,9 @@ class DatosTablas extends Component {
                             justifyContent: 'center',
                             textAlign: 'center',
                             width: '112%',
-                            backgroundColor: '#CCCCCC',
+                            backgroundColor: styles.disabled.color,
                             padding: 15,
-                            color: 'white',
+                            color: styles.white.color,
                             fontFamily: 'Nunito'
                         }
                     },
@@ -184,7 +185,7 @@ class DatosTablas extends Component {
                             width: '112%',
                             backgroundColor: theme.colors.primary,
                             padding: 15,
-                            color: 'white',
+                            color: styles.white.color,
                             fontFamily: 'Nunito'
                         }
                     },
@@ -196,11 +197,11 @@ class DatosTablas extends Component {
                             justifyContent: 'center',
                             textAlign: 'center',
                             width: '112%',
-                            backgroundColor: 'orange',
+                            backgroundColor: styles.secondary.color,
                             padding: 15,
                             borderBottomLeftRadius: 5,
                             borderBottomRightRadius: 5,
-                            color: 'white',
+                            color: styles.white.color,
                             fontFamily: 'Nunito'
                         }
                     },
@@ -208,7 +209,7 @@ class DatosTablas extends Component {
             )
         } else {
             this.checkAlert.alert("Detalles del turno",
-                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <View style={ styles.center }>
                     <Image
                         style={{ width: 250, height: 250, marginTop: -20 }}
                         source={{ uri: urlQR }}
@@ -242,9 +243,9 @@ class DatosTablas extends Component {
                             justifyContent: 'center',
                             textAlign: 'center',
                             width: '112%',
-                            backgroundColor: theme.colors.primary,
+                            backgroundColor: styles.primary.color,
                             padding: 15,
-                            color: 'white',
+                            color: styles.white.color,
                             fontFamily: 'Nunito'
                         }
                     },
@@ -256,9 +257,9 @@ class DatosTablas extends Component {
                             justifyContent: 'center',
                             textAlign: 'center',
                             width: '112%',
-                            backgroundColor: theme.colors.primary,
+                            backgroundColor: styles.primary.color,
                             padding: 15,
-                            color: 'white',
+                            color: styles.white.color,
                             fontFamily: 'Nunito'
                         }
                     },
@@ -270,11 +271,11 @@ class DatosTablas extends Component {
                             justifyContent: 'center',
                             textAlign: 'center',
                             width: '112%',
-                            backgroundColor: 'orange',
+                            backgroundColor: styles.secondary.color,
                             padding: 15,
                             borderBottomLeftRadius: 5,
                             borderBottomRightRadius: 5,
-                            color: 'white',
+                            color: styles.white.color,
                             fontFamily: 'Nunito'
                         }
                     },
@@ -288,22 +289,22 @@ class DatosTablas extends Component {
             case 'SIN_CONFIRMAR':
                 turnoColor.primary = '#757575',
                     turnoColor.secondary = '#BABABA',
-                    turnoColor.content = 'white',
-                    turnoColor.chevron = 'white'
+                    turnoColor.content = styles.white.color,
+                    turnoColor.chevron = styles.white.color
                 turnoSubtitle = turno.detalleDelTurno + ' - ' + turno.horario
                 break;
             case 'ACTUAL':
                 turnoColor.primary = '#48C774',
                 turnoColor.secondary = '#319153',
-                turnoColor.content = 'white',
-                turnoColor.chevron = 'white'
+                turnoColor.content = styles.white.color,
+                turnoColor.chevron = styles.white.color
                 turnoSubtitle = turno.detalleDelTurno + ' - ' + turno.horario
                 break;
             default:
-                turnoColor.primary = 'orange',
-                turnoColor.secondary = 'orange',
-                turnoColor.content = 'white',
-                turnoColor.chevron = 'white'
+                turnoColor.primary = styles.secondary.color,
+                turnoColor.secondary = styles.secondary.color,
+                turnoColor.content = styles.white.color,
+                turnoColor.chevron = styles.white.color
                 turnoSubtitle = turno.detalleDelTurno + ' - ' + turno.horario
                 //turnoSubtitle = turno.detalleDelTurno + "\n" + "Caja asignada : " + (cajaAsignada).replace("Caja asignada : null", "")
                 break;
@@ -319,8 +320,8 @@ class DatosTablas extends Component {
         if (data != null) {
             if (data.length === 0) {
                 return (
-                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 20, fontFamily: 'Nunito' }}>No tenés ningún turno</Text>
+                    <View style={ styles['center-flex.white'] }>
+                        <Text style={ styles.text }>No tenés ningún turno</Text>
                     </View>
                 )
             } else {
@@ -386,8 +387,8 @@ class DatosTablas extends Component {
             }
         } else {
             return (
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <Text>
+                <View style={ styles['center-flex.white'] }>
+                    <Text style={ styles.text }>
                         No se pueden mostrar los datos
                     </Text>
                 </View>

@@ -27,6 +27,10 @@
     "android": {
       "package": "com.cda.turnero",
       "versionCode": 1
+    },
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": ["js", "jsx", "scss", "sass"]
     }
   }
 }

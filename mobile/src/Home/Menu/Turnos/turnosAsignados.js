@@ -8,12 +8,7 @@ import { withTheme } from 'react-native-elements';
 import DatosTablas from './datosTablas'
 import { URL_API } from '../constantes/urlApi'
 import { connect } from 'react-redux';
-
-const theme = {
-  colors: {
-    primary: 'rgb(4, 116, 186)'
-  }
-};
+import styles from "../../../../App.scss";
 
 class TurnosAsignados extends Component {
   constructor(props) {
@@ -24,20 +19,7 @@ class TurnosAsignados extends Component {
     };
 
   }
-  static navigationOptions = {
-    title: 'Mis turnos',
-    headerStyle: {
-      backgroundColor: 'white',
-      elevation: 0,
-      shadowOpacity: 0,
-    },
-    headerTintColor: 'black',
-    headerTitleStyle: {
-      fontWeight: 'normal',
-      fontFamily: 'Nunito',
-      color: 'black'
-    },
-  };
+
   cancelarTurno = () => {
     this.props.navigation.navigate('Turnos')
   }
@@ -64,7 +46,7 @@ class TurnosAsignados extends Component {
       if (state.turnos.length === 0) {
         return (
          
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={ styles['center-flex.white'] }>
             <Text style= {{ fontSize: 20, fontFamily: 'Nunito' }}>
               No tiene turnos asignados
             </Text>
@@ -73,7 +55,7 @@ class TurnosAsignados extends Component {
       }
       else {
         return (
-          <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
+          <ScrollView style={ styles['center-flex.white'] }>
             {
               state.turnos.map((turno, i) => (
                 <DatosTablas data={turno} cancelar={this.cancelarTurno} key={turno.idTurno}></DatosTablas>
@@ -84,8 +66,8 @@ class TurnosAsignados extends Component {
       }
     } else {
       return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <ActivityIndicator size="large" color="#045ba3"/>
+        <View style={ styles['center-flex.white'] }>
+          <ActivityIndicator size="large" color={ styles.primary.color } />
         </View>
       )
     }

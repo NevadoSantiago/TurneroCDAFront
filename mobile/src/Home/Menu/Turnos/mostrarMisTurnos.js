@@ -3,6 +3,7 @@ import { View, ScrollView, Container } from 'react-native-gesture-handler';
 import TouchableScale from 'react-native-touchable-scale';
 import DatosTablas from './datosTablas'
 import moment from 'moment';
+import styles from '../../../../App.scss'
 
 import { withTheme, ListItem, Text } from 'react-native-elements';
 
@@ -21,7 +22,6 @@ class MostrarMisTurnos extends Component {
 
   render() {
     const { turnos, daySelected } = this.props
-    const { theme, updateTheme, replaceTheme } = this.props;
     //console.log(turnos)
     if (turnos.length > 0) {
       return (
@@ -33,7 +33,7 @@ class MostrarMisTurnos extends Component {
     else {
       return (
         <React.Fragment>
-          <Text style={{ marginTop: 15, fontSize: 20, alignSelf: 'center', fontFamily: 'Nunito', marginBottom: 10 }}>{'No existen turnos para este día'}</Text>
+          <Text style={ styles.text }>{'No existen turnos para este día'}</Text>
         </React.Fragment>
       )
     }

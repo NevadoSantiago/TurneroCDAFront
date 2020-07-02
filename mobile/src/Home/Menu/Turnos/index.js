@@ -15,6 +15,7 @@ import MostrarMisTurnos from "./mostrarMisTurnos"
 import { withTheme, ListItem, Text, Button } from 'react-native-elements';
 import { OBTENER_TURNOS, LIMPIAR_SESION } from '../constantes/actionRedux';
 import { NavigationEvents } from 'react-navigation';
+import styles from '../../../../App.scss'
 
 var daySelected = '1'
 var dots = []
@@ -93,14 +94,14 @@ class MiCalendario extends Component {
     if (moment(today).isSame(finalDate)) {
       return (
         <View style={{}}>
-          <Text style={{ fontSize: 30, marginLeft: 15, fontFamily: 'Nunito_bold' }}>Hoy</Text>
+          <Text style={ styles.h2 }>Hoy</Text>
         </View>
       )
     }
-    if (moment(today).isBefore(finalDate) && (moment(today).day() === (moment(finalDate).day() - 1)) && moment(today).month() === (moment(finalDate).month())) {
+    if(moment(finalDate).diff(moment(today), 'days') === 1){
       return (
         <View style={{}}>
-          <Text style={{ fontSize: 30, marginLeft: 15, fontFamily: 'Nunito_bold' }}>Mañana</Text>
+          <Text style={ styles.h2 }>Mañana</Text>
         </View>
       )
     } else {
@@ -116,43 +117,43 @@ class MiCalendario extends Component {
         case 0:
           return (
             <View style={{}}>
-              <Text style={{ fontSize: 30, marginLeft: 15, fontFamily: 'Nunito_bold' }}>Domingo</Text>
+              <Text style={ styles.h2 }>Domingo</Text>
             </View>
           )
         case 1:
           return (
             <View style={{}}>
-              <Text style={{ fontSize: 30, marginLeft: 15, fontFamily: 'Nunito_bold' }}>Lunes</Text>
+              <Text style={ styles.h2 }>Lunes</Text>
             </View>
           )
         case 2:
           return (
             <View style={{}}>
-              <Text style={{ fontSize: 30, marginLeft: 15, fontFamily: 'Nunito_bold' }}>Martes</Text>
+              <Text style={ styles.h2 }>Martes</Text>
             </View>
           )
         case 3:
           return (
             <View style={{}}>
-              <Text style={{ fontSize: 30, marginLeft: 15, fontFamily: 'Nunito_bold' }}>Miércoles</Text>
+              <Text style={ styles.h2 }>Miércoles</Text>
             </View>
           )
         case 4:
           return (
             <View style={{}}>
-              <Text style={{ fontSize: 30, marginLeft: 15, fontFamily: 'Nunito_bold' }}>Jueves</Text>
+              <Text style={ styles.h2 }>Jueves</Text>
             </View>
           )
         case 5:
           return (
             <View style={{}}>
-              <Text style={{ fontSize: 30, marginLeft: 15, fontFamily: 'Nunito_bold' }}>Viernes</Text>
+              <Text style={ styles.h2 }>Viernes</Text>
             </View>
           )
         case 6:
           return (
             <View style={{}}>
-              <Text style={{ fontSize: 30, marginLeft: 15, fontFamily: 'Nunito_bold' }}>Sabado</Text>
+              <Text style={ styles.h2 }>Sabado</Text>
             </View>
           )
         default:
@@ -174,13 +175,13 @@ class MiCalendario extends Component {
             turnosAsignados={this.filtrarDias()}
             date={date}
           />
-          <ScrollView style={{ backgroundColor: 'white' }}>
-            <View style={{ backgroundColor: 'white', height: 40, flexDirection: 'row' }}>
+          <ScrollView style={ styles['white-bg'] }>
+            <View style={{ height: 40, flexDirection: 'row' }}>
               {
                 this.showDateString(diaCalendario)
               }
               <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 15, marginRight: 15, marginTop: 15, fontFamily: 'Nunito', alignSelf: 'flex-end' }}>{diaCalendario}</Text>
+                <Text style={ styles['text.small.end'] }>{diaCalendario}</Text>
               </View>
             </View>
             <MostrarMisTurnos
@@ -210,8 +211,8 @@ class MiCalendario extends Component {
       )
     } else {
       return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <ActivityIndicator size="large" color="#045ba3" />
+        <View style={ styles['center-flex.light'] }>
+          <ActivityIndicator size="large" color={ styles.primary.color } />
         </View>
       )
     }

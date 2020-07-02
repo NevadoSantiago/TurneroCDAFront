@@ -29,17 +29,11 @@ class Calendario extends Component {
 
 	render() {
 		const { date } = this.state
-		const { theme, cambiarDiaCalendario, turnosAsignados } = this.props
+		const { cambiarDiaCalendario, turnosAsignados } = this.props
 		return (
 			<React.Fragment>
 				<CalendarList
-					style={[
-						{
-							height: 350,
-							borderBottomWidth: 0,
-							borderBottomColor: 'lightgrey'
-						}
-					]}
+					style={{ marginBottom: -40 }}
 					markedDates={turnosAsignados}
 					markingType={'multi-dot'}
 					selected={{ date }}
@@ -47,18 +41,6 @@ class Calendario extends Component {
 					marked={{ date }}
 					minDate={{ date }}
 					theme={{
-						calendarBackground: '#ffffff',
-						textSectionTitleColor: '#b6c1cd',
-						textSectionTitleDisabledColor: '#d9e1e8',
-						selectedDayBackgroundColor: '#00adf5',
-						selectedDayTextColor: '#ffffff',
-						todayTextColor: theme.colors.primary,
-						dayTextColor: 'black',
-						textDisabledColor: '#d9e1e8',
-						arrowColor: 'orange',
-						disabledArrowColor: '#d9e1e8',
-						monthTextColor: theme.colors.primary,
-						indicatorColor: theme.colors.primary,
 						textDayFontFamily: 'Nunito',
 						textMonthFontFamily: 'Nunito',
 						textDayHeaderFontFamily: 'Nunito',
