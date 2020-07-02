@@ -120,7 +120,7 @@
 
 .center-flex.black{
   flex: 1;
-  @extend %dark-background;
+  @extend %black-background;
   align-items: center;
   justify-content: center;
 }
