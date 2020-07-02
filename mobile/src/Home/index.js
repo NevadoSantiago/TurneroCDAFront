@@ -39,7 +39,7 @@ class HomeScreen extends React.Component {
     };
   }
   componentDidMount() {
-    console.warn("asddddddddddddddddddddd")
+    console.warn("Estás en la app de Guardias")
   }
 
   static navigationOptions = {
