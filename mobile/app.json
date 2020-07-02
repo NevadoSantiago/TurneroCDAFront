@@ -12,7 +12,7 @@
     "splash": {
       "image": "./assets/IMAGENCDA.png",
       "resizeMode": "contain",
-      "backgroundColor": "#0473c3"
+      "backgroundColor": "#FF9616"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
