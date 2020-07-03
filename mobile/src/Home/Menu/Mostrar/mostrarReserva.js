@@ -13,7 +13,6 @@ class MostrarReserva extends Component {
     return(
             <View>
                 <Text>
-                    {turno.nombreClinica}
                     {turno.nombreSucursal}
                     {turno.direccion}
                     {turno.sintomas}
