@@ -147,19 +147,26 @@
 
 .h1 {
   font-size: 40;
-  margin-left: 15;
   font-family: 'Nunito_bold';
 }
 
 .h2 {
   font-size: 30;
-  margin-left: 15;
   font-family: 'Nunito_bold';
 }
 
 .h3 {
   font-size: 25;
-  margin-left: 15;
+  font-family: 'Nunito_bold';
+}
+
+.h4 {
+  font-size: 20;
+  font-family: 'Nunito_bold';
+}
+
+.h5 {
+  font-size: 15;
   font-family: 'Nunito_bold';
 }
 
@@ -171,12 +178,23 @@
   font-family: 'Nunito';
 }
 
-.text {
+.text.small {
+  align-self: flex-start;
+  font-size: 15;
+  font-family: 'Nunito';
+}
+
+.text.center {
   margin-top: 15;
   font-size: 20;
   align-self: center;
   font-family: 'Nunito';
   margin-bottom: 10;
+}
+
+.text {
+  font-size: 15;
+  font-family: 'Nunito';
 }
 
 .center {
