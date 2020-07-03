@@ -30,25 +30,31 @@ class ListaEspecialidades extends Component {
   render() {
       const {especialidades} = this.props
       if(especialidades == null){
-          return (<View>
+          return (
+          <View>
               <Text>
                   llego
               </Text>
           </View>)
-      }else{
-
-      
-      especialidades.map((e, i) => {
-        return (
-            <View>
-                <Text>Entro</Text>
-            <MostrarEspecialidades especialidad = {e}> 
-
-            </MostrarEspecialidades> 
-            </View>
-        )
-      })
-}}
+      }else if(especialidades.length > 0){ 
+        console.log("IMPRIMIENDO....")
+        console.log(especialidades)
+        return(
+        this.props.especialidades.map((e, i) => (
+            <MostrarEspecialidades especialidad = {e}/> 
+    )
+       )
+        )      
+}else{
+  return(
+    <View>
+      <Text>
+        No hay especialidades
+      </Text>
+    </View>
+  )
+}
+}
 }
 
 const mapDispatchToProps = (dispatch) => {

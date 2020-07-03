@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import { withTheme, Overlay, Text, ListItem, Avatar } from 'react-native-elements';
-import { View, Container } from 'react-native';
+import { View, Text} from 'react-native';
 
 
 class MostrarEspecialidades extends Component {
@@ -8,7 +7,8 @@ class MostrarEspecialidades extends Component {
       super(props);
     }
  render(){
-     var {especialidad} = this.props
+     const {especialidad} = this.props
+     console.log(especialidad)
     return(
             <View>
                 <Text>

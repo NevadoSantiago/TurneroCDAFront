@@ -12,7 +12,6 @@ const initialState={
 const TurnosReducer = (state = initialState, action) => {    
     switch(action.type){   
         case(OBTENER_ESPECIALIDADES):{
-            console.log("OBTENER ESPECIALIDADES")
             const {data} = action
             return{
                 ...state,

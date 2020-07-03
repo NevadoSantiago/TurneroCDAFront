@@ -1,28 +1,11 @@
 import React, { Component } from 'react';
-import { withTheme, Overlay, Text, ListItem, Avatar } from 'react-native-elements';
+import { withTheme, Text, Button} from 'react-native-elements';
 import { View, Dimensions, KeyboardAvoidingView } from 'react-native';
 import MapView from "react-native-maps";
 import styles from '../../../../App.scss'
 
 class MostrarReserva extends Component {
-<<<<<<< HEAD
-    constructor(props) {
-      super(props);
-    }
- render(){
-     var {turno} = this.props
-    console.warn("Entro al componente")
-    return(
-            <View>
-                <Text>
-                    {turno.nombreSucursal}
-                    {turno.direccion}
-                    {turno.sintomas}
-                </Text>
-            </View>
-    )    
-    }
-=======
+
 
 	constructor(props) {
 		super(props);
@@ -30,11 +13,14 @@ class MostrarReserva extends Component {
 
 	render() {
 		var { turno } = this.props
-		console.warn("Entro al componente")
 
 		return (
 			<React.Fragment>
+
 				<View style={{ paddingBottom: 15, backgroundColor: styles.white.color }}>
+				<Button
+				title="Nuevo Turno"
+				></Button>
 					<View style={{ marginHorizontal: 15 }}>
 						<View style={{ marginBottom: -10 }}>
 							<Text style={styles.text}>Centro médico</Text>
@@ -102,7 +88,6 @@ class MostrarReserva extends Component {
 		)
 
 	}
->>>>>>> 05225791ea58809ad3aef04001838b92418f3406
 }
 
 export default withTheme(MostrarReserva)

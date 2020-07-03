@@ -72,7 +72,6 @@ class HomeScreen extends React.Component {
     const {loading, theme } = this.props
     const { logueado } = this.state
     if (!loading && logueado) {
-      console.log(loading)
       this.props.navigation.navigate('Reservas')
     }
     return (
