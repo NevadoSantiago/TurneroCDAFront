@@ -38,10 +38,6 @@ class HomeScreen extends React.Component {
       logueado: false
     };
   }
-  componentDidMount() {
-    console.warn("asddddddddddddddddddddd")
-  }
-
   static navigationOptions = {
     headerShown: false,
     headerTitleStyle: {
@@ -51,17 +47,6 @@ class HomeScreen extends React.Component {
   };
   mailIngresado = (mail) => {
     datosIngresados.mail = mail
-  }
-  obtenerListadoTurnos = async (id) => {
-    const { guardarTurnos } = this.props
-    await fetch(URL_API + '/api/turno/consultarTurnosCliente/' + id)
-      .then(function (response) {
-        return response.json()
-      })
-      .then(function (myJson) {
-        guardarTurnos(myJson)
-      }
-      )
   }
 
   async realizarLogueo() {
@@ -75,7 +60,6 @@ class HomeScreen extends React.Component {
       })
       .then(function (myJson) {
         iniciarSesion(myJson)
-        this.obtenerListadoTurnos(myJson)
         this.setState({
           logueado: true
         })
@@ -84,10 +68,11 @@ class HomeScreen extends React.Component {
   }
 
   render() {
-    const { mail, loadingTurnos, theme } = this.props
+    const {loading, theme } = this.props
     const { logueado } = this.state
-    if (!loadingTurnos && logueado) {
-      this.props.navigation.navigate('Turnos')
+    if (!loading && logueado) {
+      console.log(loading)
+      this.props.navigation.navigate('Reservas')
     }
     return (
       <View style={ styles['center-flex.white'] }>
@@ -115,7 +100,6 @@ class HomeScreen extends React.Component {
           title="Ingresar"
           onPress={() => this.realizarLogueo()}
         />
-        <Text>{mail}</Text>
       </View>
     );
   }
@@ -124,15 +108,12 @@ class HomeScreen extends React.Component {
 const mapDispatchToProps = dispatch => {
   return {
     iniciarSesion: (id) => dispatch({ type: INICIAR_SESION, data: id }),
-    guardarTurnos: (turnos) => dispatch({ type: OBTENER_TURNOS, data: turnos }),
     limpiarSesion: () => dispatch({ type: LIMPIAR_SESION }),
   };
 }
 const mapStateToProps = state => {
   return {
-    idUsuario: state.user.idUsuario,
-    mail: state.user.mail,
-    turnosAsignados: state.turnos.turnosAsignados
+    loading: state.user.loading,
   }
 }
 

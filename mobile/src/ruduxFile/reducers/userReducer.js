@@ -5,21 +5,27 @@ import {CERRAR_SESION, INICIAR_SESION,ACTUALIZAR_TURNOS} from '../../Home/Menu/c
 const initialState={
     mail: null,
     idUsuario:null,
-    nuevoTurno:false
+    nombre: null,
+    loading:true,
+    nuevoTurno:false,
+    reserva:null
 };
 
 
 const UserReducer = (state = initialState, action) => {
     var datos = action.data
-    var nuevoMail
-    var nuevoId
+    console.log("REDUX RESERVA")
+    console.log(datos)
     
     switch(action.type){   
         case(INICIAR_SESION):{
-            nuevoId = datos
+
             return{
                 ...state,
-                idUsuario : nuevoId 
+                idUsuario : datos.idCliente,
+                reserva : datos.detalleReserva,
+                nombre: datos.nombre,
+                loading : false
             }
             
         }

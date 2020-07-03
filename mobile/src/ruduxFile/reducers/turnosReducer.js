@@ -5,7 +5,6 @@ import moment from 'moment';
 const initialState={
     turnosAsignados: null,
     diaCalendario:moment().format("YYYY-MM-DD"),
-    loading: true
 };
 
 
@@ -17,7 +16,6 @@ const TurnosReducer = (state = initialState, action) => {
             return{
                 ...state,
                 turnosAsignados : data,
-                loading : false
             }
             
         }

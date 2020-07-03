@@ -7,11 +7,11 @@ import { createStore } from 'redux'
 import ReducerStore from './src/ruduxFile/store'
 import HomeScreen from './src/Home'
 import {ThemeProvider } from 'react-native-elements';
-import Turnos from './src/Home/Menu/Turnos';
-import DatosTablas from './src/Home/Menu/Turnos/datosTablas'
-import ListaSucursales from './src/Home/Menu/Turnos/listaSucursales'
-import ListaTiendas from './src/Home/Menu/Turnos/listaTiendas'
-import ListaTurnos from './src/Home/Menu/Turnos/listaTurnos'
+import Reservas from './src/Home/Menu/reservas'
+import DatosTablas from './src/Home/Menu/reservas/datosTablas'
+import ListaSucursales from './src/Home/Menu/reservas/listaSucursales'
+import ListaTiendas from './src/Home/Menu/reservas/listaTiendas'
+import ListaTurnos from './src/Home/Menu/reservas/listaTurnos'
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font'
 
@@ -45,7 +45,7 @@ const theme = {
 const AppNavigator = createStackNavigator(  
   {  
       Home: HomeScreen,  
-      Turnos: Turnos,
+      Reservas: Reservas,
       ListaTiendas: ListaTiendas,
       ListaSucursales: ListaSucursales,
       ListaTurnos: ListaTurnos,

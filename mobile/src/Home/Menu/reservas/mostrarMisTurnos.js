@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Container } from 'react-native-gesture-handler';
-import TouchableScale from 'react-native-touchable-scale';
 import DatosTablas from './datosTablas'
-import moment from 'moment';
+
 import styles from '../../../../App.scss'
 
 import { withTheme, ListItem, Text } from 'react-native-elements';
