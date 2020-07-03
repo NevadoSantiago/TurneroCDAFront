@@ -16,11 +16,7 @@ class MostrarReserva extends Component {
 
 		return (
 			<React.Fragment>
-
 				<View style={{ paddingBottom: 15, backgroundColor: styles.white.color }}>
-				<Button
-				title="Nuevo Turno"
-				></Button>
 					<View style={{ marginHorizontal: 15 }}>
 						<View style={{ marginBottom: -10 }}>
 							<Text style={styles.text}>Centro médico</Text>

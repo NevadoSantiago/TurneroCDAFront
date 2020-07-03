@@ -15,7 +15,7 @@ import { connect } from "react-redux";
 import TouchableScale from "react-native-touchable-scale";
 import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { withTheme, ListItem, Text } from "react-native-elements";
+import { withTheme, ListItem } from "react-native-elements";
 import { SearchBar } from "react-native-elements";
 import MapView from "react-native-maps";
 import styles from '../../../../App.scss'

@@ -2,25 +2,15 @@ import React, { Component } from "react";
 import {
   View,
   Text,
-  ActivityIndicator,
-  Dimensions,
-  Image,
-  SafeAreaView,
-  StatusBar,
 } from "react-native";
-import { Card, CardItem, Body } from "native-base";
-import QRCode from "react-native-qrcode-svg";
-import CheckAlert from "react-native-awesome-alert";
 import {  URL_API_ESPECIALIDAD } from "../constantes/urlApi";
 import { connect } from "react-redux";
 import TouchableScale from "react-native-touchable-scale";
-import { ScrollView } from "react-native-gesture-handler";
-import { StyleSheet, TouchableOpacity } from "react-native";
 import { withTheme, ListItem} from "react-native-elements";
-import { SearchBar } from "react-native-elements";
-import MapView from "react-native-maps";
+
 import styles from '../../../../App.scss'
 import MostrarEspecialidades from '../Mostrar/mostrarEspecialidades'
+import { ScrollView } from "react-native-gesture-handler";
 
 class ListaEspecialidades extends Component {
     constructor(props) {
@@ -31,31 +21,24 @@ class ListaEspecialidades extends Component {
       const {especialidades} = this.props
       if(especialidades == null){
           return (
-          <View>
+            <View>
               <Text>
-                  llego
+                No hay especialidades
               </Text>
           </View>)
-      }else if(especialidades.length > 0){ 
-        console.log("IMPRIMIENDO....")
-        console.log(especialidades)
+      }else{ 
         return(
-        this.props.especialidades.map((e, i) => (
-            <MostrarEspecialidades especialidad = {e}/> 
-    )
-       )
+          <ScrollView>
+            {this.props.especialidades.map((e, i) => (
+              <MostrarEspecialidades especialidad = {e}/> 
+                )
+              )   
+            }
+          </ScrollView>
         )      
-}else{
-  return(
-    <View>
-      <Text>
-        No hay especialidades
-      </Text>
-    </View>
-  )
-}
-}
-}
+      }
+    }
+  }
 
 const mapDispatchToProps = (dispatch) => {
   return {};
