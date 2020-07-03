@@ -38,6 +38,7 @@ class HomeScreen extends React.Component {
       logueado: false
     };
   }
+
   static navigationOptions = {
     headerShown: false,
     headerTitleStyle: {
