@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { View } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
+import { View, Text } from 'react-native'
 import MostrarReserva from '../Mostrar/mostrarReserva'
-import { withTheme, Text } from 'react-native-elements';
+import { withTheme } from 'react-native-elements';
+import styles from '../../../../App.scss'
 
 class Reservas extends Component {
   constructor(props) {
@@ -12,39 +13,54 @@ class Reservas extends Component {
     }
   }
 
+  static navigationOptions = {
+    title: 'Reservas',
+    headerStyle: {
+      backgroundColor: styles.white.color,
+      elevation: 0,
+      shadowOpacity: 0,
+    },
+    headerTintColor: styles.primary.color,
+    headerTitleStyle: {
+      fontWeight: 'normal',
+      fontFamily: 'Nunito',
+      color: styles.primary.color
+    },
+  };
+
   render() {
-    const {reserva} = this.props
-   console.log(reserva)
-    if (reserva == null) {
+    const { reserva } = this.props
+    console.log("--------RESERVA--------")
+    console.log(reserva)
+    console.log("-----------------------")
+    if (reserva === null) {
       return (
-        <View>
-            <Text>
-                Aqui se mostraran sus turnos
-            </Text>    
+        <View style={styles['center-flex.white']}>
+          <Text style={styles.text}>
+            No hay reservas
+          </Text>
         </View>
       )
     }
     else {
       return (
-       
-          <MostrarReserva  turno = {reserva}></MostrarReserva>
-        
+        <MostrarReserva turno={reserva}></MostrarReserva>
       )
     }
   }
 }
 
 const mapDispatchToProps = dispatch => {
-    return {
-    };
+  return {
+  };
+}
+
+const mapStateToProps = state => {
+  return {
+    reserva: state.user.reserva,
+    loadingTurnos: state.user.loading,
   }
-  
-  const mapStateToProps = state => {
-    return {
-      reserva: state.user.reserva,
-      loadingTurnos: state.user.loading,
-    }
-  }
+}
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(Reservas))
