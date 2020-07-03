@@ -2,14 +2,18 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { View, Text } from 'react-native'
 import MostrarReserva from '../Mostrar/mostrarReserva'
-import { withTheme } from 'react-native-elements';
+import { withTheme, Button } from 'react-native-elements';
 import styles from '../../../../App.scss'
+import {OBTENER_ESPECIALIDADES} from '../constantes/actionRedux'
+import listaEspecialidades from './listaEspecialidades';
+import {URL_API} from '../constantes/urlApi'
+
 
 class Reservas extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      especialidadesGuardadas : false,
     }
   }
 
@@ -28,17 +32,40 @@ class Reservas extends Component {
     },
   };
 
+  getEspecialidades = async() => {
+    console.log("hola")
+    const { guardarEspecialidades } = this.props
+    await fetch(URL_API + "/api/especialidad") 
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (myJson) {
+        guardarEspecialidades(myJson)
+        this.setState({
+          especialidadesGuardadas : true,
+        })
+
+      }.bind(this))
+  }
+
   render() {
+    const {Cargando} = this.props
+    const {especialidadesGuardadas} = this.state
+    if(!Cargando && especialidadesGuardadas){
+      this.props.navigation.navigate('ListaEspecialidades')
+    }
     const { reserva } = this.props
-    console.log("--------RESERVA--------")
-    console.log(reserva)
-    console.log("-----------------------")
     if (reserva === null) {
       return (
         <View style={styles['center-flex.white']}>
           <Text style={styles.text}>
             No hay reservas
           </Text>
+          <Button
+           title="Nueva Reserva"
+           onPress={() => this.getEspecialidades()}
+          >
+          </Button>
         </View>
       )
     }
@@ -52,6 +79,8 @@ class Reservas extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
+    guardarEspecialidades: (datos) => dispatch({ type: OBTENER_ESPECIALIDADES, data: datos }),
+    
   };
 }
 
@@ -59,6 +88,7 @@ const mapStateToProps = state => {
   return {
     reserva: state.user.reserva,
     loadingTurnos: state.user.loading,
+    Cargando : state.turnos.Cargando,
   }
 }
 

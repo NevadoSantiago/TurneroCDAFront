@@ -3,23 +3,19 @@ import { withTheme, Overlay, Text, ListItem, Avatar } from 'react-native-element
 import { View, Container } from 'react-native';
 
 
-class MostrarReserva extends Component {
+class MostrarEspecialidades extends Component {
     constructor(props) {
       super(props);
     }
  render(){
-     var {turno} = this.props
-    console.warn("Entro al componente")
+     var {especialidad} = this.props
     return(
             <View>
                 <Text>
-                    
-                    {turno.nombreSucursal}
-                    {turno.direccion}
-                    {turno.sintomas}
+                    {especialidad.nombre}
                 </Text>
             </View>
     )    
     }
 }
-export default MostrarReserva
+export default MostrarEspecialidades

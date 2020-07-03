@@ -14,6 +14,7 @@ import ListaTiendas from './src/Home/Menu/reservas/listaTiendas'
 import ListaTurnos from './src/Home/Menu/reservas/listaTurnos'
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font'
+import ListaEspecialidades from './src/Home/Menu/reservas/listaEspecialidades'
 
 const theme = {
   colors: {
@@ -50,6 +51,7 @@ const AppNavigator = createStackNavigator(
       ListaSucursales: ListaSucursales,
       ListaTurnos: ListaTurnos,
       DatosTablas : DatosTablas,
+      ListaEspecialidades : ListaEspecialidades, 
   },  
   {  
       initialRouteName: "Home"  
