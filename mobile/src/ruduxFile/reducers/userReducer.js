@@ -1,5 +1,5 @@
 import { addons } from "react-native";
-import {CERRAR_SESION, INICIAR_SESION,ACTUALIZAR_TURNOS} from '../../Home/Menu/constantes/actionRedux'
+import {CERRAR_SESION, INICIAR_SESION,ACTUALIZAR_TURNOS,SET_COORDENADAS} from '../../Home/Menu/constantes/actionRedux'
 
 
 const initialState={
@@ -8,14 +8,15 @@ const initialState={
     nombre: null,
     loading:true,
     nuevoTurno:false,
-    reserva:null
+    reserva:null,
+    ubicacion:null
 };
 
 
 const UserReducer = (state = initialState, action) => {
     var datos = action.data
     console.log("REDUX RESERVA")
-    console.log(datos)
+    //console.log(datos)
     
     switch(action.type){   
         case(INICIAR_SESION):{
@@ -35,6 +36,14 @@ const UserReducer = (state = initialState, action) => {
                 ...state,
                 nuevoTurno : hayNuevoTurno
             }
+        }
+        case(SET_COORDENADAS):{
+
+            return{
+                ...state,
+                ubicacion : action.data,
+            }
+            
         }
     }
     return{

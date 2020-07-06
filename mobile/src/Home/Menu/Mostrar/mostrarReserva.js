@@ -60,20 +60,20 @@ class MostrarReserva extends Component {
 						</View>
 					</View>
 				</View>
-				<KeyboardAvoidingView behavior='position' style={{ backgroundColor: styles.black.color }}>
+				<KeyboardAvoidingView behavior='height' style={{ backgroundColor: styles.black.color }}>
 					<MapView
 						style={{ width: Dimensions.get("window").width, height: Dimensions.get("window").height, }}
 						initialRegion={{
-							latitude: -34.5571634,
-							longitude: -58.4950138,
+							latitude: parseFloat(turno.latitud),
+							longitude: parseFloat(turno.longitud),
 							longitudeDelta: 0.005,
 							latitudeDelta: 0.0,
 						}}
 					>
 						<MapView.Marker
 							coordinate={{
-								latitude: -34.5571634,
-								longitude: -58.4950138,
+								latitude: parseFloat(turno.latitud),
+								longitude: parseFloat(turno.longitud),
 							}}
 							title={turno.nombreSucursal}
 							description={turno.direccion}
