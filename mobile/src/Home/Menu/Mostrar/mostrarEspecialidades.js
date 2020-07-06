@@ -1,18 +1,32 @@
-import React, {Component} from 'react';
-import { View, Text} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
+import { connect } from "react-redux";
 import { ListItem, withTheme } from "react-native-elements";
 import styles from '../../../../App.scss'
 import TouchableScale from "react-native-touchable-scale";
-
+import { SET_ESPECIALIDAD } from '../constantes/actionRedux'
 
 class MostrarEspecialidades extends Component {
-    constructor(props) {
-      super(props);
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      lista: [],
     }
- render(){
-     const {especialidad, theme} = this.props
-    return(
-        <ListItem
+  }
+
+  render() {
+    const { especialidad, setEspecialidad, theme, idEspecialidad } = this.props
+    var color
+
+    if (especialidad.especialidadId === idEspecialidad) {
+      color = styles.success.color
+    } else {
+      color = styles.primary.color
+    }
+
+    return (
+      <ListItem
         Component={TouchableScale}
         containerStyle={{
           marginLeft: 10,
@@ -24,7 +38,7 @@ class MostrarEspecialidades extends Component {
         tension={100}
         activeScale={0.95}
         linearGradientProps={{
-          colors: [theme.colors.primary, theme.colors.primary],
+          colors: [color, color],
           start: { x: 1, y: 3 },
           end: { x: 0.1, y: 5 },
         }}
@@ -38,12 +52,27 @@ class MostrarEspecialidades extends Component {
         }}
         chevron={{ color: styles.white.color, size: 20 }}
         onPress={(e) => {
-          this.props.navigation.navigate("ListaTurnos", {
-            sucursalId: data.sucursalId,
-          });
+          setEspecialidad(especialidad.especialidadId)
         }}
       />
-    )    
-    }
+    )
+  }
 }
-export default withTheme(MostrarEspecialidades)
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setEspecialidad: (datos) => dispatch({ type: SET_ESPECIALIDAD, data: datos }),
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {
+    colores: state.turnos.botonesEspecialidades,
+    idEspecialidad: state.turnos.idEspecialidad
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTheme(MostrarEspecialidades));
