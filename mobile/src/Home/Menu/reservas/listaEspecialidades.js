@@ -6,11 +6,12 @@ import {
 import {  URL_API_ESPECIALIDAD } from "../constantes/urlApi";
 import { connect } from "react-redux";
 import TouchableScale from "react-native-touchable-scale";
-import { withTheme, ListItem} from "react-native-elements";
+import { withTheme, ListItem,Button} from "react-native-elements";
 
 import styles from '../../../../App.scss'
 import MostrarEspecialidades from '../Mostrar/mostrarEspecialidades'
 import { ScrollView } from "react-native-gesture-handler";
+import {  } from "native-base";
 
 class ListaEspecialidades extends Component {
     constructor(props) {
@@ -28,6 +29,7 @@ class ListaEspecialidades extends Component {
           </View>)
       }else{ 
         return(
+        <React.Fragment>
           <ScrollView>
             {this.props.especialidades.map((e, i) => (
               <MostrarEspecialidades especialidad = {e}/> 
@@ -35,6 +37,7 @@ class ListaEspecialidades extends Component {
               )   
             }
           </ScrollView>
+        </React.Fragment>
         )      
       }
     }
