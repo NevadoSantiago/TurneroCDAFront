@@ -2,7 +2,6 @@
 import React, { Component, useState } from 'react'
 import { View, Alert, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Card, CardItem, Body, Container } from 'native-base';
-import QRCode from 'react-native-qrcode-svg';
 import CheckAlert from "react-native-awesome-alert"
 import { connect } from 'react-redux';
 import { URL_API, URL_API_TIENDA } from '../constantes/urlApi'

@@ -7,9 +7,6 @@ import {
   SafeAreaView,
   StatusBar,
 } from "react-native";
-import { Card, CardItem, Body } from "native-base";
-import QRCode from "react-native-qrcode-svg";
-import CheckAlert from "react-native-awesome-alert";
 import { URL_API, URL_API_TIENDA } from "../constantes/urlApi";
 import { connect } from "react-redux";
 import TouchableScale from "react-native-touchable-scale";
