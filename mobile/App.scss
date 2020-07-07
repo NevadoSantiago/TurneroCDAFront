@@ -6,6 +6,10 @@
 	color: whitesmoke;
 }
 
+%gray {
+  color: #CCCCCC
+}
+
 %white {
 	color: white;
 }
@@ -53,6 +57,9 @@
 }
 .light {
   @extend %light;
+}
+.gray {
+  @extend %gray
 }
 .black {
   @extend %black;

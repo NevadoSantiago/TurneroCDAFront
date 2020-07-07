@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from "react-redux";
-import { ListItem, withTheme } from "react-native-elements";
+import { ListItem, withTheme, Icon } from "react-native-elements";
 import styles from '../../../../App.scss'
 import TouchableScale from "react-native-touchable-scale";
 import { SET_ESPECIALIDAD } from '../constantes/actionRedux'
+import { Button } from 'native-base';
 
 class MostrarEspecialidades extends Component {
 
@@ -17,12 +18,14 @@ class MostrarEspecialidades extends Component {
 
   render() {
     const { especialidad, setEspecialidad, theme, idEspecialidad } = this.props
-    var color
+    var color, textColor
 
     if (especialidad.especialidadId === idEspecialidad) {
       color = styles.success.color
+      textColor = styles.white.color
     } else {
-      color = styles.primary.color
+      color = styles.gray.color
+      textColor = styles.dark.color
     }
 
     return (
@@ -45,12 +48,19 @@ class MostrarEspecialidades extends Component {
         title={especialidad.nombre}
         key={especialidad.especialidadId}
         titleStyle={{
-          color: styles.white.color,
+          color: textColor,
           textAlign: "center",
           fontFamily: "Nunito_bold",
           fontSize: 17,
         }}
-        chevron={{ color: styles.white.color, size: 20 }}
+        //chevron={{ color: textColor, size: 20 }}
+        rightElement={(
+          <Icon
+            name='more-vert'
+            color={textColor}
+            onPress={() => console.warn('bip bup 🤖')}
+          />
+        )}
         onPress={(e) => {
           setEspecialidad(especialidad.especialidadId)
         }}
