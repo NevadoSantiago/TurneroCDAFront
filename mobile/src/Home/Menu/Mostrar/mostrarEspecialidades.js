@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from "react-redux";
-import { ListItem, withTheme, Icon } from "react-native-elements";
+import { ListItem, withTheme, Icon, Overlay } from "react-native-elements";
 import styles from '../../../../App.scss'
 import TouchableScale from "react-native-touchable-scale";
 import { SET_ESPECIALIDAD } from '../constantes/actionRedux'
@@ -13,6 +13,7 @@ class MostrarEspecialidades extends Component {
     super(props);
     this.state = {
       lista: [],
+      isVisible: false
     }
   }
 
@@ -29,42 +30,53 @@ class MostrarEspecialidades extends Component {
     }
 
     return (
-      <ListItem
-        Component={TouchableScale}
-        containerStyle={{
-          marginLeft: 10,
-          marginRight: 10,
-          margin: 5,
-          borderRadius: 15,
-        }}
-        friction={90}
-        tension={100}
-        activeScale={0.95}
-        linearGradientProps={{
-          colors: [color, color],
-          start: { x: 1, y: 3 },
-          end: { x: 0.1, y: 5 },
-        }}
-        title={especialidad.nombre}
-        key={especialidad.especialidadId}
-        titleStyle={{
-          color: textColor,
-          textAlign: "center",
-          fontFamily: "Nunito_bold",
-          fontSize: 17,
-        }}
-        //chevron={{ color: textColor, size: 20 }}
-        rightElement={(
-          <Icon
-            name='more-vert'
-            color={textColor}
-            onPress={() => console.warn('bip bup 🤖')}
-          />
-        )}
-        onPress={(e) => {
-          setEspecialidad(especialidad.especialidadId)
-        }}
-      />
+      <React.Fragment>
+        <Overlay isVisible={this.state.isVisible} onBackdropPress={() => this.setState({ isVisible: false })}>
+          <Text>bip bup 🤖</Text>
+        </Overlay>
+        <ListItem
+          Component={TouchableScale}
+          containerStyle={{
+            marginLeft: 10,
+            marginRight: 10,
+            margin: 5,
+            borderRadius: 15,
+          }}
+          friction={90}
+          tension={100}
+          activeScale={0.95}
+          linearGradientProps={{
+            colors: [color, color],
+            start: { x: 1, y: 3 },
+            end: { x: 0.1, y: 5 },
+          }}
+          title={especialidad.nombre}
+          key={especialidad.especialidadId}
+          titleStyle={{
+            color: textColor,
+            textAlign: "center",
+            fontFamily: "Nunito_bold",
+            fontSize: 17,
+          }}
+          //chevron={{ color: textColor, size: 20 }}
+          rightElement={(
+            <Icon
+              name='more-vert'
+              color={textColor}
+              onPress={() => 
+                {
+                  console.warn('bip bup 🤖')
+                  this.setState({
+                    isVisible: true
+                  })
+                }}
+            />
+          )}
+          onPress={(e) => {
+            setEspecialidad(especialidad.especialidadId)
+          }}
+        />
+      </React.Fragment>
     )
   }
 }
