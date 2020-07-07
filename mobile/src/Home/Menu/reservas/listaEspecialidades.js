@@ -6,6 +6,7 @@ import {
 import { URL_API_ESPECIALIDAD } from "../constantes/urlApi";
 import { connect } from "react-redux";
 import TouchableScale from "react-native-touchable-scale";
+import { Alert } from 'react-native'
 import { withTheme, ListItem, Button } from "react-native-elements";
 
 import styles from '../../../../App.scss'
@@ -42,6 +43,7 @@ class ListaEspecialidades extends Component {
 		navigator.geolocation.getCurrentPosition(
 			posicion => {
 				setCoordenadas(JSON.stringify(posicion))
+				console.log(JSON.stringify(posicion.coords))
 			},
 			error => Alert.alert(error.message),
 			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
