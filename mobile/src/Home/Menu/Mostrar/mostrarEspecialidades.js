@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { connect } from "react-redux";
 import { ListItem, withTheme, Icon, Overlay, ButtonGroup } from "react-native-elements";
 import styles from '../../../../App.scss'
 import TouchableScale from "react-native-touchable-scale";
-import { SET_ESPECIALIDAD } from '../constantes/actionRedux'
+import { SET_ESPECIALIDAD, SET_COORDENADAS } from '../constantes/actionRedux'
 
 class MostrarEspecialidades extends Component {
 
@@ -20,8 +20,40 @@ class MostrarEspecialidades extends Component {
 
   updateIndex(selectedIndex) {
     console.warn(selectedIndex)
+    switch (selectedIndex) {
+      case 0: // DISTANCIA
+        this.encontrarCoordenadas()
+        this.setState({
+          isVisible: false
+        })
+        break;
+      case 1: // NOMBRE
+        /*this.setState({
+          isVisible: false
+        })*/
+        break;
+      case 2: // CANTIDAD DE PERSONAS
+        /*this.setState({
+          isVisible: false
+        })*/
+        break;
+      default:
+        break;
+    }
     this.setState({ selectedIndex })
   }
+
+  encontrarCoordenadas = () => {
+    const { setCoordenadas } = this.props
+    navigator.geolocation.getCurrentPosition(
+      posicion => {
+        setCoordenadas(JSON.stringify(posicion))
+        console.log(JSON.stringify(posicion.coords))
+      },
+      error => Alert.alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
 
   render() {
     const { especialidad, setEspecialidad, theme, idEspecialidad } = this.props
@@ -102,6 +134,7 @@ class MostrarEspecialidades extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     setEspecialidad: (datos) => dispatch({ type: SET_ESPECIALIDAD, data: datos }),
+    setCoordenadas: (datos) => dispatch({ type: SET_COORDENADAS, data: datos })
   };
 };
 

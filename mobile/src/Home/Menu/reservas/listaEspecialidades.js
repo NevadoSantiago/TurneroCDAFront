@@ -38,17 +38,7 @@ class ListaEspecialidades extends Component {
 		this.props.navigation.push('ListaEspecialidades')
 	}
 
-	encontrarCoordenadas = () => {
-		const { setCoordenadas } = this.props
-		navigator.geolocation.getCurrentPosition(
-			posicion => {
-				setCoordenadas(JSON.stringify(posicion))
-				console.log(JSON.stringify(posicion.coords))
-			},
-			error => Alert.alert(error.message),
-			{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-		);
-	};
+	
 
 	render() {
 		const { especialidades, idEspecialidad, especialidadNotSelected } = this.props
