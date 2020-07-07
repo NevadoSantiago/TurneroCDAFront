@@ -75,27 +75,7 @@ class ListaEspecialidades extends Component {
 					</ScrollView>
 
 					<View style={{ flexDirection: 'row', alignSelf: 'center', backgroundColor: styles.white.color }}>
-						<Button
-							buttonStyle={{ marginHorizontal: 5, borderRadius: 0 }}
-							disabled={especialidadNotSelected}
-							title="Distancia"
-							onPress={() => this.encontrarCoordenadas()}
-						>
-						</Button>
-						<Button
-							buttonStyle={{ marginHorizontal: 5, borderRadius: 0 }}
-							disabled={especialidadNotSelected}
-							title="Nombre"
-							onPress={() => console.warn('Nombre')}
-						>
-						</Button>
-						<Button
-							buttonStyle={{ marginHorizontal: 5, borderRadius: 0 }}
-							disabled={especialidadNotSelected}
-							title="Cantidad de personas"
-							onPress={() => console.warn('Cantidad de personas')}
-						>
-						</Button>
+						
 					</View>
 				</React.Fragment>
 			)
