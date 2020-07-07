@@ -4,10 +4,10 @@ import { Button, Input } from 'react-native-elements'
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 import { withTheme } from 'react-native-elements';
-import { INICIAR_SESION, OBTENER_TURNOS, LIMPIAR_SESION } from './Menu/constantes/actionRedux'
+import { INICIAR_SESION, LIMPIAR_SESION,OBTENER_ESPECIALIDADES } from './Menu/constantes/actionRedux'
 import { connect } from 'react-redux';
 import styles from "../../App.scss";
-import { URL_API_USUARIO, URL_API } from './Menu/constantes/urlApi'
+import { URL_API_USUARIO, URL_API_ESPECIALIDAD } from './Menu/constantes/urlApi'
 
 import styled from 'styled-components';
 
@@ -35,7 +35,8 @@ class HomeScreen extends React.Component {
     super(props);
     this.state = {
       id: null,
-      logueado: false
+      logueado: false,
+      especialidadesGuardadas: false
     };
   }
 
@@ -61,18 +62,39 @@ class HomeScreen extends React.Component {
       })
       .then(function (myJson) {
         iniciarSesion(myJson)
+        this.getEspecialidades()
         this.setState({
           logueado: true
         })
 
       }.bind(this))
   }
+  getEspecialidades = async() => {
+    const { guardarEspecialidades } = this.props
+    await fetch(URL_API_ESPECIALIDAD + "/api/especialidad") 
+      .then(function (response) {
+        return response.json()
+      })
+      .then(function (myJson) {
+        guardarEspecialidades(myJson)
+        this.setState({
+          especialidadesGuardadas : true,
+        })
+
+      }.bind(this))
+  }
 
   render() {
-    const {loading, theme } = this.props
-    const { logueado } = this.state
-    if (!loading && logueado) {
-      this.props.navigation.navigate('Reservas')
+    const {loading, theme,reserva } = this.props
+    const { logueado,especialidadesGuardadas } = this.state
+    if (!loading && logueado && especialidadesGuardadas) {
+      console.log(reserva)
+      if(reserva === null){
+        this.props.navigation.navigate('ListaEspecialidades')
+      }else{
+        this.props.navigation.navigate('Reservas')
+      }
+      
     }
     return (
       <View style={ styles['center-flex.white'] }>
@@ -109,11 +131,13 @@ const mapDispatchToProps = dispatch => {
   return {
     iniciarSesion: (id) => dispatch({ type: INICIAR_SESION, data: id }),
     limpiarSesion: () => dispatch({ type: LIMPIAR_SESION }),
+    guardarEspecialidades: (datos) => dispatch({ type: OBTENER_ESPECIALIDADES, data:datos }),
   };
 }
 const mapStateToProps = state => {
   return {
     loading: state.user.loading,
+    reserva: state.user.reserva,
   }
 }
 

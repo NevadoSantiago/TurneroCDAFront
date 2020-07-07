@@ -15,8 +15,6 @@ const initialState={
 
 const UserReducer = (state = initialState, action) => {
     var datos = action.data
-    console.log("REDUX RESERVA")
-    //console.log(datos)
     
     switch(action.type){   
         case(INICIAR_SESION):{

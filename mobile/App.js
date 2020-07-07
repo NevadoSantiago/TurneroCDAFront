@@ -10,6 +10,7 @@ import {ThemeProvider } from 'react-native-elements';
 import Reservas from './src/Home/Menu/reservas'
 import DatosTablas from './src/Home/Menu/reservas/datosTablas'
 import ListaSucursales from './src/Home/Menu/reservas/listaSucursales'
+import ListadoPaisesYProv from './src/Home/Menu/reservas/listadoPaisesYProv'
 import ListaTiendas from './src/Home/Menu/reservas/listaTiendas'
 import ListaTurnos from './src/Home/Menu/reservas/listaTurnos'
 import { AppLoading } from 'expo';
@@ -51,7 +52,8 @@ const AppNavigator = createStackNavigator(
       ListaSucursales: ListaSucursales,
       ListaTurnos: ListaTurnos,
       DatosTablas : DatosTablas,
-      ListaEspecialidades : ListaEspecialidades, 
+      ListaEspecialidades : ListaEspecialidades,
+      ListadoPaisesYProv : ListadoPaisesYProv, 
   },  
   {  
       initialRouteName: "Home"  

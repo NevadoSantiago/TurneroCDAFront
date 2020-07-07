@@ -27,7 +27,7 @@ class ListaSucursales extends Component {
         super(props);
         this.state = {
             sucursales: null,
-            id: this.props.idUsuario
+            idEspecialidad: this.props.idUsuario
         }
     }
 
@@ -47,8 +47,8 @@ class ListaSucursales extends Component {
     };
 
   async componentDidMount() {
-    const { tiendaId } = this.props.navigation.state.params;
-    await fetch(URL_API + "/api/turno/consultarSucursalesPorTienda/" + tiendaId)
+    const { idEspecialidad } = this.props
+    await fetch(URL_API + "/api/sucursal/filtrar/especialidad/"+idEspecialidad)
       .then(function (response) {
         return response.json();
       })
@@ -67,7 +67,6 @@ class ListaSucursales extends Component {
     const { theme, updateTheme, replaceTheme } = this.props;
 
     if (sucursales != null) {
-      //const ruta = '../../../../assets/' + '${data.nombreTienda}' + '.jpg';
       return (
         <ScrollView style={{ flex: 1}}>
             <View>
@@ -187,7 +186,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    idUsuario: state.user.idUsuario,
+    idEspecialidad: state.turnos.idEspecialidad,
   };
 };
 
