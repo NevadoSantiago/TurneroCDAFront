@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from "react-redux";
-import { ListItem, withTheme, Icon, Overlay } from "react-native-elements";
+import { ListItem, withTheme, Icon, Overlay, ButtonGroup } from "react-native-elements";
 import styles from '../../../../App.scss'
 import TouchableScale from "react-native-touchable-scale";
 import { SET_ESPECIALIDAD } from '../constantes/actionRedux'
-import { Button } from 'native-base';
 
 class MostrarEspecialidades extends Component {
 
@@ -13,12 +12,20 @@ class MostrarEspecialidades extends Component {
     super(props);
     this.state = {
       lista: [],
-      isVisible: false
+      isVisible: false,
+      selectedIndex: null
     }
+    this.updateIndex = this.updateIndex.bind(this)
+  }
+
+  updateIndex(selectedIndex) {
+    console.warn(selectedIndex)
+    this.setState({ selectedIndex })
   }
 
   render() {
     const { especialidad, setEspecialidad, theme, idEspecialidad } = this.props
+    const { selectedIndex } = this.state
     var color, textColor
 
     if (especialidad.especialidadId === idEspecialidad) {
@@ -31,8 +38,20 @@ class MostrarEspecialidades extends Component {
 
     return (
       <React.Fragment>
-        <Overlay isVisible={this.state.isVisible} onBackdropPress={() => this.setState({ isVisible: false })}>
-          <Text>bip bup 🤖</Text>
+        <Overlay
+          isVisible={this.state.isVisible}
+          onBackdropPress={() => this.setState({ isVisible: false })}
+          overlayStyle={{ padding: -100, width: '75%' }}
+        >
+          <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito' }}>bip bup 🤖</Text>
+          <ButtonGroup
+            onPress={this.updateIndex}
+            selectedIndex={selectedIndex}
+            buttons={['Distancia', 'Nombre', 'Cantidad de personas']}
+            containerStyle={{ height: 120, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: styles.dark.color }}
+            textStyle={{ fontFamily: 'Nunito' }}
+            vertical={true}
+          />
         </Overlay>
         <ListItem
           Component={TouchableScale}
@@ -63,13 +82,12 @@ class MostrarEspecialidades extends Component {
             <Icon
               name='more-vert'
               color={textColor}
-              onPress={() => 
-                {
-                  console.warn('bip bup 🤖')
-                  this.setState({
-                    isVisible: true
-                  })
-                }}
+              onPress={() => {
+                console.warn('bip bup 🤖')
+                this.setState({
+                  isVisible: true
+                })
+              }}
             />
           )}
           onPress={(e) => {
