@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 import { connect } from "react-redux";
-import { withTheme, Button } from "react-native-elements";
-import styles from '../../../../App.scss';
-import MostrarEspecialidades from '../Mostrar/mostrarEspecialidades';
+import TouchableScale from "react-native-touchable-scale";
+import { Alert } from 'react-native'
+import { withTheme, ListItem, Button } from "react-native-elements";
+
+import styles from '../../../../App.scss'
+import MostrarEspecialidades from '../Mostrar/mostrarEspecialidades'
 import { ScrollView } from "react-native-gesture-handler";
 import { SET_ESPECIALIDAD, SET_COORDENADAS, FILTRAR_CANTIDAD,FILTRAR_DISTANCIA } from '../constantes/actionRedux';
 
@@ -48,47 +51,29 @@ class ListaEspecialidades extends Component {
           <Text>
             No hay especialidades
           </Text>
-        </View>)
-    } else {
-      return (
-        <React.Fragment>
-          <ScrollView style={{ backgroundColor: styles.white.color }}>
-            {
-              this.props.especialidades.map((e, i) => {
-                return (
-                  <MostrarEspecialidades especialidad={e} />
-                )
-              }
-              )
-            }
-          </ScrollView>
-          <View style={{ flexDirection: 'row', alignSelf: 'center', backgroundColor: styles.white.color }}>
-            <Button
-              buttonStyle={{ marginHorizontal: 5, borderRadius: 0 }}
-              disabled={especialidadNotSelected}
-              title="Distancia"
-              onPress={() => this.encontrarCoordenadas(FILTRAR_DISTANCIA)}
-            >
-            </Button>
-            <Button
-              buttonStyle={{ marginHorizontal: 5, borderRadius: 0 }}
-              disabled={especialidadNotSelected}
-              title="Nombre"
-              onPress={() => this.props.navigation.navigate("ListaSucursales")}
-            >
-            </Button>
-            <Button
-              buttonStyle={{ marginHorizontal: 5, borderRadius: 0 }}
-              disabled={especialidadNotSelected}
-              title="Cantidad de personas"
-              onPress={() => this.encontrarCoordenadas(FILTRAR_CANTIDAD)}
-            >
-            </Button>
-          </View>
-        </React.Fragment>
-      )
-    }
-  }
+				</View>)
+		} else {
+			//console.log(this.state.coordenadas)
+			return (
+				<React.Fragment>
+					<ScrollView style={{ backgroundColor: styles.white.color }}>
+						{
+							this.props.especialidades.map((e, i) => {
+								return (
+									<MostrarEspecialidades especialidad={e} />
+								)
+							}
+							)
+						}
+					</ScrollView>
+
+					<View style={{ flexDirection: 'row', alignSelf: 'center', backgroundColor: styles.white.color }}>
+						
+					</View>
+				</React.Fragment>
+			)
+		}
+	}
 }
 
 const mapDispatchToProps = (dispatch) => {
