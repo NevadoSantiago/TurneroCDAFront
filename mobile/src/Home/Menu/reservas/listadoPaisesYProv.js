@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text } from "react-native";
+import { View, Text, Picker } from "react-native";
 import { connect } from "react-redux";
 import { withTheme, Button } from "react-native-elements";
 import styles from '../../../../App.scss';
@@ -12,7 +12,13 @@ class ListadoPaisesYProv extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      provincias: null
+      provincias: null,
+      localidades: null,
+      provinciaSelected: null,
+      localidadSelected: null,
+      textoProvincia: "Seleccione una provincia",
+      textoLocalidad: "Seleccione una localidad",
+      choosingLocalidad: false
     }
   }
 
@@ -48,12 +54,102 @@ class ListadoPaisesYProv extends Component {
       );
   }
 
+  getLocalidades = async (idProvincia) => {
+    var url;
+    url = URL_API + "/api/locacion/localidad/" + idProvincia
+
+    await fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(
+        function (myJson) {
+          this.setState({
+            localidades: myJson
+          })
+        }.bind(this)
+      );
+  }
+
   componentDidMount() {
     this.getProvincias()
   }
 
+  seleccionarLocalidad = (localidades) => {
+    return (
+      <Picker
+        style={{ margin: 15, height: 50, alignSelf: 'stretch', textAlign: 'center' }}
+        mode={Picker.MODE_DROPDOWN}
+        selectedValue={(this.state && this.state.pickerLocalidadValue)}
+        onValueChange={(value) => {
+          if (value !== 0) {
+            this.setState({ pickerLocalidadValue: value });
+            {
+              //this.getLocalidades(parseInt(value))
+            }
+          }
+        }}
+      >
+        <Picker.Item key={'unselectable'} enabled={false} label={this.state.textoLocalidad} value='0' />
+        {
+          localidades.map((data, i) => (
+            <Picker.Item value={data.localidadId} label={data.nombre} key={data.localidadId} />
+          ))
+        }
+      </Picker>
+    )
+  }
+
+  seleccionarProvincia = (provincias) => {
+    return (
+      <Picker
+        style={{ margin: 15, height: 50, alignSelf: 'stretch', textAlign: 'center' }}
+        mode={Picker.MODE_DROPDOWN}
+        selectedValue={(this.state && this.state.pickerProvinciaValue)}
+        onValueChange={(value) => {
+          if (value !== 0) {
+            this.getLocalidades(parseInt(value))
+            this.setState({ pickerProvinciaValue: value });
+            /*this.setState({
+              choosingLocalidad: true
+            })*/
+          }
+        }}
+      >
+        <Picker.Item key={'unselectable'} enabled={false} label={this.state.textoProvincia} value='0' />
+        {
+          provincias.map((data, i) => (
+            <Picker.Item value={data.provinciaId} label={data.nombre} key={data.provinciaId} />
+          ))
+        }
+      </Picker>
+    )
+  }
+
+  formularioTurno = (state) => {
+    console.log(this.state.choosingLocalidad)
+    if (this.state.localidades != null) {
+      console.log(this.state.localidades)
+      return (
+        <React.Fragment>
+          {
+            this.seleccionarProvincia(this.state.provincias)
+          }
+          {
+            this.seleccionarLocalidad(this.state.localidades)
+          }
+        </React.Fragment>
+      )
+    }
+    else {
+      return (
+        this.seleccionarProvincia(this.state.provincias)
+      )
+    }
+  }
+
   render() {
-    const { provincias } = this.state
+    const { provincias, localidades, state } = this.state
     /*     if (especialidades == null) {
           return (
             <View>
@@ -66,8 +162,8 @@ class ListadoPaisesYProv extends Component {
     if (provincias == null) {
       return (
         <React.Fragment>
-          <View style={ styles['center-flex.white'] }>
-            <Text style={ styles['h5'] }>
+          <View style={styles['center-flex.white']}>
+            <Text style={styles['h5']}>
               Cargando...
             </Text>
           </View>
@@ -76,18 +172,12 @@ class ListadoPaisesYProv extends Component {
     } else {
       return (
         <React.Fragment>
-          <View style={ styles['center-flex.white'] }>
-            <Text style={ styles['h5'] }>
+          <View style={styles['center-flex.white']}>
+            <Text style={styles['h5']}>
               Listado de provincias
             </Text>
             <Text></Text>
-            {
-              provincias.map((p) => {
-                return (
-                  <Text style={ styles['text'] }>{p.nombre}</Text>
-                )
-              })
-            }
+            {this.formularioTurno(state)}
           </View>
         </React.Fragment>
       )
