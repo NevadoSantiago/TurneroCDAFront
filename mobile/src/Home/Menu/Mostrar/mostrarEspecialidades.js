@@ -27,13 +27,13 @@ class MostrarEspecialidades extends Component {
           isVisible: false
         })
         break;
-      case 1: // NOMBRE
+      case 1: // PERSONAS EN COLA
         this.encontrarCoordenadas()
         /*this.setState({
           isVisible: false
         })
         break;
-      case 2: // CANTIDAD DE PERSONAS
+      case 2: // PERSONALIZADA
         /*this.setState({
           isVisible: false
         })*/
@@ -81,7 +81,7 @@ class MostrarEspecialidades extends Component {
             <ButtonGroup
               onPress={this.updateIndex}
               selectedIndex={selectedIndex}
-              buttons={['Distancia (requiere permisos)', 'Nombre', 'Cantidad de personas']}
+              buttons={['Distancia (requiere permisos)', 'Personas en cola', 'Personalizada']}
               containerStyle={{ height: 120, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: styles.dark.color }}
               textStyle={{ fontFamily: 'Nunito' }}
               vertical={true}
