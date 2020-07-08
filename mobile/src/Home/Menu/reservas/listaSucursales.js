@@ -83,6 +83,7 @@ class ListaSucursales extends Component {
             />}
             <MapView
               style={mapStyles.mapStyle}
+              showsUserLocation={true}
               initialRegion={{
                 latitude: latitude,
                 longitude: longitude,
