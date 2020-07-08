@@ -4,7 +4,9 @@ import { connect } from "react-redux";
 import { ListItem, withTheme, Icon, Overlay, ButtonGroup } from "react-native-elements";
 import styles from '../../../../App.scss'
 import TouchableScale from "react-native-touchable-scale";
-import { SET_ESPECIALIDAD, SET_COORDENADAS } from '../constantes/actionRedux'
+import {URL_API} from '../constantes/urlApi'
+import { SET_SUCURSALES,
+  SET_ESPECIALIDAD, SET_COORDENADAS,FILTRAR_CANTIDAD,FILTRAR_DISTANCIA,SET_FILTRO, FILTRAR_NOMBRE } from '../constantes/actionRedux'
 
 class MostrarEspecialidades extends Component {
 
@@ -13,30 +15,51 @@ class MostrarEspecialidades extends Component {
     this.state = {
       lista: [],
       isVisible: false,
-      selectedIndex: null
+      selectedIndex: null,
+      sucursalesCargadas: null
     }
     this.updateIndex = this.updateIndex.bind(this)
   }
 
+  getSucursales = async() => {
+    const { idEspecialidad, setSucursales } = this.props
+    var url;
+      url = URL_API + "/api/sucursal/filtrar/especialidad/"+idEspecialidad
+
+    await fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(
+        function (myJson) {
+          setSucursales(myJson);
+          this.setState({
+            sucursalesCargadas: true,
+          });
+        }.bind(this)
+      );
+  }
+
   updateIndex(selectedIndex) {
-    console.warn(selectedIndex)
+    this.getSucursales()
     switch (selectedIndex) {
-      case 0: // DISTANCIA
-        this.encontrarCoordenadas()
+      case 0: // DISTANCIA      
+        this.encontrarCoordenadas(FILTRAR_DISTANCIA)
         this.setState({
           isVisible: false
         })
         break;
-      case 1: // PERSONAS EN COLA
-        this.encontrarCoordenadas()
-        /*this.setState({
-          isVisible: false
-        })
+      case 1: // NOMBRE
+        this.props.setFiltro(FILTRAR_NOMBRE);
+        {this.props.nav.navigate("ListaSucursales")}
+
+
         break;
-      case 2: // PERSONALIZADA
-        /*this.setState({
+      case 2: // CANTIDAD DE PERSONAS
+        this.encontrarCoordenadas(FILTRAR_CANTIDAD)
+        this.setState({
           isVisible: false
-        })*/
+        }) 
         break;
       default:
         break;
@@ -44,14 +67,17 @@ class MostrarEspecialidades extends Component {
     this.setState({ selectedIndex })
   }
 
-  encontrarCoordenadas = () => {
+  encontrarCoordenadas = (filtro) => {
     const { setCoordenadas } = this.props
     navigator.geolocation.getCurrentPosition(
       posicion => {
-        setCoordenadas(JSON.stringify(posicion))
-        console.log(JSON.stringify(posicion.coords))
+        setCoordenadas(posicion,filtro)
+        this.props.nav.navigate("ListaSucursales")
       },
-      error => Alert.alert(error.message),
+      error => {
+        this.props.nav.navigate("ListadoPaisesYProv")               
+                this.props.setFiltro(filtro)
+    },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   };
@@ -112,13 +138,11 @@ class MostrarEspecialidades extends Component {
             fontFamily: "Nunito_bold",
             fontSize: 17,
           }}
-          //chevron={{ color: textColor, size: 20 }}
           rightElement={(
             <Icon
               name='more-vert'
               color={textColor}
               onPress={() => {
-                console.warn('bip bup 🤖')
                 this.setState({
                   isVisible: true
                 })
@@ -137,14 +161,17 @@ class MostrarEspecialidades extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     setEspecialidad: (datos) => dispatch({ type: SET_ESPECIALIDAD, data: datos }),
-    setCoordenadas: (datos) => dispatch({ type: SET_COORDENADAS, data: datos })
+    setSucursales: (datos) => dispatch({ type: SET_SUCURSALES, data: datos }),
+    setFiltro: (datos) => dispatch({ type: SET_FILTRO, data: datos }),
+    setCoordenadas: (datos, tipoBusqueda) => dispatch({ type: SET_COORDENADAS,busqueda:tipoBusqueda, data: datos })
   };
 };
 
 const mapStateToProps = (state) => {
   return {
     colores: state.turnos.botonesEspecialidades,
-    idEspecialidad: state.turnos.idEspecialidad
+    idEspecialidad: state.turnos.idEspecialidad,
+    ubicacion : state.user.ubicacion
   };
 };
 

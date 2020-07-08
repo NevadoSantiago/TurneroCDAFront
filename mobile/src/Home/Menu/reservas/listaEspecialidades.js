@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import TouchableScale from "react-native-touchable-scale";
 import { Alert } from 'react-native'
 import { withTheme, ListItem, Button } from "react-native-elements";
+import MostrarEspecialidades from '../Mostrar/mostrarEspecialidades'
 
 import styles from '../../../../App.scss'
-import MostrarEspecialidades from '../Mostrar/mostrarEspecialidades'
 import { ScrollView } from "react-native-gesture-handler";
 import { SET_ESPECIALIDAD, SET_COORDENADAS, FILTRAR_CANTIDAD,FILTRAR_DISTANCIA } from '../constantes/actionRedux';
 
@@ -30,21 +30,9 @@ class ListaEspecialidades extends Component {
     },
   };
 
-  encontrarCoordenadas = (tipoBusqueda) => {
-    const { setCoordenadas } = this.props
-    navigator.geolocation.getCurrentPosition(
-      posicion => {
-        setCoordenadas(JSON.stringify(posicion), tipoBusqueda)
-        this.props.navigation.navigate("ListaSucursales")
-      },
-      
-      error => this.props.navigation.navigate("ListadoPaisesYProv"),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  };
 
   render() {
-    const { especialidades, especialidadNotSelected } = this.props
+    const { especialidades, especialidadNotSelected, navigation} = this.props
     if (especialidades == null) {
       return (
         <View>
@@ -53,14 +41,13 @@ class ListaEspecialidades extends Component {
           </Text>
 				</View>)
 		} else {
-			//console.log(this.state.coordenadas)
 			return (
 				<React.Fragment>
 					<ScrollView style={{ backgroundColor: styles.white.color }}>
 						{
 							this.props.especialidades.map((e, i) => {
 								return (
-									<MostrarEspecialidades especialidad={e} />
+									<MostrarEspecialidades especialidad={e} nav = {navigation} />
 								)
 							}
 							)

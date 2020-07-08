@@ -1,5 +1,5 @@
 import { addons } from "react-native";
-import {CERRAR_SESION, INICIAR_SESION,ACTUALIZAR_TURNOS,SET_COORDENADAS} from '../../Home/Menu/constantes/actionRedux'
+import {CERRAR_SESION, INICIAR_SESION,ACTUALIZAR_TURNOS,SET_COORDENADAS,SET_FILTRO} from '../../Home/Menu/constantes/actionRedux'
 
 
 const initialState={
@@ -9,7 +9,8 @@ const initialState={
     loading:true,
     nuevoTurno:false,
     reserva:null,
-    ubicacion:null
+    ubicacion:null,
+    filtro:null
 };
 
 
@@ -36,10 +37,19 @@ const UserReducer = (state = initialState, action) => {
             }
         }
         case(SET_COORDENADAS):{
-
+            const {busqueda} = action
             return{
                 ...state,
                 ubicacion : action.data,
+                filtro:busqueda
+            }
+            
+        }
+        case(SET_FILTRO):{
+            const {data} = action
+            return{
+                ...state,
+                filtro:data
             }
             
         }

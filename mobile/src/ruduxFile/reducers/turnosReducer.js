@@ -1,10 +1,11 @@
 import { addons } from "react-native";
-import {OBTENER_ESPECIALIDADES, SET_ESPECIALIDAD } from '../../Home/Menu/constantes/actionRedux'
+import {OBTENER_ESPECIALIDADES, SET_ESPECIALIDAD,SET_SUCURSALES} from '../../Home/Menu/constantes/actionRedux'
 import moment from 'moment';
 
 
 const initialState={
     listaEspecialidades : null,
+    sucursales:null,
     Cargando : true,
     idEspecialidad : null,
     especialidadNotSelected : true
@@ -28,6 +29,13 @@ const TurnosReducer = (state = initialState, action) => {
                 ...state,
                 idEspecialidad : data,
                 especialidadNotSelected : false
+            }
+        }
+        case(SET_SUCURSALES):{
+            const {data} = action
+            return{
+                ...state,
+                sucursales : data,
             }
         }
         }

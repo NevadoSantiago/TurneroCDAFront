@@ -25,7 +25,6 @@ import styles from '../../../../App.scss'
 
 function getImageFromIdTienda(idTienda) {
     const url = URL_API_TIENDA + "/api/tienda/imagen/" + idTienda
-    //console.log(url)
     return url;
 }
 
@@ -59,7 +58,6 @@ class DatosTablas extends Component {
             })
             .then(function (myJson) {
                 Alert.alert("Caja asignada", "Te hemos asignada la caja número " + myJson + ". Acércate a ella para finalizar con la compra")
-                console.log(myJson)
                 this.setState({
                     cajaAsignada: myJson
                 })
