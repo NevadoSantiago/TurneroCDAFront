@@ -88,7 +88,6 @@ class HomeScreen extends React.Component {
     const {loading, theme,reserva } = this.props
     const { logueado,especialidadesGuardadas } = this.state
     if (!loading && logueado && especialidadesGuardadas) {
-      console.log(reserva)
       if(reserva === null){
         this.props.navigation.navigate('ListaEspecialidades')
       }else{
