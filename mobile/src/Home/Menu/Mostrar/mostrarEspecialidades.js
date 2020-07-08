@@ -35,9 +35,6 @@ class MostrarEspecialidades extends Component {
       .then(
         function (myJson) {
           setSucursales(myJson);
-          this.setState({
-            sucursalesCargadas: true,
-          });
         }.bind(this)
       );
   }

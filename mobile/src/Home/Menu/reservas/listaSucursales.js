@@ -84,10 +84,10 @@ class ListaSucursales extends Component {
             <MapView
               style={mapStyles.mapStyle}
               initialRegion={{
-                latitude: -34.612773,
-                longitude: -58.448894,
-                longitudeDelta: 0.02,
-                latitudeDelta: 0.01,
+                latitude: -34.6098896,
+                longitude: -58.4612702,
+                longitudeDelta: 0,
+                latitudeDelta: 0.2,
               }}
             >
               {
@@ -95,8 +95,8 @@ class ListaSucursales extends Component {
                   return (
                     <MapView.Marker
                       coordinate={{
-                        latitude: Number.parseInt(s.configuracion.cordLatitud),
-                        longitude: Number.parseInt(s.configuracion.cordLongitud),
+                        latitude: Number.parseFloat(s.configuracion.cordLatitud),
+                        longitude: Number.parseFloat(s.configuracion.cordLongitud),
                       }}
                       title={s.nombre}
                       description={s.direccion}
