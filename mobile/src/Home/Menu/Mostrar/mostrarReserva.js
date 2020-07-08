@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { withTheme, Text, Button} from 'react-native-elements';
+import { withTheme, Text, Button } from 'react-native-elements';
 import { View, Dimensions, KeyboardAvoidingView } from 'react-native';
 import MapView from "react-native-maps";
+import { MAP_STYLE } from '../constantes/mapStyle'
 import styles from '../../../../App.scss'
 
 class MostrarReserva extends Component {
@@ -63,6 +64,10 @@ class MostrarReserva extends Component {
 				<KeyboardAvoidingView behavior='height' style={{ backgroundColor: styles.black.color }}>
 					<MapView
 						style={{ width: Dimensions.get("window").width, height: Dimensions.get("window").height, }}
+						showsUserLocation={true}
+						customMapStyle={
+							MAP_STYLE
+						}
 						initialRegion={{
 							latitude: parseFloat(turno.latitud),
 							longitude: parseFloat(turno.longitud),

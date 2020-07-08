@@ -71,8 +71,8 @@ class ListaSucursales extends Component {
 
     if (sucursales != null) {
       return (
-        <ScrollView style={{ flex: 1 }}>
-          <View>
+        <ScrollView style={ styles['flex-white'] }>
+          <View style={ styles['flex-white'] }>
             {<SearchBar
               ref="searchBar"
 
@@ -111,8 +111,8 @@ class ListaSucursales extends Component {
               }
             </MapView>
           </View>
-          <View style={styles['flex.white']}>
-            <ScrollView>
+          <View style={styles['flex.light']}>
+            <ScrollView style={styles['flex.light']}>
               {sucursales.map((data, i) => {
                 return (
                   <ListItem
