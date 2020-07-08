@@ -18,7 +18,6 @@ class ListadoPaisesYProv extends Component {
       localidadSelected: null,
       textoProvincia: "Seleccione una provincia",
       textoLocalidad: "Seleccione una localidad",
-      choosingLocalidad: false
     }
   }
 
@@ -56,7 +55,7 @@ class ListadoPaisesYProv extends Component {
 
   getLocalidades = async (idProvincia) => {
     var url;
-    url = URL_API + "/api/locacion/localidad/" + idProvincia
+    url = URL_API + "/api/locacion/localidades/" + idProvincia
 
     await fetch(url)
       .then(function (response) {
@@ -86,6 +85,7 @@ class ListadoPaisesYProv extends Component {
             this.setState({ pickerLocalidadValue: value });
             {
               //this.getLocalidades(parseInt(value))
+              console.log(value)
             }
           }
         }}
@@ -110,9 +110,6 @@ class ListadoPaisesYProv extends Component {
           if (value !== 0) {
             this.getLocalidades(parseInt(value))
             this.setState({ pickerProvinciaValue: value });
-            /*this.setState({
-              choosingLocalidad: true
-            })*/
           }
         }}
       >
@@ -127,9 +124,7 @@ class ListadoPaisesYProv extends Component {
   }
 
   formularioTurno = (state) => {
-    console.log(this.state.choosingLocalidad)
     if (this.state.localidades != null) {
-      console.log(this.state.localidades)
       return (
         <React.Fragment>
           {
