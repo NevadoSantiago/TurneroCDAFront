@@ -71,13 +71,10 @@ class MostrarEspecialidades extends Component {
     const { setCoordenadas } = this.props
     navigator.geolocation.getCurrentPosition(
       posicion => {
-        console.log("BUSCA")
-        console.log(posicion)
         setCoordenadas(posicion,filtro)
         this.props.nav.navigate("ListaSucursales")
       },
       error => {
-        console.log(error)
         this.props.nav.navigate("ListadoPaisesYProv")               
                 this.props.setFiltro(filtro)
     },
@@ -141,7 +138,6 @@ class MostrarEspecialidades extends Component {
             fontFamily: "Nunito_bold",
             fontSize: 17,
           }}
-          //chevron={{ color: textColor, size: 20 }}
           rightElement={(
             <Icon
               name='more-vert'
