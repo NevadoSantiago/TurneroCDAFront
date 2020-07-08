@@ -4,7 +4,7 @@ import {
   ActivityIndicator,
   Dimensions,
 } from "react-native";
-import { URL_API, URL_API_TIENDA } from "../constantes/urlApi";
+import { MAP_STYLE } from "../constantes/mapStyle";
 import { connect } from "react-redux";
 import TouchableScale from "react-native-touchable-scale";
 import { ScrollView } from "react-native-gesture-handler";
@@ -84,6 +84,9 @@ class ListaSucursales extends Component {
             <MapView
               style={mapStyles.mapStyle}
               showsUserLocation={true}
+              customMapStyle={
+                MAP_STYLE
+              }
               initialRegion={{
                 latitude: latitude,
                 longitude: longitude,
