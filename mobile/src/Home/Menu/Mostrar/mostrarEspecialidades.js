@@ -52,8 +52,9 @@ class MostrarEspecialidades extends Component {
       case 1: // NOMBRE
         this.props.setFiltro(FILTRAR_NOMBRE);
         {this.props.nav.navigate("ListaSucursales")}
-
-
+        this.setState({
+          isVisible: false
+        })
         break;
       case 2: // CANTIDAD DE PERSONAS
         this.encontrarCoordenadas(FILTRAR_CANTIDAD)
@@ -90,71 +91,119 @@ class MostrarEspecialidades extends Component {
     if (especialidad.especialidadId === idEspecialidad) {
       color = styles.success.color
       textColor = styles.white.color
+      return (
+        <React.Fragment>
+          <Overlay
+            isVisible={this.state.isVisible}
+            onBackdropPress={() => this.setState({ isVisible: false })}
+            overlayStyle={{ padding: -100, width: '75%' }}
+          >
+            <React.Fragment>
+              <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold' }}>Opciones de búsqueda</Text>
+              <ButtonGroup
+                onPress={this.updateIndex}
+                selectedIndex={selectedIndex}
+                buttons={['Distancia (requiere permisos)', 'Personas en cola', 'Personalizada']}
+                containerStyle={{ height: 120, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: styles.dark.color }}
+                textStyle={{ fontFamily: 'Nunito' }}
+                vertical={true}
+              />
+            </React.Fragment>
+          </Overlay>
+          <ListItem
+            Component={TouchableScale}
+            containerStyle={{
+              marginLeft: 10,
+              marginRight: 10,
+              margin: 5,
+              borderRadius: 15,
+            }}
+            friction={90}
+            tension={100}
+            activeScale={0.95}
+            linearGradientProps={{
+              colors: [color, color],
+              start: { x: 1, y: 3 },
+              end: { x: 0.1, y: 5 },
+            }}
+            title={especialidad.nombre}
+            key={especialidad.especialidadId}
+            titleStyle={{
+              color: textColor,
+              textAlign: "center",
+              fontFamily: "Nunito_bold",
+              fontSize: 17,
+            }}
+            rightElement={(
+              <Icon
+                name='more-vert'
+                color={textColor}
+                onPress={() => {
+                  this.setState({
+                    isVisible: true
+                  })
+                }}
+              />
+            )}
+            onPress={(e) => {
+              setEspecialidad(especialidad.especialidadId)
+            }}
+          />
+        </React.Fragment>
+      )
     } else {
       color = styles.gray.color
       textColor = styles.dark.color
+      return (
+        <React.Fragment>
+          <Overlay
+            isVisible={this.state.isVisible}
+            onBackdropPress={() => this.setState({ isVisible: false })}
+            overlayStyle={{ padding: -100, width: '75%' }}
+          >
+            <React.Fragment>
+              <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold' }}>Opciones de búsqueda</Text>
+              <ButtonGroup
+                onPress={this.updateIndex}
+                selectedIndex={selectedIndex}
+                buttons={['Distancia (requiere permisos)', 'Personas en cola', 'Personalizada']}
+                containerStyle={{ height: 120, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: styles.dark.color }}
+                textStyle={{ fontFamily: 'Nunito' }}
+                vertical={true}
+              />
+            </React.Fragment>
+          </Overlay>
+          <ListItem
+            Component={TouchableScale}
+            containerStyle={{
+              marginLeft: 10,
+              marginRight: 10,
+              margin: 5,
+              borderRadius: 15,
+            }}
+            friction={90}
+            tension={100}
+            activeScale={0.95}
+            linearGradientProps={{
+              colors: [color, color],
+              start: { x: 1, y: 3 },
+              end: { x: 0.1, y: 5 },
+            }}
+            title={especialidad.nombre}
+            key={especialidad.especialidadId}
+            titleStyle={{
+              color: textColor,
+              textAlign: "center",
+              fontFamily: "Nunito_bold",
+              fontSize: 17,
+            }}
+            onPress={(e) => {
+              setEspecialidad(especialidad.especialidadId)
+            }}
+          />
+        </React.Fragment>
+      )
     }
-
-    return (
-      <React.Fragment>
-        <Overlay
-          isVisible={this.state.isVisible}
-          onBackdropPress={() => this.setState({ isVisible: false })}
-          overlayStyle={{ padding: -100, width: '75%' }}
-        >
-          <React.Fragment>
-            <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold' }}>Opciones de búsqueda</Text>
-            <ButtonGroup
-              onPress={this.updateIndex}
-              selectedIndex={selectedIndex}
-              buttons={['Distancia (requiere permisos)', 'Personas en cola', 'Personalizada']}
-              containerStyle={{ height: 120, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: styles.dark.color }}
-              textStyle={{ fontFamily: 'Nunito' }}
-              vertical={true}
-            />
-          </React.Fragment>
-        </Overlay>
-        <ListItem
-          Component={TouchableScale}
-          containerStyle={{
-            marginLeft: 10,
-            marginRight: 10,
-            margin: 5,
-            borderRadius: 15,
-          }}
-          friction={90}
-          tension={100}
-          activeScale={0.95}
-          linearGradientProps={{
-            colors: [color, color],
-            start: { x: 1, y: 3 },
-            end: { x: 0.1, y: 5 },
-          }}
-          title={especialidad.nombre}
-          key={especialidad.especialidadId}
-          titleStyle={{
-            color: textColor,
-            textAlign: "center",
-            fontFamily: "Nunito_bold",
-            fontSize: 17,
-          }}
-          rightElement={(
-            <Icon
-              name='more-vert'
-              color={textColor}
-              onPress={() => {
-                this.setState({
-                  isVisible: true
-                })
-              }}
-            />
-          )}
-          onPress={(e) => {
-            setEspecialidad(especialidad.especialidadId)
-          }}
-        />
-      </React.Fragment>
-    )
   }
 }
 
