@@ -53,6 +53,7 @@ class MostrarEspecialidades extends Component {
         this.props.setFiltro(FILTRAR_NOMBRE);
         {this.props.nav.navigate("ListaSucursales")}
 
+
         break;
       case 2: // CANTIDAD DE PERSONAS
         this.encontrarCoordenadas(FILTRAR_CANTIDAD)
@@ -104,15 +105,17 @@ class MostrarEspecialidades extends Component {
           onBackdropPress={() => this.setState({ isVisible: false })}
           overlayStyle={{ padding: -100, width: '75%' }}
         >
-          <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold' }}>Opciones de búsqueda</Text>
-          <ButtonGroup
-            onPress={this.updateIndex}
-            selectedIndex={selectedIndex}
-            buttons={['Distancia (requiere permisos)', 'Nombre', 'Cantidad de personas']}
-            containerStyle={{ height: 120, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: styles.dark.color }}
-            textStyle={{ fontFamily: 'Nunito' }}
-            vertical={true}
-          />
+          <React.Fragment>
+            <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold' }}>Opciones de búsqueda</Text>
+            <ButtonGroup
+              onPress={this.updateIndex}
+              selectedIndex={selectedIndex}
+              buttons={['Distancia (requiere permisos)', 'Nombre', 'Cantidad de personas']}
+              containerStyle={{ height: 120, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: styles.dark.color }}
+              textStyle={{ fontFamily: 'Nunito' }}
+              vertical={true}
+            />
+          </React.Fragment>
         </Overlay>
         <ListItem
           Component={TouchableScale}
