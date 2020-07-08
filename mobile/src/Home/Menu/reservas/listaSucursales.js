@@ -61,8 +61,8 @@ class ListaSucursales extends Component {
     const { theme, updateTheme, replaceTheme, ubicacion, sucursales } = this.props;
     var latitude, longitude
     if (ubicacion == null) {
-      latitude = null
-      longitude = null
+      latitude = -34.6098896
+      longitude = -58.4612702
     } else {
       latitude = ubicacion.coords.latitude
       longitude = ubicacion.coords.longitude
@@ -84,8 +84,8 @@ class ListaSucursales extends Component {
             <MapView
               style={mapStyles.mapStyle}
               initialRegion={{
-                latitude: -34.6098896,
-                longitude: -58.4612702,
+                latitude: latitude,
+                longitude: longitude,
                 longitudeDelta: 0,
                 latitudeDelta: 0.2,
               }}
