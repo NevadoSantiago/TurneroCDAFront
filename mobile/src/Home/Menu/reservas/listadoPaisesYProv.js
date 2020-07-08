@@ -5,11 +5,15 @@ import { withTheme, Button } from "react-native-elements";
 import styles from '../../../../App.scss';
 import MostrarEspecialidades from '../Mostrar/mostrarEspecialidades';
 import { ScrollView } from "react-native-gesture-handler";
-import { SET_ESPECIALIDAD, SET_COORDENADAS, FILTRAR_CANTIDAD,FILTRAR_DISTANCIA } from '../constantes/actionRedux';
+import { SET_ESPECIALIDAD, SET_COORDENADAS, FILTRAR_CANTIDAD, FILTRAR_DISTANCIA } from '../constantes/actionRedux';
+import { URL_API } from '../constantes/urlApi'
 
 class ListadoPaisesYProv extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      provincias: null
+    }
   }
 
   static navigationOptions = {
@@ -27,24 +31,67 @@ class ListadoPaisesYProv extends Component {
     },
   };
 
+  getProvincias = async () => {
+    var url;
+    url = URL_API + "/api/locacion/provincias"
+
+    await fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(
+        function (myJson) {
+          this.setState({
+            provincias: myJson
+          })
+        }.bind(this)
+      );
+  }
+
+  componentDidMount() {
+    this.getProvincias()
+  }
+
   render() {
-/*     if (especialidades == null) {
-      return (
-        <View>
-          <Text>
-            No hay ubicaciones
-          </Text>
-        </View>)
-    } else { */
+    const { provincias } = this.state
+    /*     if (especialidades == null) {
+          return (
+            <View>
+              <Text>
+                No hay ubicaciones
+              </Text>
+            </View>)
+        } else { */
+
+    if (provincias == null) {
       return (
         <React.Fragment>
-          <View>
-              <Text>
-                  Aca se van a mostrar los paises y provincias
-              </Text>
+          <View style={ styles['center-flex.white'] }>
+            <Text style={ styles['h5'] }>
+              Cargando...
+            </Text>
           </View>
         </React.Fragment>
       )
+    } else {
+      return (
+        <React.Fragment>
+          <View style={ styles['center-flex.white'] }>
+            <Text style={ styles['h5'] }>
+              Listado de provincias
+            </Text>
+            <Text></Text>
+            {
+              provincias.map((p) => {
+                return (
+                  <Text style={ styles['text'] }>{p.nombre}</Text>
+                )
+              })
+            }
+          </View>
+        </React.Fragment>
+      )
+    }
     /* } */
   }
 }
