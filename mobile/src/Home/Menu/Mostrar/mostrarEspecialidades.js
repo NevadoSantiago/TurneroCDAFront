@@ -4,9 +4,11 @@ import { connect } from "react-redux";
 import { ListItem, withTheme, Icon, Overlay, ButtonGroup } from "react-native-elements";
 import styles from '../../../../App.scss'
 import TouchableScale from "react-native-touchable-scale";
-import {URL_API} from '../constantes/urlApi'
-import { SET_SUCURSALES,
-  SET_ESPECIALIDAD, SET_COORDENADAS,FILTRAR_CANTIDAD,FILTRAR_DISTANCIA,SET_FILTRO, FILTRAR_NOMBRE } from '../constantes/actionRedux'
+import { URL_API } from '../constantes/urlApi'
+import {
+  SET_SUCURSALES,
+  SET_ESPECIALIDAD, SET_COORDENADAS, FILTRAR_CANTIDAD, FILTRAR_DISTANCIA, SET_FILTRO, FILTRAR_NOMBRE
+} from '../constantes/actionRedux'
 
 class MostrarEspecialidades extends Component {
 
@@ -21,10 +23,10 @@ class MostrarEspecialidades extends Component {
     this.updateIndex = this.updateIndex.bind(this)
   }
 
-  getSucursales = async() => {
+  getSucursales = async () => {
     const { idEspecialidad, setSucursales } = this.props
     var url;
-      url = URL_API + "/api/sucursal/filtrar/especialidad/"+idEspecialidad
+    url = URL_API + "/api/sucursal/filtrar/especialidad/" + idEspecialidad
 
     await fetch(url)
       .then(function (response) {
@@ -51,7 +53,7 @@ class MostrarEspecialidades extends Component {
         break;
       case 1: // NOMBRE
         this.props.setFiltro(FILTRAR_NOMBRE);
-        {this.props.nav.navigate("ListaSucursales")}
+        { this.props.nav.navigate("ListaSucursales") }
         this.setState({
           isVisible: false
         })
@@ -60,7 +62,7 @@ class MostrarEspecialidades extends Component {
         this.encontrarCoordenadas(FILTRAR_CANTIDAD)
         this.setState({
           isVisible: false
-        }) 
+        })
         break;
       default:
         break;
@@ -72,13 +74,13 @@ class MostrarEspecialidades extends Component {
     const { setCoordenadas } = this.props
     navigator.geolocation.getCurrentPosition(
       posicion => {
-        setCoordenadas(posicion,filtro)
+        setCoordenadas(posicion, filtro)
         this.props.nav.navigate("ListaSucursales")
       },
       error => {
-        this.props.nav.navigate("ListadoPaisesYProv")               
-                this.props.setFiltro(filtro)
-    },
+        this.props.nav.navigate("ListadoPaisesYProv")
+        this.props.setFiltro(filtro)
+      },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );
   };
@@ -99,7 +101,7 @@ class MostrarEspecialidades extends Component {
             overlayStyle={{ padding: -100, width: '75%' }}
           >
             <React.Fragment>
-              <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold' }}>Opciones de búsqueda</Text>
+              <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold' }}>Opciones de búsqueda para {especialidad.nombre}</Text>
               <ButtonGroup
                 onPress={this.updateIndex}
                 selectedIndex={selectedIndex}
@@ -156,23 +158,6 @@ class MostrarEspecialidades extends Component {
       textColor = styles.dark.color
       return (
         <React.Fragment>
-          <Overlay
-            isVisible={this.state.isVisible}
-            onBackdropPress={() => this.setState({ isVisible: false })}
-            overlayStyle={{ padding: -100, width: '75%' }}
-          >
-            <React.Fragment>
-              <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold' }}>Opciones de búsqueda</Text>
-              <ButtonGroup
-                onPress={this.updateIndex}
-                selectedIndex={selectedIndex}
-                buttons={['Distancia (requiere permisos)', 'Personas en cola', 'Personalizada']}
-                containerStyle={{ height: 120, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: styles.dark.color }}
-                textStyle={{ fontFamily: 'Nunito' }}
-                vertical={true}
-              />
-            </React.Fragment>
-          </Overlay>
           <ListItem
             Component={TouchableScale}
             containerStyle={{
@@ -212,7 +197,7 @@ const mapDispatchToProps = (dispatch) => {
     setEspecialidad: (datos) => dispatch({ type: SET_ESPECIALIDAD, data: datos }),
     setSucursales: (datos) => dispatch({ type: SET_SUCURSALES, data: datos }),
     setFiltro: (datos) => dispatch({ type: SET_FILTRO, data: datos }),
-    setCoordenadas: (datos, tipoBusqueda) => dispatch({ type: SET_COORDENADAS,busqueda:tipoBusqueda, data: datos })
+    setCoordenadas: (datos, tipoBusqueda) => dispatch({ type: SET_COORDENADAS, busqueda: tipoBusqueda, data: datos })
   };
 };
 
@@ -220,7 +205,7 @@ const mapStateToProps = (state) => {
   return {
     colores: state.turnos.botonesEspecialidades,
     idEspecialidad: state.turnos.idEspecialidad,
-    ubicacion : state.user.ubicacion
+    ubicacion: state.user.ubicacion
   };
 };
 
