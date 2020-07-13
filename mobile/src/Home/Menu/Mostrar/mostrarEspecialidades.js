@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { ListItem, withTheme, Icon, Overlay, ButtonGroup } from "react-native-elements";
 import styles from '../../../../App.scss'
 import TouchableScale from "react-native-touchable-scale";
-import { URL_API } from '../constantes/urlApi'
+import { URL_API, URL_API_ESPECIALIDAD } from '../constantes/urlApi'
 import {
   SET_SUCURSALES,
   SET_ESPECIALIDAD, SET_COORDENADAS, FILTRAR_CANTIDAD, FILTRAR_DISTANCIA, SET_FILTRO, FILTRAR_NOMBRE
