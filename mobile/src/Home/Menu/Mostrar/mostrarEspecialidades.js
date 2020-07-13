@@ -38,24 +38,42 @@ class MostrarEspecialidades extends Component {
         }.bind(this)
       );
   }
+  getSucursalesOrdenadoCantidad = async () => {
+    const {setSucursales} = this.props
+    var url;
+    url = URL_API + "/api/sucursal/filtrar/cantidadPersonas"
+
+    await fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(
+        function (myJson) {
+          setSucursales(myJson);
+        }.bind(this)
+      );
+  }
 
   updateIndex(selectedIndex) {
-    this.getSucursales()
+    
     switch (selectedIndex) {
-      case 0: // DISTANCIA      
+      case 0: // DISTANCIA 
+        this.getSucursales()     
         this.encontrarCoordenadas(FILTRAR_DISTANCIA)
         this.setState({
           isVisible: false
         })
         break;
-      case 1: // NOMBRE
+      case 1: // Personas en cola
+      this.getSucursalesOrdenadoCantidad()
         this.props.setFiltro(FILTRAR_NOMBRE);
         { this.props.nav.navigate("ListaSucursales") }
         this.setState({
           isVisible: false
         })
         break;
-      case 2: // CANTIDAD DE PERSONAS
+      case 2: //NOMBRE
+      this.getSucursales()   
         this.encontrarCoordenadas(FILTRAR_CANTIDAD)
         this.setState({
           isVisible: false
@@ -98,6 +116,8 @@ class MostrarEspecialidades extends Component {
             overlayStyle={{ padding: -100, width: '75%' }}
           >
             <React.Fragment>
+        {/*     <Icon name="persons" size={30} color="#900"/> */}
+
               <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold' }}>Opciones de búsqueda para {especialidad.nombre}</Text>
               <ButtonGroup
                 onPress={this.updateIndex}
