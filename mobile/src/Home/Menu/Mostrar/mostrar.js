@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions, Animated, Text } from 'react-native';
+import { StyleSheet, View, Dimensions, Animated, Text, Alert } from 'react-native';
 import { MAP_STYLE } from '../constantes/mapStyle'
 import style from '../../../../App.scss'
 
@@ -14,11 +14,12 @@ import MapView, {
 import PanController from './PanController';
 import PriceMarker from './AnimatedPriceMarker';
 
-const screen = Dimensions.get('window');
 
+
+const screen = Dimensions.get('window');
 const ASPECT_RATIO = screen.width / screen.height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
+/*const LATITUDE = 37.78825;
+const LONGITUDE = -122.4324;*/
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
@@ -167,24 +168,24 @@ class MostrarReserva extends React.Component {
         id: 0,
         amount: 99,
         coordinate: {
-          latitude: LATITUDE,
-          longitude: LONGITUDE,
+          /*latitude: LATITUDE,
+          longitude: LONGITUDE,*/
         },
       },
       {
         id: 1,
         amount: 199,
         coordinate: {
-          latitude: LATITUDE + 0.004,
-          longitude: LONGITUDE - 0.004,
+        /* latitude: LATITUDE + 0.004,
+          longitude: LONGITUDE - 0.004,*/
         },
       },
       {
         id: 2,
         amount: 285,
         coordinate: {
-          latitude: LATITUDE - 0.004,
-          longitude: LONGITUDE - 0.004,
+         /* latitude: LATITUDE - 0.004,
+          longitude: LONGITUDE - 0.004,*/
         },
       },
     ];
@@ -205,14 +206,14 @@ class MostrarReserva extends React.Component {
       translateY,
       markers,
       region: new AnimatedRegion({
-        latitude: LATITUDE,
+        /*latitude: LATITUDE,
         longitude: LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,*/
       }),
     };
   }
-
+/*
   componentDidMount() {
     const { region, panX, panY, scrollX, markers } = this.state;
 
@@ -233,8 +234,8 @@ class MostrarReserva extends React.Component {
         duration: 0,
       })
       .start();
-  }
-
+  }*/
+/*
   onStartShouldSetPanResponder = e => {
     // we only want to move the view if they are starting the gesture on top
     // of the view, so this calculates that and returns true if so. If we return
@@ -320,7 +321,7 @@ class MostrarReserva extends React.Component {
       }
     }
   };
-
+*/
   onRegionChange(/* region */) {
     // this.state.region.setValue(region);
   }
@@ -384,9 +385,16 @@ class MostrarReserva extends React.Component {
                 
               ]}
             >
-              <Text style={style['text.center']}>{'Item'}</Text>
-              <Button></Button>
+              <Text style={style['text.center']}>{'Detalle'}</Text>
+             
+              <Button
+              title="Cancelar"
+              onPress={(()=>{Alert.alert('¿Seguro que desea cancelar la reserva?')})}>
+
+              </Button>
+              
             </View>
+            
           </View>
 
         </PanController>
