@@ -114,7 +114,6 @@ class MostrarEspecialidades extends Component {
     const { especialidad, setEspecialidad, theme, idEspecialidad } = this.props
     const { selectedIndex } = this.state
     var color, textColor
-<<<<<<< HEAD
     color = styles.gray.color
     textColor = styles.dark.color
     return (
@@ -150,51 +149,6 @@ class MostrarEspecialidades extends Component {
         />
       </React.Fragment>
     )
-=======
-
-
-      color = styles.gray.color
-      textColor = styles.dark.color
-      return (
-        <React.Fragment>
-          <ListItem
-            Component={TouchableScale}
-            containerStyle={{
-              marginLeft: 10,
-              marginRight: 10,
-              margin: 5,
-              borderRadius: 15,
-            }}
-            friction={90}
-            tension={100}
-            activeScale={0.95}
-            linearGradientProps={{
-              colors: [color, color],
-              start: { x: 1, y: 3 },
-              end: { x: 0.1, y: 5 },
-            }}
-            title={especialidad.nombre}
-            key={especialidad.especialidadId}
-            titleStyle={{
-              color: textColor,
-              textAlign: "center",
-              fontFamily: "Nunito_bold",
-              fontSize: 17,
-            }}
-            onPress={(e) => {
-              setEspecialidad(especialidad.especialidadId)
-              this.props.setFiltro(FILTRAR_NOMBRE);
-              { this.props.nav.navigate("ListaSucursales") }
-              this.setState({
-                isVisible: false
-              })
-              
-            }}
-          />
-        </React.Fragment>
-      )
-    
->>>>>>> 61225d071bea6d28a7f4e3bdb63696d0166bb1a3
   }
 }
 
