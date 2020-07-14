@@ -61,6 +61,7 @@ class HomeScreen extends React.Component {
         return response.json()
       })
       .then(function (myJson) {
+        console.log(myJson)
         iniciarSesion(myJson)
         this.getEspecialidades()
         this.setState({

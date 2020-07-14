@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { View, Text } from 'react-native'
-import MostrarReserva from '../Mostrar/mostrarReserva'
+//import MostrarReserva from '../Mostrar/mostrarReserva'
+import MostrarReserva from '../Mostrar/mostrar'
 import { withTheme, Button } from 'react-native-elements';
 import styles from '../../../../App.scss'
 import {OBTENER_ESPECIALIDADES} from '../constantes/actionRedux'

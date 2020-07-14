@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { ListItem, withTheme, Icon, Overlay, ButtonGroup } from "react-native-elements";
 import styles from '../../../../App.scss'
 import TouchableScale from "react-native-touchable-scale";
-import { URL_API } from '../constantes/urlApi'
+import { URL_API, URL_API_ESPECIALIDAD } from '../constantes/urlApi'
 import {
   SET_SUCURSALES,
   SET_ESPECIALIDAD, SET_COORDENADAS, FILTRAR_CANTIDAD, FILTRAR_DISTANCIA, SET_FILTRO, FILTRAR_NOMBRE
@@ -38,24 +38,42 @@ class MostrarEspecialidades extends Component {
         }.bind(this)
       );
   }
+  getSucursalesOrdenadoCantidad = async () => {
+    const {setSucursales} = this.props
+    var url;
+    url = URL_API + "/api/sucursal/filtrar/cantidadPersonas"
+
+    await fetch(url)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(
+        function (myJson) {
+          setSucursales(myJson);
+        }.bind(this)
+      );
+  }
 
   updateIndex(selectedIndex) {
-    this.getSucursales()
+    
     switch (selectedIndex) {
-      case 0: // DISTANCIA      
+      case 0: // DISTANCIA 
+        this.getSucursales()     
         this.encontrarCoordenadas(FILTRAR_DISTANCIA)
         this.setState({
           isVisible: false
         })
         break;
-      case 1: // NOMBRE
+      case 1: // Personas en cola
+      this.getSucursalesOrdenadoCantidad()
         this.props.setFiltro(FILTRAR_NOMBRE);
         { this.props.nav.navigate("ListaSucursales") }
         this.setState({
           isVisible: false
         })
         break;
-      case 2: // CANTIDAD DE PERSONAS
+      case 2: //NOMBRE
+      this.getSucursales()   
         this.encontrarCoordenadas(FILTRAR_CANTIDAD)
         this.setState({
           isVisible: false
@@ -87,7 +105,7 @@ class MostrarEspecialidades extends Component {
     const { selectedIndex } = this.state
     var color, textColor
 
-    
+
       color = styles.gray.color
       textColor = styles.dark.color
       return (

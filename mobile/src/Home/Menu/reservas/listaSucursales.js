@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 import TouchableScale from "react-native-touchable-scale";
 import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, TouchableOpacity } from "react-native";
-import { withTheme, ListItem } from "react-native-elements";
+import { withTheme, ListItem, Icon } from "react-native-elements";
 import { SearchBar } from "react-native-elements";
 import MapView from "react-native-maps";
 import styles from '../../../../App.scss'
@@ -114,6 +114,7 @@ class ListaSucursales extends Component {
           <View style={styles['flex.light']}>
             <ScrollView style={styles['flex.light']}>
               {sucursales.map((data, i) => {
+                console.log(data)
                 return (
                   <ListItem
                     Component={TouchableScale}
@@ -134,6 +135,18 @@ class ListaSucursales extends Component {
                     //leftAvatar={{ rounded: true, source: { uri: avatar_url } }}
                     title={data.nombre}
                     subtitle={data.direccion}
+                    rightIcon={(
+                      <Icon
+                        name='person'
+                                          
+                      />
+                    )}
+                    rightSubtitle={data.cantidadPersonas}
+                    rightSubtitleStyle={{
+                      color: styles.white.color,
+                      fontFamily: 'Nunito',
+                      fontSize: 20
+                    }}
                     subtitleStyle={{
                       color: styles.white.color,
                       fontFamily: 'Nunito'
