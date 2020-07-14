@@ -12,7 +12,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { Autocomplete, withKeyboardAwareScrollView } from "react-native-dropdown-autocomplete";
 import { Container } from "native-base";
 
-var writing = false
+var writingProvincia = false
+var writingLocalidad = false
 
 class ListadoPaisesYProv extends Component {
   constructor(props) {
@@ -23,7 +24,8 @@ class ListadoPaisesYProv extends Component {
       provinciaSelected: null,
       localidadSelected: null,
       textoProvincia: "Ingrese una provincia",
-      textoLocalidad: "Ingrese una localidad"
+      textoLocalidad: "Ingrese una localidad",
+      finishWriting: false
     }
   }
 
@@ -89,14 +91,18 @@ class ListadoPaisesYProv extends Component {
           key={2}
           style={{ maxHeight: 40 }}
           placeholder='Ingrese una localidad'
+          onChangeText={
+            writingLocalidad = true,
+            console.warn('L:' + writingLocalidad)
+          }
           //scrollToInput={ev => scrollToInput(ev)}
           initialValue={(this.state && this.state.pickerLocalidadValue)}
           handleSelectItem={(item, id) => {
             //const { onDropdownClose } = this.props;
             //onDropdownClose();
             console.log(item);
-            this.setState({ pickerLocalidadValue: item.nombre, localidadSelected: item });
-            writing == false
+            this.setState({ pickerLocalidadValue: item.nombre, localidadSelected: item, finishWriting: true });
+            writingLocalidad == false
           }}
           //onDropdownClose={() => onDropdownClose()}
           onDropdownShow={() => onDropdownShow()}
@@ -149,16 +155,28 @@ class ListadoPaisesYProv extends Component {
     )*/
   }
 
-  seleccionarProvincia = (provincias) => {
+  seleccionarProvincia = (provincias, finished) => {
     const { scrollToInput, onDropdownClose, onDropdownShow } = this.props;
+
+    //this.setState({ finishWriting: false })
+
+    if (finished) {
+      console.warn('finished: ' + finished)
+      writingLocalidad == false
+      console.warn('writingLocalidad: ' + writingLocalidad)
+    } else {
+      console.warn('don\'t finished')
+    }
 
     return (
       <SafeAreaView>
         <Autocomplete
-          onChangeText={
-            writing = true,
-            console.warn(writing)
-          }
+          onChangeText={() => {
+              writingProvincia = true
+              writingLocalidad = finished
+              console.warn('P: ' + writingProvincia)
+              this.setState({ finishWriting: false })
+          }}
           key={1}
           style={{ maxHeight: 40 }}
           placeholder='Ingrese una provincia'
@@ -169,8 +187,8 @@ class ListadoPaisesYProv extends Component {
             //onDropdownClose();
             this.getLocalidades(item.provinciaId)
             this.setState({ pickerProvinciaValue: item.nombre, provinciaSelected: item });
-            writing = false
-            console.warn(writing)
+            writingProvincia = false
+            writingLocalidad = true
           }}
           renderIcon={() => (
             <Ionicons name="ios-add-circle-outline" size={20} color="#c7c6c1" style={{ position: "absolute", left: 28, top: 11, }} />
@@ -229,11 +247,34 @@ class ListadoPaisesYProv extends Component {
   }
 
   formularioTurno = (state) => {
-    var { localidades, provincias, localidadSelected } = state
-    if (localidades != null && writing == false) {
+    var { localidades, provincias, localidadSelected, finishWriting } = state
+
+    console.warn('F:' + finishWriting)
+
+    /*if (finishWriting == true) {
+      if (writingProvincia == true && writingLocalidad == true) {
+        return (
+          <React.Fragment>
+            {
+              this.seleccionarProvincia(provincias)
+            }
+            {
+              this.seleccionarLocalidad(localidades)
+            }
+          </React.Fragment>
+        )
+      }
+      else {
+        return (
+          this.seleccionarProvincia(provincias)
+        )
+      }
+    }
+    if (localidades != null && writingProvincia == false && writingLocalidad == true) {
       console.log('LOCALIDAD SELECCIONADA')
       console.log(localidadSelected)
       console.log('----------------------------')
+      //finishWriting == true
       return (
         <React.Fragment>
           {
@@ -260,6 +301,39 @@ class ListadoPaisesYProv extends Component {
         </View>
       )
       */
+    if (finishWriting == false) {
+      if (localidades != null && writingProvincia == false && writingLocalidad == true) {
+        console.log('LOCALIDAD SELECCIONADA')
+        console.log(localidadSelected)
+        console.log('----------------------------')
+        //finishWriting == true
+        return (
+          <React.Fragment>
+            {
+              this.seleccionarProvincia(provincias, false)
+            }
+            {
+              this.seleccionarLocalidad(localidades)
+            }
+          </React.Fragment>
+        )
+      }
+      else {
+        return (
+          this.seleccionarProvincia(provincias, false)
+        )
+      }
+    } else {
+      return (
+        <React.Fragment>
+          {
+            this.seleccionarProvincia(provincias, true)
+          }
+          {
+            this.seleccionarLocalidad(localidades)
+          }
+        </React.Fragment>
+      )
     }
   }
 
