@@ -51,6 +51,7 @@ class ListaSucursales extends Component {
       longitude = ubicacion.coords.longitude
     }
 
+    console.log(sucursales)
 
     if (sucursales != null) {
       return (

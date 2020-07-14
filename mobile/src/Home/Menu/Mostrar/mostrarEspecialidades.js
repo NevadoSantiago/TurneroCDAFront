@@ -23,8 +23,8 @@ class MostrarEspecialidades extends Component {
     this.updateIndex = this.updateIndex.bind(this)
   }
 
-  getSucursales = async () => {
-    const { idEspecialidad, setSucursales } = this.props
+  getSucursales = async (idEspecialidad) => {
+    const { setSucursales } = this.props
     var url;
     url = URL_API + "/api/sucursal/filtrar/especialidad/" + idEspecialidad
 
@@ -55,13 +55,10 @@ class MostrarEspecialidades extends Component {
   }
 
   
-  navegarListaSucursales() {
-    this.getSucursales()
+  navegarListaSucursales(idEspecialidad) {
+    this.getSucursales(idEspecialidad)
     this.props.setFiltro(FILTRAR_NOMBRE);
-    { this.props.nav.navigate("ListaSucursales") }
-    this.setState({
-      isVisible: false
-    })
+    this.props.nav.navigate("ListaSucursales")
   }
 
   updateIndex(selectedIndex) {
@@ -116,6 +113,7 @@ class MostrarEspecialidades extends Component {
     var color, textColor
     color = styles.gray.color
     textColor = styles.dark.color
+
     return (
       <React.Fragment>
         <ListItem
@@ -144,7 +142,7 @@ class MostrarEspecialidades extends Component {
           }}
           onPress={(e) => {
             setEspecialidad(especialidad.especialidadId)
-            this.navegarListaSucursales();
+            this.navegarListaSucursales(especialidad.especialidadId);
           }}
         />
       </React.Fragment>
