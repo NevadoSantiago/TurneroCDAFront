@@ -25,23 +25,6 @@ class ListaSucursales extends Component {
       idUsuario: this.props.idUsuario
     }
   }
-  mostrarMarcadores = () => {
-    const { sucursales } = this.props
-    sucursales.map((s, i) => {
-      return (
-        <MapView.Marker
-          coordinate={{
-            latitude: -34.612773,
-            longitude: -58.448894,
-          }}
-          title={"Disco"}
-          description={"Direccion: Peron 580"}
-        ></MapView.Marker>
-      )
-    }
-    )
-  }
-
   static navigationOptions = {
     title: 'Seleccione una sucursal',
     headerStyle: {
