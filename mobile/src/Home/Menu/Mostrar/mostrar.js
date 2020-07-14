@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions, Animated } from 'react-native';
+import { StyleSheet, View, Dimensions, Animated, Text } from 'react-native';
+import { MAP_STYLE } from '../constantes/mapStyle'
+import style from '../../../../App.scss'
 
-import {
+import { Button } from 'react-native-elements'
+
+import MapView, {
   ProviderPropType,
-  Animated as AnimatedMap,
+  //Animated as AnimatedMap
   AnimatedRegion,
   Marker,
 } from 'react-native-maps';
@@ -322,6 +326,7 @@ class MostrarReserva extends React.Component {
   }
 
   render() {
+    const { turno } = this.props
     const {
       panX,
       panY,
@@ -331,9 +336,11 @@ class MostrarReserva extends React.Component {
       region,
     } = this.state;
 
+    const { translateY, translateX, scale, opacity } = animations[0];
+
     return (
       <View style={styles.container}>
-          
+
         <PanController
           style={styles.container}
           vertical
@@ -347,48 +354,41 @@ class MostrarReserva extends React.Component {
           onStartShouldSetPanResponder={this.onStartShouldSetPanResponder}
           onMoveShouldSetPanResponder={this.onMoveShouldSetPanResponder}
         >
-          <AnimatedMap
-            provider={this.props.provider}
-            style={styles.map}
-            region={region}
-            onRegionChange={this.onRegionChange}
-          >
-            {markers.map((marker, i) => {
-              const { selected, markerOpacity, markerScale } = animations[i];
-
-              return (
-                <Marker key={marker.id} coordinate={marker.coordinate}>
-                  <PriceMarker
-                    style={{
-                      opacity: markerOpacity,
-                      transform: [{ scale: markerScale }],
-                    }}
-                    amount={marker.amount}
-                    selected={selected}
-                  />
-                </Marker>
-              );
-            })}
-          </AnimatedMap>
+          <MapView
+						style={{ width: Dimensions.get("window").width, height: Dimensions.get("window").height, }}
+						showsUserLocation={true}
+						customMapStyle={
+							MAP_STYLE
+						}
+						initialRegion={{
+							latitude: parseFloat(turno.latitud),
+							longitude: parseFloat(turno.longitud),
+							longitudeDelta: 0.005,
+							latitudeDelta: 0.0,
+						}}
+					>
+						<MapView.Marker
+							coordinate={{
+								latitude: parseFloat(turno.latitud),
+								longitude: parseFloat(turno.longitud),
+							}}
+							title={turno.nombreSucursal}
+							description={turno.direccion}
+						></MapView.Marker>
+					</MapView>
           <View style={styles.itemContainer}>
-            {markers.map((marker, i) => {
-              const { translateY, translateX, scale, opacity } = animations[i];
-
-              return (
-                <Animated.View
-                  key={marker.id}
-                  style={[
-                    styles.item,
-                    {
-                      opacity,
-                      transform: [{ translateY }, { translateX }, { scale }],
-                    },
-                  ]}
-                />
-              );
-            })}
+            <View
+              key='1'
+              style={[
+                styles.item
+                
+              ]}
+            >
+              <Text style={style['text.center']}>{'Item'}</Text>
+              <Button></Button>
+            </View>
           </View>
-          
+
         </PanController>
       </View>
     );
@@ -419,11 +419,12 @@ const styles = StyleSheet.create({
   item: {
     width: ITEM_WIDTH,
     height: screen.height + 2 * ITEM_PREVIEW_HEIGHT,
-    backgroundColor: 'red',
+    backgroundColor: style.light.color,
     marginHorizontal: ITEM_SPACING / 2,
     overflow: 'hidden',
-    borderRadius: 3,
-    borderColor: '#000',
+    borderRadius: 5,
+    borderWidth: 3,
+    borderColor: style.gray.color,
   },
 });
 
