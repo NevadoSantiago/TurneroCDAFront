@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import {
   View,
+  Text,
   ActivityIndicator,
-  Dimensions,
-  Text
+  Dimensions
 } from "react-native";
 import { MAP_STYLE } from "../constantes/mapStyle";
 import { connect } from "react-redux";
@@ -14,6 +14,8 @@ import { withTheme, ListItem, Icon } from "react-native-elements";
 import { SearchBar, Button, ButtonGroup, Overlay } from "react-native-elements";
 import MapView from "react-native-maps";
 import styles from '../../../../App.scss'
+import { getDistance } from 'geolib';
+import { Slider } from 'react-native';
 
 const imageWidth = Dimensions.get("window").width;
 
@@ -21,11 +23,12 @@ class ListaSucursales extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sucursales: null,
+      sucursalesFiltradas: this.props.sucursales,
       idEspecialidad: this.props.idEspecialidad,
       idUsuario: this.props.idUsuario,
       isVisible: false,
       selectedIndex: null,
+      distancia: 0,
     }
     this.updateIndex = this.updateIndex.bind(this)
   }
@@ -72,6 +75,7 @@ class ListaSucursales extends Component {
     const { theme, updateTheme, replaceTheme, ubicacion, sucursales } = this.props;
     const { selectedIndex } = this.state
 
+    const { distancia, sucursalesFiltradas } = this.state
     var latitude, longitude
     if (ubicacion == null) {
       latitude = -34.6098896
@@ -84,6 +88,7 @@ class ListaSucursales extends Component {
     console.log(sucursales)
 
     if (sucursales != null) {
+
       return (
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -117,7 +122,7 @@ class ListaSucursales extends Component {
               />}
               <MapView
                 style={mapStyles.mapStyle}
-                showsUserLocation={false}
+                showsUserLocation={true}
                 customMapStyle={
                   MAP_STYLE
                 }
@@ -162,7 +167,13 @@ class ListaSucursales extends Component {
                   </View>
                 </MapView.Marker>
                 {
+
                   sucursales.map((s, i) => {
+
+                    var latitudSucursal = s.configuracion.cordLatitud
+                    var longitudSucursal = s.configuracion.cordLongitud
+                    var longitud = getDistance(ubicacion.coords,
+                      { latitude: latitudSucursal, longitude: longitudSucursal })
                     return (
                       <MapView.Marker
                         coordinate={{
@@ -179,9 +190,26 @@ class ListaSucursales extends Component {
               </MapView>
             </View>
             <View style={styles['flex.light']}>
+              <Text>{distancia} km</Text>
+              <Slider
+                style={{ width: imageWidth, height: 50 }}
+                onValueChange={(value) => this.setState({
+                  distancia: value
+                })}
+                onSlidingComplete={(value) => this.filtrarSucursalesDistancia(value)}
+                minimumValue={1}
+                maximumValue={50}
+                minimumTrackTintColor="#0000FF"
+                maximumTrackTintColor="#FFFFF0"
+              />
               <ScrollView style={styles['flex.light']}>
                 {sucursales.map((data, i) => {
-                  console.log(data)
+                  var cantPersonas;
+                  if (data.cantidadPersonas == 0) {
+                    cantPersonas = "0"
+                  } else {
+                    cantPersonas = data.cantidadPersonas
+                  }
                   return (
                     <ListItem
                       Component={TouchableScale}
@@ -205,10 +233,9 @@ class ListaSucursales extends Component {
                       rightIcon={(
                         <Icon
                           name='person'
-
                         />
                       )}
-                      rightSubtitle={data.cantidadPersonas}
+                      rightSubtitle={cantPersonas}
                       rightSubtitleStyle={{
                         color: styles.white.color,
                         fontFamily: 'Nunito',
@@ -279,10 +306,10 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    idEspecialidad: state.turnos.idEspecialidad,
-    idUsuario: state.user.idUsuario,
-    ubicacion: state.user.ubicacion,
-    sucursales: state.turnos.sucursales
+      idEspecialidad: state.turnos.idEspecialidad,
+      idUsuario: state.user.idUsuario,
+      ubicacion: state.user.ubicacion,
+      sucursales: state.turnos.sucursales
   };
 };
 
