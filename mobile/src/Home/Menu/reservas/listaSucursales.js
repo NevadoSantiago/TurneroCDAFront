@@ -122,7 +122,7 @@ class ListaSucursales extends Component {
               />}
               <MapView
                 style={mapStyles.mapStyle}
-                showsUserLocation={true}
+                showsUserLocation={false}
                 customMapStyle={
                   MAP_STYLE
                 }
