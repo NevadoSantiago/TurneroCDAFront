@@ -57,8 +57,8 @@ class MostrarEspecialidades extends Component {
   
   navegarListaSucursales(idEspecialidad) {
     this.getSucursales(idEspecialidad)
-    this.props.setFiltro(FILTRAR_NOMBRE);
-    this.props.nav.navigate("ListaSucursales")
+    this.props.setFiltro(FILTRAR_CANTIDAD);
+    this.encontrarCoordenadas(FILTRAR_DISTANCIA)
   }
 
   updateIndex(selectedIndex) {
@@ -92,9 +92,9 @@ class MostrarEspecialidades extends Component {
     this.setState({ selectedIndex })
   }
 
-  encontrarCoordenadas = (filtro) => {
+  encontrarCoordenadas = async (filtro) => {
     const { setCoordenadas } = this.props
-    navigator.geolocation.getCurrentPosition(
+    await navigator.geolocation.getCurrentPosition(
       posicion => {
         setCoordenadas(posicion, filtro)
         this.props.nav.navigate("ListaSucursales")

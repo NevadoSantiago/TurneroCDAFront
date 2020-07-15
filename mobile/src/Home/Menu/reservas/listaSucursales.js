@@ -59,10 +59,9 @@ class ListaSucursales extends Component {
           <View style={ styles['flex-white'] }>
             {<SearchBar
               ref="searchBar"
-
-              placeholder="Buscar direccion"
+              placeholder="Buscar sucursal"
               lightTheme="true"
-              showsCancelButtonWhileEditing={false}
+              showsCancelButtonWhileEditing={true}
               style={styles.white.color}
             />}
             <MapView

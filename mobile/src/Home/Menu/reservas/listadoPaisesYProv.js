@@ -1,16 +1,12 @@
 import React, { Component } from "react";
-import { View, Text, Picker, TouchableOpacity, SafeAreaView } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import { connect } from "react-redux";
 import { withTheme, Button } from "react-native-elements";
 import styles from '../../../../App.scss';
-import MostrarEspecialidades from '../Mostrar/mostrarEspecialidades';
-import { ScrollView } from "react-native-gesture-handler";
 import { SET_ESPECIALIDAD, SET_COORDENADAS, FILTRAR_CANTIDAD, FILTRAR_DISTANCIA } from '../constantes/actionRedux';
 import { URL_API } from '../constantes/urlApi'
-//import Autocomplete from 'react-native-autocomplete-input'
 import { Ionicons } from "@expo/vector-icons";
-import { Autocomplete, withKeyboardAwareScrollView } from "react-native-dropdown-autocomplete";
-import { Container } from "native-base";
+import { Autocomplete } from "react-native-dropdown-autocomplete";
 
 var writingProvincia = false
 var writingLocalidad = false
@@ -83,28 +79,23 @@ class ListadoPaisesYProv extends Component {
   }
 
   seleccionarLocalidad = (localidades) => {
-    const { scrollToInput, onDropdownClose, onDropdownShow } = this.props;
+    const { onDropdownShow } = this.props;
+    const { textoLocalidad } = this.state
 
     return (
       <SafeAreaView>
         <Autocomplete
           key={2}
           style={{ maxHeight: 40 }}
-          placeholder='Ingrese una localidad'
-          onChangeText={
-            writingLocalidad = true,
-            console.warn('L:' + writingLocalidad)
-          }
-          //scrollToInput={ev => scrollToInput(ev)}
+          placeholder={textoLocalidad}
+          onChangeText={ () => {
+            writingLocalidad = true
+          }}
           initialValue={(this.state && this.state.pickerLocalidadValue)}
           handleSelectItem={(item, id) => {
-            //const { onDropdownClose } = this.props;
-            //onDropdownClose();
-            console.log(item);
             this.setState({ pickerLocalidadValue: item.nombre, localidadSelected: item, finishWriting: true });
             writingLocalidad == false
           }}
-          //onDropdownClose={() => onDropdownClose()}
           onDropdownShow={() => onDropdownShow()}
           inputStyle={{ borderColor: styles.primary.color, fontFamily: 'Nunito' }}
           separatorStyle={{ backgroundColor: 'black' }}
@@ -130,61 +121,30 @@ class ListadoPaisesYProv extends Component {
         />
       </SafeAreaView>
     )
-    /*return (
-      <Picker
-        style={{ marginHorizontal: 15, height: 50, alignSelf: 'stretch', textAlign: 'center' }}
-        mode={Picker.MODE_DROPDOWN}
-        selectedValue={(this.state && this.state.pickerLocalidadValue)}
-        onValueChange={(value) => {
-          if (value !== 0) {
-            this.setState({ pickerLocalidadValue: value });
-            {
-              //this.getLocalidades(parseInt(value))
-              console.log(value)
-            }
-          }
-        }}
-      >
-        <Picker.Item key={'unselectable'} enabled={false} label={this.state.textoLocalidad} value='0' />
-        {
-          localidades.map((data, i) => (
-            <Picker.Item value={data.localidadId} label={data.nombre} key={data.localidadId} />
-          ))
-        }
-      </Picker>
-    )*/
   }
 
   seleccionarProvincia = (provincias, finished) => {
     const { scrollToInput, onDropdownClose, onDropdownShow } = this.props;
-
-    //this.setState({ finishWriting: false })
+    const { textoProvincia } = this.state
 
     if (finished) {
-      console.warn('finished: ' + finished)
       writingLocalidad == false
-      console.warn('writingLocalidad: ' + writingLocalidad)
-    } else {
-      console.warn('don\'t finished')
     }
 
     return (
       <SafeAreaView>
         <Autocomplete
           onChangeText={() => {
-              writingProvincia = true
-              writingLocalidad = finished
-              console.warn('P: ' + writingProvincia)
-              this.setState({ finishWriting: false })
+            writingProvincia = true
+            writingLocalidad = finished
+            this.setState({ finishWriting: false })
           }}
           key={1}
           style={{ maxHeight: 40 }}
-          placeholder='Ingrese una provincia'
-          //scrollToInput={ev => scrollToInput(ev)}
+          placeholder={textoProvincia}
           initialValue={(this.state && this.state.pickerProvinciaValue)}
           handleSelectItem={(item, id) => {
             const { onDropdownClose } = this.props;
-            //onDropdownClose();
             this.getLocalidades(item.provinciaId)
             this.setState({ pickerProvinciaValue: item.nombre, provinciaSelected: item });
             writingProvincia = false
@@ -193,7 +153,6 @@ class ListadoPaisesYProv extends Component {
           renderIcon={() => (
             <Ionicons name="ios-add-circle-outline" size={20} color="#c7c6c1" style={{ position: "absolute", left: 28, top: 11, }} />
           )}
-          //onDropdownClose={() => onDropdownClose()}
           onDropdownShow={() => onDropdownShow()}
           inputStyle={{ borderColor: styles.primary.color, fontFamily: 'Nunito' }}
           separatorStyle={{ backgroundColor: 'black' }}
@@ -223,90 +182,13 @@ class ListadoPaisesYProv extends Component {
         />
       </SafeAreaView>
     )
-
-    /*return (
-      <Picker
-        style={{ marginHorizontal: 15, height: 50, alignSelf: 'stretch', textAlign: 'center' }}
-        mode={Picker.MODE_DROPDOWN}
-        selectedValue={(this.state && this.state.pickerProvinciaValue)}
-        onValueChange={(value) => {
-          if (value !== 0) {
-            this.getLocalidades(parseInt(value))
-            this.setState({ pickerProvinciaValue: value });
-          }
-        }}
-      >
-        <Picker.Item key={'unselectable'} enabled={false} label={this.state.textoProvincia} value='0' />
-        {
-          provincias.map((data, i) => (
-            <Picker.Item value={data.provinciaId} label={data.nombre} key={data.provinciaId} />
-          ))
-        }
-      </Picker>
-    )*/
   }
 
   formularioTurno = (state) => {
     var { localidades, provincias, localidadSelected, finishWriting } = state
 
-    console.warn('F:' + finishWriting)
-
-    /*if (finishWriting == true) {
-      if (writingProvincia == true && writingLocalidad == true) {
-        return (
-          <React.Fragment>
-            {
-              this.seleccionarProvincia(provincias)
-            }
-            {
-              this.seleccionarLocalidad(localidades)
-            }
-          </React.Fragment>
-        )
-      }
-      else {
-        return (
-          this.seleccionarProvincia(provincias)
-        )
-      }
-    }
-    if (localidades != null && writingProvincia == false && writingLocalidad == true) {
-      console.log('LOCALIDAD SELECCIONADA')
-      console.log(localidadSelected)
-      console.log('----------------------------')
-      //finishWriting == true
-      return (
-        <React.Fragment>
-          {
-            this.seleccionarProvincia(provincias)
-          }
-          {
-            this.seleccionarLocalidad(localidades)
-          }
-        </React.Fragment>
-      )
-    }
-    else {
-      return (
-        this.seleccionarProvincia(provincias)
-      )
-      /*
-      return (
-        <View style={{ height: 70, marginHorizontal: 15, padding: 10, backgroundColor: styles.primary.color, borderRadius: 15, zIndex: 0 }}>
-          <View style={{ height: 50, paddingVertical: 5, paddingHorizontal: 5, backgroundColor: 'white', borderRadius: 10, zIndex: 0 }}>
-            <View style={{ flex: 1, zIndex: 999 }}>
-              {this.seleccionarProvincia(this.state.provincias)}
-            </View>
-          </View>
-        </View>
-      )
-      */
     if (finishWriting == false) {
       if (localidades != null && writingProvincia == false && writingLocalidad == true) {
-        console.log('LOCALIDAD SELECCIONADA')
-        console.log(localidadSelected)
-        console.log('----------------------------')
-        //finishWriting == true
         return (
           <React.Fragment>
             {
@@ -337,24 +219,54 @@ class ListadoPaisesYProv extends Component {
     }
   }
 
+  showSelectedData = () => {
+    const { provinciaSelected, localidadSelected, finishWriting } = this.state
+    if (finishWriting == true) {
+      if (provinciaSelected != null && localidadSelected != null) {
+        return (
+          <View>
+            <Text style={styles['text.center']}>
+              {provinciaSelected.nombre + '\n'}
+              {localidadSelected.nombre}
+            </Text>
+            <Button 
+              containerStyle={{ marginHorizontal: 15 }}
+              buttonStyle={{ backgroundColor: styles.secondary.color, borderRadius: 15, height: 50 }}
+              titleStyle={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                fontFamily: 'Nunito_bold',
+                width: '100%'
+              }}
+              title="Confirmar ubicación"
+              onPress={() => {
+                console.log('----- UBICACIÓN CONFIRMADA -----')
+                console.log(localidadSelected)
+                console.log('--------------------------------')
+              }}
+            ></Button>
+          </View>
+        )
+      }
+      else if (provinciaSelected != null && localidadSelected == null) {
+        return (
+          <Text style={styles['text.center']}>
+            {provinciaSelected.nombre}
+          </Text>
+        )
+      }
+    }
+  }
+
   handleSelectItem(item, index) {
     const { onDropdownClose } = this.props;
     onDropdownClose();
-    console.log(item);
     this.getLocalidades(item.provinciaId)
     this.setState({ pickerProvinciaValue: item.provinciaId });
   }
 
   render() {
-    const { provincias, localidades } = this.state
-    /*     if (especialidades == null) {
-          return (
-            <View>
-              <Text>
-                No hay ubicaciones
-              </Text>
-            </View>)
-        } else { */
+    const { provincias, localidades, provinciaSelected, localidadSelected } = this.state
 
     if (provincias == null) {
       return (
@@ -370,16 +282,12 @@ class ListadoPaisesYProv extends Component {
       return (
         <React.Fragment>
           <View style={styles['flex.white']}>
-            <Text style={styles['text.center']}>
-              Ubicación inicial
-            </Text>
-            <Text></Text>
             {this.formularioTurno(this.state)}
+            {this.showSelectedData()}
           </View>
         </React.Fragment>
       )
     }
-    /* } */
   }
 }
 
@@ -402,4 +310,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withTheme(ListadoPaisesYProv));
-

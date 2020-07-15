@@ -17,7 +17,7 @@ class Reservas extends Component {
   }
 
   static navigationOptions = {
-    title: 'Reservas',
+    title: 'Mis reservas',
     headerStyle: {
       backgroundColor: styles.white.color,
       elevation: 0,
