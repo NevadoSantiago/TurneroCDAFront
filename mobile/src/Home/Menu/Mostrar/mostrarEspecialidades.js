@@ -39,9 +39,9 @@ class MostrarEspecialidades extends Component {
       );
   }
   getSucursalesOrdenadoCantidad = async () => {
-    const {setSucursales} = this.props
+    const {setSucursales,idEspecialidad} = this.props
     var url;
-    url = URL_API + "/api/sucursal/filtrar/cantidadPersonas"
+    url = URL_API + "/api/sucursal/filtrar/cantidadPersonas/" + idEspecialidad
 
     await fetch(url)
       .then(function (response) {

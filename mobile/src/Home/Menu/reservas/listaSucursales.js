@@ -29,27 +29,6 @@ class ListaSucursales extends Component {
       distancia:0,
     }
   }
-  mostrarMarcadores = () => {
-    const { sucursales } = this.props
-    sucursales.map((s, i) => {
-      return (
-        <MapView.Marker
-          coordinate={{
-            latitude: s.configuracion.cordLatitud,
-            longitude: s.configuracion.cordLongitud,
-          }}
-          title={"Disco"}
-          description={"Direccion: Peron 580"}
-        ></MapView.Marker>
-      )
-    }
-    )
-  }
-
-  filtrarSucursalesDistancia = (distancia)=>{
-       
-  }
-
   static navigationOptions = {
     title: 'Seleccione una sucursal',
     headerStyle: {
@@ -77,6 +56,7 @@ class ListaSucursales extends Component {
       longitude = ubicacion.coords.longitude
     }
 
+    console.log(sucursales)
 
     if (sucursales != null) {
       
@@ -85,10 +65,9 @@ class ListaSucursales extends Component {
           <View style={ styles['flex-white'] }>
             {<SearchBar
               ref="searchBar"
-
-              placeholder="Buscar direccion"
+              placeholder="Buscar sucursal"
               lightTheme="true"
-              showsCancelButtonWhileEditing={false}
+              showsCancelButtonWhileEditing={true}
               style={styles.white.color}
             />}
             <MapView

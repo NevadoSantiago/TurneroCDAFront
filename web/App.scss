@@ -89,18 +89,13 @@
   @extend %white-background
 }
 
+
 .button-center {
 	justify-content: center;
 	align-items: center;
 	width: 90%;
 }
 
-.button-end {
-	justify-content: center;
-  align-items: center;
-  font-family: 'Nunito';
-	width: 100%;
-}
 
 .input-label-text {
   margin-left: 5%;
@@ -207,11 +202,6 @@
 .text {
   font-size: 15;
   font-family: 'Nunito';
-}
-
-.text.bold {
-  font-size: 15;
-  font-family: 'Nunito_bold';
 }
 
 .center {
