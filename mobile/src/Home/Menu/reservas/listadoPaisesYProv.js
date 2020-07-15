@@ -88,7 +88,7 @@ class ListadoPaisesYProv extends Component {
           key={2}
           style={{ maxHeight: 40 }}
           placeholder={textoLocalidad}
-          onChangeText={ () => {
+          onChangeText={() => {
             writingLocalidad = true
           }}
           initialValue={(this.state && this.state.pickerLocalidadValue)}
@@ -221,6 +221,7 @@ class ListadoPaisesYProv extends Component {
 
   showSelectedData = () => {
     const { provinciaSelected, localidadSelected, finishWriting } = this.state
+    const { setCoordenadas } = this.props
     if (finishWriting == true) {
       if (provinciaSelected != null && localidadSelected != null) {
         return (
@@ -229,7 +230,7 @@ class ListadoPaisesYProv extends Component {
               {provinciaSelected.nombre + '\n'}
               {localidadSelected.nombre}
             </Text>
-            <Button 
+            <Button
               containerStyle={{ marginHorizontal: 15 }}
               buttonStyle={{ backgroundColor: styles.secondary.color, borderRadius: 15, height: 50 }}
               titleStyle={{
@@ -240,9 +241,19 @@ class ListadoPaisesYProv extends Component {
               }}
               title="Confirmar ubicación"
               onPress={() => {
+                var posicion = {
+                  coords: {
+                    latitude: parseFloat(localidadSelected.latitud),
+                    longitude: parseFloat(localidadSelected.longitud)
+                  }
+                }
                 console.log('----- UBICACIÓN CONFIRMADA -----')
-                console.log(localidadSelected)
+                //console.log(localidadSelected)
+                //console.log('--------------------------------')
+                setCoordenadas(posicion, FILTRAR_CANTIDAD)
+                console.log(posicion)
                 console.log('--------------------------------')
+                this.props.navigation.navigate("ListaSucursales")
               }}
             ></Button>
           </View>
@@ -294,7 +305,7 @@ class ListadoPaisesYProv extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     setEspecialidad: (datos) => dispatch({ type: SET_ESPECIALIDAD, data: datos }),
-    setCoordenadas: (datos) => dispatch({ type: SET_COORDENADAS, data: datos })
+    setCoordenadas: (datos, tipoBusqueda) => dispatch({ type: SET_COORDENADAS, busqueda: tipoBusqueda, data: datos })
   };
 };
 
@@ -302,7 +313,8 @@ const mapStateToProps = (state) => {
   return {
     especialidades: state.turnos.listaEspecialidades,
     idEspecialidad: state.turnos.idEspecialidad,
-    especialidadNotSelected: state.turnos.especialidadNotSelected
+    especialidadNotSelected: state.turnos.especialidadNotSelected,
+    ubicacion: state.user.ubicacion
   };
 };
 

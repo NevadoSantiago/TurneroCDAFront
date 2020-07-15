@@ -97,6 +97,7 @@ class MostrarEspecialidades extends Component {
     await navigator.geolocation.getCurrentPosition(
       posicion => {
         setCoordenadas(posicion, filtro)
+        console.log(posicion)
         this.props.nav.navigate("ListaSucursales")
       },
       error => {
