@@ -10,12 +10,11 @@ import { connect } from "react-redux";
 import TouchableScale from "react-native-touchable-scale";
 import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, KeyboardAvoidingView } from "react-native";
-import { withTheme, ListItem, Icon } from "react-native-elements";
+import { withTheme, ListItem, Icon, Slider } from "react-native-elements";
 import { SearchBar, Button, ButtonGroup, Overlay } from "react-native-elements";
 import MapView from "react-native-maps";
 import styles from '../../../../App.scss'
 import { getDistance } from 'geolib';
-import { Slider } from 'react-native';
 
 const imageWidth = Dimensions.get("window").width;
 
@@ -190,18 +189,18 @@ class ListaSucursales extends Component {
               </MapView>
             </View>
             <View style={styles['flex.light']}>
-              <Text>{distancia} km</Text>
-              <Slider
-                style={{ width: imageWidth, height: 50 }}
-                onValueChange={(value) => this.setState({
-                  distancia: value
-                })}
-                onSlidingComplete={(value) => this.filtrarSucursalesDistancia(value)}
-                minimumValue={1}
-                maximumValue={50}
-                minimumTrackTintColor="#0000FF"
-                maximumTrackTintColor="#FFFFF0"
-              />
+              <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+                <Text style={{ fontFamily: 'Nunito' }}>{distancia} km</Text>
+                <Slider
+                  value={this.state.distancia}
+                  onValueChange={(value) => this.setState({
+                    distancia: value
+                  })}
+                  minimumValue={1}
+                  maximumValue={50}
+                  thumbTintColor={styles.primary.color}
+                />
+              </View>
               <ScrollView style={styles['flex.light']}>
                 {sucursales.map((data, i) => {
                   var cantPersonas;
@@ -306,10 +305,10 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-      idEspecialidad: state.turnos.idEspecialidad,
-      idUsuario: state.user.idUsuario,
-      ubicacion: state.user.ubicacion,
-      sucursales: state.turnos.sucursales
+    idEspecialidad: state.turnos.idEspecialidad,
+    idUsuario: state.user.idUsuario,
+    ubicacion: state.user.ubicacion,
+    sucursales: state.turnos.sucursales
   };
 };
 
