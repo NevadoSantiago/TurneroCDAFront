@@ -304,6 +304,7 @@ class ListaSucursales extends Component {
                       rightIcon={(
                         <Icon
                           name='person'
+                          color='white'
                         />
                       )}
                       rightSubtitle={cantPersonas}
