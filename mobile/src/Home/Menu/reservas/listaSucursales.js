@@ -55,8 +55,8 @@ class ListaSucursales extends Component {
 
     if (sucursales != null) {
       return (
-        <ScrollView style={ styles['flex-white'] }>
-          <View style={ styles['flex-white'] }>
+        <ScrollView style={styles['flex-white']}>
+          <View style={styles['flex-white']}>
             {<SearchBar
               ref="searchBar"
               placeholder="Buscar sucursal"
@@ -77,6 +77,40 @@ class ListaSucursales extends Component {
                 latitudeDelta: 0.2,
               }}
             >
+              <MapView.Marker
+                coordinate={{
+                  latitude: latitude,
+                  longitude: longitude,
+                }}
+              >
+                <View
+                  style={{
+                      height: 40,
+                      width: 40,
+                      borderRadius: 20,
+                      overflow: 'hidden',
+                      backgroundColor: 'rgba(0, 122, 255, 0.1)',
+                      borderWidth: 1,
+                      borderColor: 'rgba(0, 112, 255, 0.3)',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                  }}
+                >
+                  <View
+                    style={{
+                      height: 18,
+                      width: 18,
+                      borderWidth: 3,
+                      borderColor: 'white',
+                      borderRadius: 9,
+                      overflow: 'hidden',
+                      backgroundColor: '#007AFF'
+                    }}
+                  >
+
+                  </View>
+                </View>
+              </MapView.Marker>
               {
                 sucursales.map((s, i) => {
                   return (
@@ -121,7 +155,7 @@ class ListaSucursales extends Component {
                     rightIcon={(
                       <Icon
                         name='person'
-                                          
+
                       />
                     )}
                     rightSubtitle={data.cantidadPersonas}
