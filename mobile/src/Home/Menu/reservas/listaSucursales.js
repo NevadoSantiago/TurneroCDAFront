@@ -27,11 +27,16 @@ class ListaSucursales extends Component {
       idEspecialidad: this.props.idEspecialidad,
       idUsuario: this.props.idUsuario,
       isVisible: false,
+      isOverlayTurnoVisible: false,
       selectedIndex: null,
       distancia: 3,
       seCalculoDistancia:false,
+      selectedReservaIndex: null,
+      sucursalSelected: ''
+
     }
     this.updateIndex = this.updateIndex.bind(this)
+    this.reservarTurno = this.reservarTurno.bind(this)
   }
   static navigationOptions = {
     title: 'Seleccione una sucursal',
@@ -71,9 +76,48 @@ class ListaSucursales extends Component {
     }
     this.setState({ selectedIndex })
   }
+
+
+
+
+  reservarTurno(selectedReservaIndex) {
+
+    switch (selectedReservaIndex) {
+      case 0: // DISTANCIA 
+        this.setState({
+          isOverlayTurnoVisible: false
+        })
+        break;
+      case 1: // Personas en cola
+        this.setState({
+          isOverlayTurnoVisible: false
+        })
+        break;
+      case 2: //NOMBRE
+        this.setState({
+          isOverlayTurnoVisible: false
+        })
+        break;
+      default:
+        break;
+    }
+    this.setState({ selectedReservaIndex })
+  }
+
+  filtrarSucursalesDistancia(value) {
+    this.props.sucursales.forEach(element => {
+      if (getDistance(
+        { latitude: element.configuracion.cordLatitud, longitude: element.configuracion.cordLongitud },
+        { latitude: this.props.ubicacion.coords.latitude, longitude: this.props.ubicacion.coords.longitude }
+      ) <= value * 1000) {
+        console.log("estoy aca nomas")
+      }
+    });
+  }
+
   render() {
     const { theme, updateTheme, replaceTheme, ubicacion, sucursales,calcularDistancia } = this.props;
-    const { selectedIndex,seCalculoDistancia } = this.state
+    const { selectedIndex,seCalculoDistancia,selectedReservaIndex } = this.state
 
     const { distancia} = this.state
     var latitude, longitude
@@ -84,7 +128,6 @@ class ListaSucursales extends Component {
       latitude = ubicacion.coords.latitude
       longitude = ubicacion.coords.longitude
     }
-
 
     if (sucursales != null) {
       if(!seCalculoDistancia){
@@ -98,6 +141,32 @@ class ListaSucursales extends Component {
           behavior={Platform.OS == "ios" ? "padding" : "height"}
           style={{ flex: 1 }}
         >
+          <Overlay
+            isVisible={this.state.isOverlayTurnoVisible}
+            onBackdropPress={() => this.setState({ isOverlayTurnoVisible: false })}
+            overlayStyle={{ padding: -100, width: '75%' }}
+          >
+            <Text style={{ alignSelf: 'flex-start', padding: 15, fontFamily: 'Nunito_bold', fontSize: 18 }}>
+              Reservar turno
+            </Text>
+            <Text style={{ alignSelf: 'flex-start', paddingBottom: 15, paddingHorizontal: 15, fontFamily: 'Nunito' }}>
+              Desea reservar un turno en {this.state.sucursalSelected.nombre} ahora?
+            </Text>
+            <View style={{ alignItems: 'flex-end', flexDirection: 'row-reverse', paddingHorizontal: 5, paddingBottom: 10 }}>
+              <Button
+                containerStyle={{ width: 60 }}
+                title="NO"
+                type="clear"
+                onPress={ () => { console.warn('NO pressed'), this.setState({ isOverlayTurnoVisible: false }) }}
+              />
+              <Button
+                containerStyle={{ width: 60, marginHorizontal: 15 }}
+                title="SI"
+                type="clear"
+                onPress={ () => { console.warn('SI pressed'), this.setState({ isOverlayTurnoVisible: false }) }}
+              />
+            </View>
+          </Overlay>
           <Overlay
             isVisible={this.state.isVisible}
             onBackdropPress={() => this.setState({ isVisible: false })}
@@ -255,9 +324,10 @@ class ListaSucursales extends Component {
                       }}
                       chevron={{ color: styles.white.color, size: 20 }}
                       onPress={(e) => {
-                        this.props.navigation.navigate("ListaTurnos", {
-                          sucursalId: data.sucursalId,
-                        });
+                        this.setState({
+                          sucursalSelected: data,
+                          isOverlayTurnoVisible: true
+                        })
                       }}
                     />
                   );}
