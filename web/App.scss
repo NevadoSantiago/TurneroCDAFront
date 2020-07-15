@@ -1,0 +1,210 @@
+%blue {
+	color: blue;
+}
+
+%light {
+	color: whitesmoke;
+}
+
+%gray {
+  color: #CCCCCC
+}
+
+%white {
+	color: white;
+}
+
+%black {
+	color: black;
+}
+
+%dark {
+	color: #1F1F1F;
+}
+
+%disabled {
+  color: #CCCCCC
+}
+
+%primary-background {
+	background-color: rgb(4, 116, 186)
+}
+%success-background {
+	background-color: #48C774
+}
+
+%dark-background {
+	background-color: #1F1F1F
+}
+
+%light-background {
+  background-color: whitesmoke
+}
+
+%black-background {
+  background-color: black
+}
+
+%white-background {
+  background-color: white
+}
+
+.blue {
+  @extend %blue;
+}
+.white {
+  @extend %white;
+}
+.light {
+  @extend %light;
+}
+.gray {
+  @extend %gray
+}
+.black {
+  @extend %black;
+}
+.dark {
+  @extend %dark;
+}
+.disabled {
+  @extend %disabled;
+}
+.primary {
+  color: rgb(4, 116, 186)
+}
+.secondary {
+  color: orange
+}
+.success {
+  color: #48C774
+}
+.warning {
+  color: #FFFC40
+}
+.error {
+  color: #FF554D
+}
+.white-bg {
+  @extend %white-background
+}
+
+
+.button-center {
+	justify-content: center;
+	align-items: center;
+	width: 90%;
+}
+
+
+.input-label-text {
+  margin-left: 5%;
+  text-align: left;
+  align-self: stretch;
+  font-family: 'Nunito';
+}
+
+.center-flex.white{
+  flex: 1;
+  @extend %white-background;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-flex.light{
+  flex: 1;
+  @extend %light-background;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-flex.dark{
+  flex: 1;
+  @extend %dark-background;
+  align-items: center;
+  justify-content: center;
+}
+
+.center-flex.black{
+  flex: 1;
+  @extend %black-background;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex.white{
+  flex: 1;
+  @extend %white-background;
+}
+
+.flex.light{
+  flex: 1;
+  @extend %light-background;
+}
+
+.flex.dark{
+  flex: 1;
+  @extend %dark-background;
+}
+
+.flex.black{
+  flex: 1;
+  @extend %black-background;
+}
+
+.h1 {
+  font-size: 40;
+  font-family: 'Nunito_bold';
+}
+
+.h2 {
+  font-size: 30;
+  font-family: 'Nunito_bold';
+}
+
+.h3 {
+  font-size: 25;
+  font-family: 'Nunito_bold';
+}
+
+.h4 {
+  font-size: 20;
+  font-family: 'Nunito_bold';
+}
+
+.h5 {
+  font-size: 15;
+  font-family: 'Nunito_bold';
+}
+
+.text.small.end {
+  align-self: flex-end;
+  font-size: 15;
+  margin-right: 15;
+  margin-top: 15;
+  font-family: 'Nunito';
+}
+
+.text.small {
+  align-self: flex-start;
+  font-size: 15;
+  font-family: 'Nunito';
+}
+
+.text.center {
+  margin-top: 15;
+  font-size: 20;
+  align-self: center;
+  font-family: 'Nunito';
+  margin-bottom: 10;
+}
+
+.text {
+  font-size: 15;
+  font-family: 'Nunito';
+}
+
+.center {
+  align-items: center;
+  justify-content: center;
+}
