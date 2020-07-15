@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   View,
+  Text,
   ActivityIndicator,
   Dimensions,
 } from "react-native";
@@ -13,6 +14,8 @@ import { withTheme, ListItem, Icon } from "react-native-elements";
 import { SearchBar } from "react-native-elements";
 import MapView from "react-native-maps";
 import styles from '../../../../App.scss'
+import { getDistance } from 'geolib';
+import { Slider } from 'react-native';
 
 const imageWidth = Dimensions.get("window").width;
 
@@ -20,9 +23,10 @@ class ListaSucursales extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sucursales: null,
+      sucursalesFiltradas: this.props.sucursales,
       idEspecialidad: this.props.idEspecialidad,
-      idUsuario: this.props.idUsuario
+      idUsuario: this.props.idUsuario,
+      distancia:0,
     }
   }
   mostrarMarcadores = () => {
@@ -31,8 +35,8 @@ class ListaSucursales extends Component {
       return (
         <MapView.Marker
           coordinate={{
-            latitude: -34.612773,
-            longitude: -58.448894,
+            latitude: s.configuracion.cordLatitud,
+            longitude: s.configuracion.cordLongitud,
           }}
           title={"Disco"}
           description={"Direccion: Peron 580"}
@@ -40,6 +44,10 @@ class ListaSucursales extends Component {
       )
     }
     )
+  }
+
+  filtrarSucursalesDistancia = (distancia)=>{
+       
   }
 
   static navigationOptions = {
@@ -59,6 +67,7 @@ class ListaSucursales extends Component {
 
   render() {
     const { theme, updateTheme, replaceTheme, ubicacion, sucursales } = this.props;
+    const {distancia,sucursalesFiltradas} = this.state
     var latitude, longitude
     if (ubicacion == null) {
       latitude = -34.6098896
@@ -70,6 +79,7 @@ class ListaSucursales extends Component {
 
 
     if (sucursales != null) {
+      
       return (
         <ScrollView style={ styles['flex-white'] }>
           <View style={ styles['flex-white'] }>
@@ -95,7 +105,13 @@ class ListaSucursales extends Component {
               }}
             >
               {
+                
                 sucursales.map((s, i) => {
+                  
+                  var latitudSucursal = s.configuracion.cordLatitud
+                  var longitudSucursal = s.configuracion.cordLongitud 
+                  var longitud =getDistance(ubicacion.coords,
+                    {latitude:latitudSucursal,longitude:longitudSucursal})
                   return (
                     <MapView.Marker
                       coordinate={{
@@ -112,9 +128,27 @@ class ListaSucursales extends Component {
             </MapView>
           </View>
           <View style={styles['flex.light']}>
+            <Text>{distancia} km</Text>
+          <Slider
+           style={{width:imageWidth, height: 50}}
+           onValueChange={(value) => this.setState({
+             distancia:value
+           })}
+           onSlidingComplete={(value) => this.filtrarSucursalesDistancia(value)}
+          minimumValue={1}
+           maximumValue={50}
+          minimumTrackTintColor="#0000FF"
+           maximumTrackTintColor="#FFFFF0"
+  />
             <ScrollView style={styles['flex.light']}>
               {sucursales.map((data, i) => {
-                console.log(data)
+                var cantPersonas;
+                if(data.cantidadPersonas == 0){
+                  cantPersonas = "0"
+                }else
+                {
+                  cantPersonas = data.cantidadPersonas
+                }
                 return (
                   <ListItem
                     Component={TouchableScale}
@@ -137,11 +171,10 @@ class ListaSucursales extends Component {
                     subtitle={data.direccion}
                     rightIcon={(
                       <Icon
-                        name='person'
-                                          
+                        name='person'                                         
                       />
                     )}
-                    rightSubtitle={data.cantidadPersonas}
+                    rightSubtitle={cantPersonas}
                     rightSubtitleStyle={{
                       color: styles.white.color,
                       fontFamily: 'Nunito',

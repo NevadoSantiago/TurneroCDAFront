@@ -10,6 +10,7 @@ import {
   SET_ESPECIALIDAD, SET_COORDENADAS, FILTRAR_CANTIDAD, FILTRAR_DISTANCIA, SET_FILTRO, FILTRAR_NOMBRE
 } from '../constantes/actionRedux'
 
+
 class MostrarEspecialidades extends Component {
 
   constructor(props) {
@@ -27,7 +28,6 @@ class MostrarEspecialidades extends Component {
     const { idEspecialidad, setSucursales } = this.props
     var url;
     url = URL_API + "/api/sucursal/filtrar/especialidad/" + idEspecialidad
-
     await fetch(url)
       .then(function (response) {
         return response.json();
@@ -66,15 +66,15 @@ class MostrarEspecialidades extends Component {
         break;
       case 1: // Personas en cola
       this.getSucursalesOrdenadoCantidad()
-        this.props.setFiltro(FILTRAR_NOMBRE);
-        { this.props.nav.navigate("ListaSucursales") }
+      this.encontrarCoordenadas(FILTRAR_NOMBRE)
         this.setState({
           isVisible: false
         })
         break;
       case 2: //NOMBRE
       this.getSucursales()   
-        this.encontrarCoordenadas(FILTRAR_CANTIDAD)
+        this.props.setFiltro(FILTRAR_CANTIDAD)
+        this.props.nav.navigate("ListaSucursales")
         this.setState({
           isVisible: false
         })
