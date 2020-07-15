@@ -1,439 +1,343 @@
-import React from 'react';
-import { StyleSheet, View, Dimensions, Animated, Text, Alert } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  ScrollView,
+  Animated,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+  Platform,
+  Alert,
+} from "react-native";
+import { Button } from 'react-native-elements'
 import { MAP_STYLE } from '../constantes/mapStyle'
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+
+import { markers, mapDarkStyle, mapStandardStyle } from './model/mapData';
+import StarRating from './components/StarRating';
+
 import style from '../../../../App.scss'
 
-import { Button } from 'react-native-elements'
+//import { useTheme } from '@react-navigation/native';
+import { withTheme } from 'react-native-elements';
 
-import MapView, {
-  ProviderPropType,
-  //Animated as AnimatedMap
-  AnimatedRegion,
-  Marker,
-} from 'react-native-maps';
-import PanController from './PanController';
-import PriceMarker from './AnimatedPriceMarker';
+const { width, height } = Dimensions.get("window");
+const CARD_HEIGHT = 180;
+const CARD_WIDTH = width * 0.9;
+const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
+const MostrarReserva = (props) => {
+  //const theme = useTheme();
 
+  console.log('----------- TURNO -----------')
+  var turno = props.turno
+  console.log(turno)
 
-const screen = Dimensions.get('window');
-const ASPECT_RATIO = screen.width / screen.height;
-/*const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;*/
-const LATITUDE_DELTA = 0.0922;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-
-const ITEM_SPACING = 10;
-const ITEM_PREVIEW = 10;
-const ITEM_WIDTH = screen.width - 2 * ITEM_SPACING - 2 * ITEM_PREVIEW;
-const SNAP_WIDTH = ITEM_WIDTH + ITEM_SPACING;
-const ITEM_PREVIEW_HEIGHT = 150;
-const SCALE_END = screen.width / ITEM_WIDTH;
-const BREAKPOINT1 = 246;
-const BREAKPOINT2 = 350;
-const ONE = new Animated.Value(1);
-
-function getMarkerState(panX, panY, scrollY, i) {
-  const xLeft = -SNAP_WIDTH * i + SNAP_WIDTH / 2;
-  const xRight = -SNAP_WIDTH * i - SNAP_WIDTH / 2;
-  const xPos = -SNAP_WIDTH * i;
-
-  const isIndex = panX.interpolate({
-    inputRange: [xRight - 1, xRight, xLeft, xLeft + 1],
-    outputRange: [0, 1, 1, 0],
-    extrapolate: 'clamp',
-  });
-
-  const isNotIndex = panX.interpolate({
-    inputRange: [xRight - 1, xRight, xLeft, xLeft + 1],
-    outputRange: [1, 0, 0, 1],
-    extrapolate: 'clamp',
-  });
-
-  const center = panX.interpolate({
-    inputRange: [xPos - 10, xPos, xPos + 10],
-    outputRange: [0, 1, 0],
-    extrapolate: 'clamp',
-  });
-
-  const selected = panX.interpolate({
-    inputRange: [xRight, xPos, xLeft],
-    outputRange: [0, 1, 0],
-    extrapolate: 'clamp',
-  });
-
-  const translateY = Animated.multiply(isIndex, panY);
-
-  const translateX = panX;
-
-  const anim = Animated.multiply(
-    isIndex,
-    scrollY.interpolate({
-      inputRange: [0, BREAKPOINT1],
-      outputRange: [0, 1],
-      extrapolate: 'clamp',
-    })
-  );
-
-  const scale = Animated.add(
-    ONE,
-    Animated.multiply(
-      isIndex,
-      scrollY.interpolate({
-        inputRange: [BREAKPOINT1, BREAKPOINT2],
-        outputRange: [0, SCALE_END - 1],
-        extrapolate: 'clamp',
-      })
-    )
-  );
-
-  // [0 => 1]
-  let opacity = scrollY.interpolate({
-    inputRange: [BREAKPOINT1, BREAKPOINT2],
-    outputRange: [0, 1],
-    extrapolate: 'clamp',
-  });
-
-  // if i === index: [0 => 0]
-  // if i !== index: [0 => 1]
-  opacity = Animated.multiply(isNotIndex, opacity);
-
-  // if i === index: [1 => 1]
-  // if i !== index: [1 => 0]
-  opacity = opacity.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 0],
-  });
-
-  let markerOpacity = scrollY.interpolate({
-    inputRange: [0, BREAKPOINT1],
-    outputRange: [0, 1],
-    extrapolate: 'clamp',
-  });
-
-  markerOpacity = Animated.multiply(isNotIndex, markerOpacity).interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 0],
-  });
-
-  const markerScale = selected.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 1.2],
-  });
-
-  return {
-    translateY,
-    translateX,
-    scale,
-    opacity,
-    anim,
-    center,
-    selected,
-    markerOpacity,
-    markerScale,
+  const initialMapState = {
+    //markers,
+    markers: [
+      {
+        coordinate: {
+          latitude: parseFloat(turno.latitud),
+          longitude: parseFloat(turno.longitud),
+        },
+        title: turno.nombreSucursal,
+        description: turno.direccion
+      }
+    ],
+    region: {
+      latitude: parseFloat(turno.latitud),
+      longitude: parseFloat(turno.longitud),
+      latitudeDelta: 0.0012,
+      longitudeDelta: 0.01,
+    },
   };
-}
 
-class MostrarReserva extends React.Component {
-  constructor(props) {
-    super(props);
+  const [state, setState] = React.useState(initialMapState);
 
-    const panX = new Animated.Value(0);
-    const panY = new Animated.Value(0);
+  let mapIndex = 0;
+  let mapAnimation = new Animated.Value(0);
 
-    const scrollY = panY.interpolate({
-      inputRange: [-1, 1],
-      outputRange: [1, -1],
+  useEffect(() => {
+    mapAnimation.addListener(({ value }) => {
+      let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
+      if (index >= state.markers.length) {
+        index = state.markers.length - 1;
+      }
+      if (index <= 0) {
+        index = 0;
+      }
+
+      clearTimeout(regionTimeout);
+
+      const regionTimeout = setTimeout(() => {
+        if (mapIndex !== index) {
+          mapIndex = index;
+          const { coordinate } = state.markers[index];
+          _map.current.animateToRegion(
+            {
+              ...coordinate,
+              latitudeDelta: state.region.latitudeDelta,
+              longitudeDelta: state.region.longitudeDelta,
+            },
+            350
+          );
+        }
+      }, 10);
     });
+  });
 
-    const scrollX = panX.interpolate({
-      inputRange: [-1, 1],
-      outputRange: [1, -1],
-    });
-
-    const scale = scrollY.interpolate({
-      inputRange: [0, BREAKPOINT1],
-      outputRange: [1, 1.6],
-      extrapolate: 'clamp',
-    });
-
-    const translateY = scrollY.interpolate({
-      inputRange: [0, BREAKPOINT1],
-      outputRange: [0, -100],
-      extrapolate: 'clamp',
-    });
-
-    const markers = [
-      {
-        id: 0,
-        amount: 99,
-        coordinate: {
-          /*latitude: LATITUDE,
-          longitude: LONGITUDE,*/
-        },
-      },
-      {
-        id: 1,
-        amount: 199,
-        coordinate: {
-        /* latitude: LATITUDE + 0.004,
-          longitude: LONGITUDE - 0.004,*/
-        },
-      },
-      {
-        id: 2,
-        amount: 285,
-        coordinate: {
-         /* latitude: LATITUDE - 0.004,
-          longitude: LONGITUDE - 0.004,*/
-        },
-      },
+  const interpolations = state.markers.map((marker, index) => {
+    const inputRange = [
+      (index - 1) * CARD_WIDTH,
+      index * CARD_WIDTH,
+      ((index + 1) * CARD_WIDTH),
     ];
 
-    const animations = markers.map((m, i) =>
-      getMarkerState(panX, panY, scrollY, i)
-    );
+    const scale = mapAnimation.interpolate({
+      inputRange,
+      outputRange: [1, 1.5, 1],
+      extrapolate: "clamp"
+    });
 
-    this.state = {
-      panX,
-      panY,
-      animations,
-      index: 0,
-      canMoveHorizontal: true,
-      scrollY,
-      scrollX,
-      scale,
-      translateY,
-      markers,
-      region: new AnimatedRegion({
-        /*latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,*/
-      }),
-    };
-  }
-/*
-  componentDidMount() {
-    const { region, panX, panY, scrollX, markers } = this.state;
+    return { scale };
+  });
 
-    panX.addListener(this.onPanXChange);
-    panY.addListener(this.onPanYChange);
+  const onMarkerPress = (mapEventData) => {
+    const markerID = mapEventData._targetInst.return.key;
 
-    region.stopAnimation();
-    region
-      .timing({
-        latitude: scrollX.interpolate({
-          inputRange: markers.map((m, i) => i * SNAP_WIDTH),
-          outputRange: markers.map(m => m.coordinate.latitude),
-        }),
-        longitude: scrollX.interpolate({
-          inputRange: markers.map((m, i) => i * SNAP_WIDTH),
-          outputRange: markers.map(m => m.coordinate.longitude),
-        }),
-        duration: 0,
-      })
-      .start();
-  }*/
-/*
-  onStartShouldSetPanResponder = e => {
-    // we only want to move the view if they are starting the gesture on top
-    // of the view, so this calculates that and returns true if so. If we return
-    // false, the gesture should get passed to the map view appropriately.
-    const { panY } = this.state;
-    const { pageY } = e.nativeEvent;
-    const topOfMainWindow = ITEM_PREVIEW_HEIGHT + panY.__getValue();
-    const topOfTap = screen.height - pageY;
-
-    return topOfTap < topOfMainWindow;
-  };
-
-  onMoveShouldSetPanResponder = e => {
-    const { panY } = this.state;
-    const { pageY } = e.nativeEvent;
-    const topOfMainWindow = ITEM_PREVIEW_HEIGHT + panY.__getValue();
-    const topOfTap = screen.height - pageY;
-
-    return topOfTap < topOfMainWindow;
-  };
-
-  onPanXChange = ({ value }) => {
-    const { index } = this.state;
-    const newIndex = Math.floor((-1 * value + SNAP_WIDTH / 2) / SNAP_WIDTH);
-    if (index !== newIndex) {
-      this.setState({ index: newIndex });
+    let x = (markerID * CARD_WIDTH) + (markerID * 20);
+    if (Platform.OS === 'ios') {
+      x = x - SPACING_FOR_CARD_INSET;
     }
-  };
 
-  onPanYChange = ({ value }) => {
-    const {
-      canMoveHorizontal,
-      region,
-      scrollY,
-      scrollX,
-      markers,
-      index,
-    } = this.state;
-    const shouldBeMovable = Math.abs(value) < 2;
-    if (shouldBeMovable !== canMoveHorizontal) {
-      this.setState({ canMoveHorizontal: shouldBeMovable });
-      if (!shouldBeMovable) {
-        const { coordinate } = markers[index];
-        region.stopAnimation();
-        region
-          .timing({
-            latitude: scrollY.interpolate({
-              inputRange: [0, BREAKPOINT1],
-              outputRange: [
-                coordinate.latitude,
-                coordinate.latitude - LATITUDE_DELTA * 0.5 * 0.375,
-              ],
-              extrapolate: 'clamp',
-            }),
-            latitudeDelta: scrollY.interpolate({
-              inputRange: [0, BREAKPOINT1],
-              outputRange: [LATITUDE_DELTA, LATITUDE_DELTA * 0.5],
-              extrapolate: 'clamp',
-            }),
-            longitudeDelta: scrollY.interpolate({
-              inputRange: [0, BREAKPOINT1],
-              outputRange: [LONGITUDE_DELTA, LONGITUDE_DELTA * 0.5],
-              extrapolate: 'clamp',
-            }),
-            duration: 0,
-          })
-          .start();
-      } else {
-        region.stopAnimation();
-        region
-          .timing({
-            latitude: scrollX.interpolate({
-              inputRange: markers.map((m, i) => i * SNAP_WIDTH),
-              outputRange: markers.map(m => m.coordinate.latitude),
-            }),
-            longitude: scrollX.interpolate({
-              inputRange: markers.map((m, i) => i * SNAP_WIDTH),
-              outputRange: markers.map(m => m.coordinate.longitude),
-            }),
-            duration: 0,
-          })
-          .start();
-      }
-    }
-  };
-*/
-  onRegionChange(/* region */) {
-    // this.state.region.setValue(region);
+    _scrollView.current.scrollTo({ x: x, y: 0, animated: true })
+    //_scrollView.current.scrollTo({ x: x, y: 0, animated: true });
   }
 
-  render() {
-    const { turno } = this.props
-    const {
-      panX,
-      panY,
-      animations,
-      canMoveHorizontal,
-      markers,
-      region,
-    } = this.state;
+  const _map = React.useRef(null);
+  const _scrollView = React.useRef(null);
 
-    const { translateY, translateX, scale, opacity } = animations[0];
+  return (
+    <View style={styles.container}>
+      <MapView
+        ref={_map}
+        initialRegion={state.region}
+        style={styles.container}
+        provider={PROVIDER_GOOGLE}
+        customMapStyle={MAP_STYLE}
+      >
+        {state.markers.map((marker, index) => {
+          const scaleStyle = {
+            transform: [
+              {
+                scale: interpolations[index].scale,
+              },
+            ],
+          };
+          return (
+            <MapView.Marker key={index} coordinate={marker.coordinate} /*onPress={(e) => onMarkerPress(e)}*/ title={turno.nombreSucursal} description={turno.direccion}>
+              <Animated.View style={[styles.markerWrap]}>
+                <Animated.Image
+                  source={require('../../../../assets/map_marker.png')}
+                  style={[styles.marker, scaleStyle]}
+                  resizeMode="cover"
+                />
+              </Animated.View>
+            </MapView.Marker>
+          );
+        })}
+      </MapView>
 
-    return (
-      <View style={styles.container}>
-
-        <PanController
-          style={styles.container}
-          vertical
-          horizontal={canMoveHorizontal}
-          xMode="snap"
-          snapSpacingX={SNAP_WIDTH}
-          yBounds={[-1 * screen.height, 0]}
-          xBounds={[-screen.width * (markers.length - 1), 0]}
-          panY={panY}
-          panX={panX}
-          onStartShouldSetPanResponder={this.onStartShouldSetPanResponder}
-          onMoveShouldSetPanResponder={this.onMoveShouldSetPanResponder}
-        >
-          <MapView
-						style={{ width: Dimensions.get("window").width, height: Dimensions.get("window").height, }}
-						showsUserLocation={true}
-						customMapStyle={
-							MAP_STYLE
-						}
-						initialRegion={{
-							latitude: parseFloat(turno.latitud),
-							longitude: parseFloat(turno.longitud),
-							longitudeDelta: 0.005,
-							latitudeDelta: 0.0,
-						}}
-					>
-						<MapView.Marker
-							coordinate={{
-								latitude: parseFloat(turno.latitud),
-								longitude: parseFloat(turno.longitud),
-							}}
-							title={turno.nombreSucursal}
-							description={turno.direccion}
-						></MapView.Marker>
-					</MapView>
-          <View style={styles.itemContainer}>
-            <View
-              key='1'
-              style={[
-                styles.item
-                
-              ]}
-            >
-              <Text style={style['text.center']}>{'Detalle'}</Text>
-             
-              <Button
-              title="Cancelar"
-              onPress={(()=>{Alert.alert('¿Seguro que desea cancelar la reserva?')})}>
-
-              </Button>
-              
+      <Animated.ScrollView
+        ref={_scrollView}
+        horizontal
+        pagingEnabled
+        scrollEventThrottle={1}
+        showsHorizontalScrollIndicator={false}
+        snapToInterval={CARD_WIDTH + 20}
+        snapToAlignment="center"
+        style={styles.scrollView}
+        contentInset={{
+          top: 0,
+          left: SPACING_FOR_CARD_INSET,
+          bottom: 0,
+          right: SPACING_FOR_CARD_INSET
+        }}
+        contentContainerStyle={{
+          paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0
+        }}
+        onScroll={Animated.event(
+          [
+            {
+              nativeEvent: {
+                contentOffset: {
+                  x: mapAnimation,
+                }
+              },
+            },
+          ],
+          { useNativeDriver: true }
+        )}
+      >
+        {state.markers.map((marker, index) => (
+          <View style={styles.card} key={index}>
+            <View style={styles.textContent}>
+              <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
+              <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
+              <Text numberOfLines={1} style={styles.cardtitle}>-</Text>
+              <Text numberOfLines={1} style={styles.cardDescription}>{turno.sintomas}</Text>
+              <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}>
+                <Button
+                  buttonStyle={{ backgroundColor: style.secondary.color, borderRadius: 15, height: 50 }}
+                  titleStyle={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    fontFamily: 'Nunito_bold',
+                    width: '100%'
+                  }}
+                  title="Cancelar turno"
+                  onPress={() => {
+                    Alert.alert('Cancelar', '¿Seguro que desea cancelar la reserva?',
+                      [
+                        { text: 'SI', onPress: () => { console.warn('SI pressed') } },
+                        { text: 'NO', onPress: () => { console.warn('NO pressed') } }
+                      ]
+                    )
+                  }}
+                ></Button>
+              </View>
             </View>
-            
           </View>
-
-        </PanController>
-      </View>
-    );
-  }
-}
-
-MostrarReserva.propTypes = {
-  provider: ProviderPropType,
+        ))}
+      </Animated.ScrollView>
+    </View >
+  );
 };
+
+export default withTheme(MostrarReserva);
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
+    flex: 1,
   },
-  itemContainer: {
-    backgroundColor: 'transparent',
-    flexDirection: 'row',
-    paddingHorizontal: ITEM_SPACING / 2 + ITEM_PREVIEW,
+  searchBox: {
     position: 'absolute',
-    // top: screen.height - ITEM_PREVIEW_HEIGHT - 64,
-    paddingTop: screen.height - ITEM_PREVIEW_HEIGHT - 64,
-    // paddingTop: !ANDROID ? 0 : screen.height - ITEM_PREVIEW_HEIGHT - 64,
-  },
-  map: {
-    backgroundColor: 'transparent',
-    ...StyleSheet.absoluteFillObject,
-  },
-  item: {
-    width: ITEM_WIDTH,
-    height: screen.height + 2 * ITEM_PREVIEW_HEIGHT,
-    backgroundColor: style.light.color,
-    marginHorizontal: ITEM_SPACING / 2,
-    overflow: 'hidden',
+    marginTop: Platform.OS === 'ios' ? 40 : 20,
+    flexDirection: "row",
+    backgroundColor: '#fff',
+    width: '90%',
+    alignSelf: 'center',
     borderRadius: 5,
-    borderWidth: 3,
-    borderColor: style.gray.color,
+    padding: 10,
+    shadowColor: '#ccc',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 10,
   },
+  chipsScrollView: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 90 : 80,
+    paddingHorizontal: 10
+  },
+  chipsIcon: {
+    marginRight: 5,
+  },
+  chipsItem: {
+    flexDirection: "row",
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 8,
+    paddingHorizontal: 20,
+    marginHorizontal: 10,
+    height: 35,
+    shadowColor: '#ccc',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 10,
+  },
+  scrollView: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingVertical: 10,
+  },
+  endPadding: {
+    paddingRight: width - CARD_WIDTH,
+  },
+  card: {
+    // padding: 10,
+    elevation: 2,
+    backgroundColor: "whitesmoke",
+    //borderTopLeftRadius: 5,
+    //borderTopRightRadius: 5,
+    borderRadius: 5,
+    marginHorizontal: -10,
+    shadowColor: "#000",
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
+    shadowOffset: { x: 2, y: -2 },
+    height: CARD_HEIGHT,
+    width: CARD_WIDTH,
+    overflow: "hidden",
+  },
+  cardImage: {
+    flex: 3,
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+  },
+  textContent: {
+    flex: 2,
+    padding: 10,
+  },
+  cardtitle: {
+    fontSize: 17,
+    // marginTop: 5,
+    alignSelf: 'center',
+    paddingBottom: 5,
+    fontFamily: 'Nunito_bold',
+  },
+  cardDescription: {
+    fontFamily: 'Nunito',
+    fontSize: 13,
+    alignSelf: 'center',
+    paddingBottom: 5,
+    color: "#444",
+  },
+  markerWrap: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 50,
+    height: 50,
+  },
+  marker: {
+    width: 30,
+    height: 30,
+  },
+  button: {
+    alignItems: 'center',
+    marginTop: 5
+  },
+  signIn: {
+    width: '100%',
+    padding: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 3
+  },
+  textSign: {
+    fontSize: 14,
+    fontWeight: 'bold'
+  }
 });
-
-export default MostrarReserva;
