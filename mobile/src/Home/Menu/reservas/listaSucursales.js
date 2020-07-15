@@ -71,6 +71,17 @@ class ListaSucursales extends Component {
     this.setState({ selectedIndex })
   }
 
+  filtrarSucursalesDistancia(value) {
+    this.props.sucursales.forEach(element => {
+      if(getDistance(
+        {latitude: element.configuracion.cordLatitud, longitude: element.configuracion.cordLongitud},
+        {latitude: this.props.ubicacion.coords.latitude, longitude: this.props.ubicacion.coords.longitude}
+      ) <= value * 1000){
+        console.log("estoy aca nomas")
+      }
+    });
+  }
+
   render() {
     const { theme, updateTheme, replaceTheme, ubicacion, sucursales } = this.props;
     const { selectedIndex } = this.state
@@ -84,6 +95,8 @@ class ListaSucursales extends Component {
       latitude = ubicacion.coords.latitude
       longitude = ubicacion.coords.longitude
     }
+
+    
 
     console.log(sucursales)
 
@@ -190,7 +203,7 @@ class ListaSucursales extends Component {
               </MapView>
             </View>
             <View style={styles['flex.light']}>
-              <Text>{distancia} km</Text>
+              <Text style={{ alignSelf: 'center', padding: 5, fontFamily: 'Nunito', fontSize: 20 }} >{Math.trunc(distancia)} km</Text>
               <Slider
                 style={{ width: imageWidth, height: 50 }}
                 onValueChange={(value) => this.setState({
