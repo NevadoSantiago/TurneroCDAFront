@@ -30,6 +30,7 @@ class ListaSucursales extends Component {
       selectedIndex: null,
       selectedReservaIndex: null,
       distancia: 0,
+      sucursalSelected: ''
     }
     this.updateIndex = this.updateIndex.bind(this)
     this.reservarTurno = this.reservarTurno.bind(this)
@@ -142,7 +143,7 @@ class ListaSucursales extends Component {
               Reservar turno
             </Text>
             <Text style={{ alignSelf: 'flex-start', paddingBottom: 15, paddingHorizontal: 15, fontFamily: 'Nunito' }}>
-              Desea reservar un turno ahora?
+              Desea reservar un turno en {this.state.sucursalSelected.nombre} ahora?
             </Text>
             <View style={{ alignItems: 'flex-end', flexDirection: 'row-reverse', paddingHorizontal: 5, paddingBottom: 10 }}>
               <Button
@@ -319,6 +320,7 @@ class ListaSucursales extends Component {
                       chevron={{ color: styles.white.color, size: 20 }}
                       onPress={(e) => {
                         this.setState({
+                          sucursalSelected: data,
                           isOverlayTurnoVisible: true
                         })
                       }}
