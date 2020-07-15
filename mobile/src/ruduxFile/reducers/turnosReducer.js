@@ -1,17 +1,28 @@
 import { addons } from "react-native";
-import {OBTENER_ESPECIALIDADES, SET_ESPECIALIDAD,SET_SUCURSALES} from '../../Home/Menu/constantes/actionRedux'
-import moment from 'moment';
+import {OBTENER_ESPECIALIDADES, SET_ESPECIALIDAD,SET_SUCURSALES, CALCULAR_DISTANCIA} from '../../Home/Menu/constantes/actionRedux'
+import { getDistance } from 'geolib';
 
 
 const initialState={
     listaEspecialidades : null,
     sucursales:null,
+    sucursalesAMostrar :null,
     Cargando : true,
     idEspecialidad : null,
     especialidadNotSelected : true
 };
 
-
+calcularDistancia =(data,suc)=>{
+    var distanciaAPersona 
+    suc.forEach(s => {
+        distanciaAPersona = getDistance(
+            {latitude: s.configuracion.cordLatitud, longitude: s.configuracion.cordLongitud},
+            {latitude: data.coords.latitude, longitude: data.coords.longitude}
+          )
+          s.distanciaAPersona = distanciaAPersona /1000
+    });
+    return suc
+}
 const TurnosReducer = (state = initialState, action) => {    
     switch(action.type){   
         case(OBTENER_ESPECIALIDADES):{
@@ -36,6 +47,16 @@ const TurnosReducer = (state = initialState, action) => {
             return{
                 ...state,
                 sucursales : data,
+                sucursalesAMostrar:data
+            }
+        }
+        case(CALCULAR_DISTANCIA):{
+            const {data,suc} = action
+            const sucursalesActualizadas = this.calcularDistancia(data,suc)
+            return{
+                ...state,
+                sucursalesAMostrar : data,
+                sucursales : sucursalesActualizadas
             }
         }
         }

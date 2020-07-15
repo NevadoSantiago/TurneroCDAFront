@@ -23,25 +23,11 @@ class MostrarEspecialidades extends Component {
     this.updateIndex = this.updateIndex.bind(this)
   }
 
-  getSucursales = async (idEspecialidad) => {
-    const { setSucursales } = this.props
-    var url;
-    url = URL_API + "/api/sucursal/filtrar/especialidad/" + idEspecialidad
 
-    await fetch(url)
-      .then(function (response) {
-        return response.json();
-      })
-      .then(
-        function (myJson) {
-          setSucursales(myJson);
-        }.bind(this)
-      );
-  }
-  getSucursalesOrdenadoCantidad = async () => {
+  getSucursalesOrdenadoCantidad = async (idEspecialidad) => {
     const {setSucursales} = this.props
     var url;
-    url = URL_API + "/api/sucursal/filtrar/cantidadPersonas"
+    url = URL_API + "/api/sucursal/filtrar/cantidadPersonas/" + idEspecialidad
 
     await fetch(url)
       .then(function (response) {
@@ -56,8 +42,7 @@ class MostrarEspecialidades extends Component {
 
   
   navegarListaSucursales(idEspecialidad) {
-    this.getSucursales(idEspecialidad)
-    this.props.setFiltro(FILTRAR_CANTIDAD);
+    this.getSucursalesOrdenadoCantidad(idEspecialidad)
     this.encontrarCoordenadas(FILTRAR_DISTANCIA)
   }
 
@@ -73,7 +58,6 @@ class MostrarEspecialidades extends Component {
         break;
       case 1: // Personas en cola
       this.getSucursalesOrdenadoCantidad()
-        this.props.setFiltro(FILTRAR_NOMBRE);
         { this.props.nav.navigate("ListaSucursales") }
         this.setState({
           isVisible: false
@@ -102,7 +86,6 @@ class MostrarEspecialidades extends Component {
       },
       error => {
         this.props.nav.navigate("ListadoPaisesYProv")
-        this.props.setFiltro(filtro)
       },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );

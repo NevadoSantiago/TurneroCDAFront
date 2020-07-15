@@ -12,6 +12,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, KeyboardAvoidingView } from "react-native";
 import { withTheme, ListItem, Icon, Slider } from "react-native-elements";
 import { SearchBar, Button, ButtonGroup, Overlay } from "react-native-elements";
+import {CALCULAR_DISTANCIA} from '../constantes/actionRedux'
 import MapView from "react-native-maps";
 import styles from '../../../../App.scss'
 import { getDistance } from 'geolib';
@@ -27,7 +28,8 @@ class ListaSucursales extends Component {
       idUsuario: this.props.idUsuario,
       isVisible: false,
       selectedIndex: null,
-      distancia: 0,
+      distancia: 3,
+      seCalculoDistancia:false,
     }
     this.updateIndex = this.updateIndex.bind(this)
   }
@@ -69,23 +71,11 @@ class ListaSucursales extends Component {
     }
     this.setState({ selectedIndex })
   }
-
-  filtrarSucursalesDistancia(value) {
-    this.props.sucursales.forEach(element => {
-      if(getDistance(
-        {latitude: element.configuracion.cordLatitud, longitude: element.configuracion.cordLongitud},
-        {latitude: this.props.ubicacion.coords.latitude, longitude: this.props.ubicacion.coords.longitude}
-      ) <= value * 1000){
-        console.log("estoy aca nomas")
-      }
-    });
-  }
-
   render() {
-    const { theme, updateTheme, replaceTheme, ubicacion, sucursales } = this.props;
-    const { selectedIndex } = this.state
+    const { theme, updateTheme, replaceTheme, ubicacion, sucursales,calcularDistancia } = this.props;
+    const { selectedIndex,seCalculoDistancia } = this.state
 
-    const { distancia, sucursalesFiltradas } = this.state
+    const { distancia} = this.state
     var latitude, longitude
     if (ubicacion == null) {
       latitude = -34.6098896
@@ -95,12 +85,14 @@ class ListaSucursales extends Component {
       longitude = ubicacion.coords.longitude
     }
 
-    
-
-    console.log(sucursales)
 
     if (sucursales != null) {
-
+      if(!seCalculoDistancia){
+        calcularDistancia(ubicacion,sucursales)
+        this.setState({
+          seCalculoDistancia:true
+        })
+      }
       return (
         <KeyboardAvoidingView
           behavior={Platform.OS == "ios" ? "padding" : "height"}
@@ -123,7 +115,6 @@ class ListaSucursales extends Component {
               vertical={true}
             />
           </Overlay>
-          <ScrollView style={styles['flex-white']}>
             <View style={styles['flex-white']}>
               {<SearchBar
                 ref="searchBar"
@@ -180,12 +171,7 @@ class ListaSucursales extends Component {
                 </MapView.Marker>
                 {
 
-                  sucursales.map((s, i) => {
-
-                    var latitudSucursal = s.configuracion.cordLatitud
-                    var longitudSucursal = s.configuracion.cordLongitud
-                    var longitud = getDistance(ubicacion.coords,
-                      { latitude: latitudSucursal, longitude: longitudSucursal })
+                  sucursales.map((s, i) => {                    
                     return (
                       <MapView.Marker
                         coordinate={{
@@ -203,9 +189,10 @@ class ListaSucursales extends Component {
             </View>
             <View style={styles['flex.light']}>
               <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-                <Text style={{ fontFamily: 'Nunito' }}>{distancia} km</Text>
+                <Text style={{ fontFamily: 'Nunito' }}>{distancia.toFixed(1)} km</Text>
                 <Slider
                   value={this.state.distancia}
+
                   onValueChange={(value) => this.setState({
                     distancia: value
                   })}
@@ -222,6 +209,9 @@ class ListaSucursales extends Component {
                   } else {
                     cantPersonas = data.cantidadPersonas
                   }
+                  if(distancia > data.distanciaAPersona){
+
+                  
                   return (
                     <ListItem
                       Component={TouchableScale}
@@ -270,13 +260,13 @@ class ListaSucursales extends Component {
                         });
                       }}
                     />
-                  );
+                  );}
                 })}
               </ScrollView>
             </View>
-          </ScrollView>
-          <Button
-            containerStyle={{ marginHorizontal: 10, position: 'absolute', bottom: 15 }}
+          <View>
+                      <Button
+            containerStyle={{ marginHorizontal: 10, bottom: 15 }}
             buttonStyle={{ backgroundColor: styles.secondary.color, borderRadius: 15, height: 50 }}
             titleStyle={{
               justifyContent: 'center',
@@ -291,6 +281,8 @@ class ListaSucursales extends Component {
               })
             }}
           />
+          </View>
+
         </KeyboardAvoidingView>
       );
     } else {
@@ -313,7 +305,9 @@ const mapStyles = StyleSheet.create({
 });
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    calcularDistancia: (datos,sucursales) => dispatch({ type: CALCULAR_DISTANCIA, data:datos, suc:sucursales }),
+  };
 };
 
 const mapStateToProps = (state) => {
@@ -321,7 +315,8 @@ const mapStateToProps = (state) => {
     idEspecialidad: state.turnos.idEspecialidad,
     idUsuario: state.user.idUsuario,
     ubicacion: state.user.ubicacion,
-    sucursales: state.turnos.sucursales
+    sucursales: state.turnos.sucursales,
+    sucursalesAMostrar:state.turnos.sucursalesAMostrar
   };
 };
 
