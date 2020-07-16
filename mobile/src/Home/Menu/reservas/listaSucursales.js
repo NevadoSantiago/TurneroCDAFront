@@ -11,8 +11,8 @@ import TouchableScale from "react-native-touchable-scale";
 import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, KeyboardAvoidingView } from "react-native";
 import { withTheme, ListItem, Icon, Slider } from "react-native-elements";
-import { SearchBar, Button, ButtonGroup, Overlay } from "react-native-elements";
-import { CALCULAR_DISTANCIA } from '../constantes/actionRedux'
+import { Input, Button, ButtonGroup, Overlay } from "react-native-elements";
+import { CALCULAR_DISTANCIA, SET_SUCURSAL } from '../constantes/actionRedux'
 import MapView from "react-native-maps";
 import styles from '../../../../App.scss'
 import { getDistance } from 'geolib';
@@ -35,10 +35,10 @@ class ListaSucursales extends Component {
       selectedReservaIndex: null,
       sucursalSelected: '',
       textoSucursal: 'Buscar una sucursal',
-      wasSelected: false
+      wasSelected: false,
+      sintomas: null
     }
     this.updateIndex = this.updateIndex.bind(this)
-    this.reservarTurno = this.reservarTurno.bind(this)
   }
   static navigationOptions = {
     title: 'Seleccione una sucursal',
@@ -79,33 +79,6 @@ class ListaSucursales extends Component {
     this.setState({ selectedIndex })
   }
 
-
-
-
-  reservarTurno(selectedReservaIndex) {
-
-    switch (selectedReservaIndex) {
-      case 0: // DISTANCIA 
-        this.setState({
-          isOverlayTurnoVisible: false
-        })
-        break;
-      case 1: // Personas en cola
-        this.setState({
-          isOverlayTurnoVisible: false
-        })
-        break;
-      case 2: //NOMBRE
-        this.setState({
-          isOverlayTurnoVisible: false
-        })
-        break;
-      default:
-        break;
-    }
-    this.setState({ selectedReservaIndex })
-  }
-
   filtrarSucursalesDistancia(value) {
     this.props.sucursales.forEach(element => {
       if (getDistance(
@@ -118,7 +91,7 @@ class ListaSucursales extends Component {
   }
 
   render() {
-    const { theme, updateTheme, replaceTheme, ubicacion, sucursales, calcularDistancia } = this.props;
+    const { theme, updateTheme, replaceTheme, ubicacion, sucursales, calcularDistancia, setSucursal } = this.props;
     const { selectedIndex, seCalculoDistancia, sucursalSelected, sucursalesFiltradas, wasSelected } = this.state
 
     const { distancia } = this.state
@@ -156,6 +129,11 @@ class ListaSucursales extends Component {
             <Text style={{ alignSelf: 'flex-start', padding: 15, fontFamily: 'Nunito_bold', fontSize: 18 }}>
               Reservar turno
             </Text>
+            <Input
+              placeholder='Síntomas (opcional)'
+              containerStyle={{ alignSelf: 'center', width: '96%' }}
+              onChangeText={(text) => this.setState({sintomas: text})}
+            />
             <Text style={{ alignSelf: 'flex-start', paddingBottom: 15, paddingHorizontal: 15, fontFamily: 'Nunito' }}>
               Desea reservar un turno en {this.state.sucursalSelected.nombre} ahora?
             </Text>
@@ -164,7 +142,8 @@ class ListaSucursales extends Component {
                 containerStyle={{ width: 60 }}
                 title="NO"
                 type="clear"
-                onPress={() => { console.warn('NO pressed'), this.setState({ isOverlayTurnoVisible: false }) }}
+                onPress={() => { console.warn('NO pressed'), console.log(this.state.sintomas), this.setState({ isOverlayTurnoVisible: false }) }}
+                
               />
               <Button
                 containerStyle={{ width: 60, marginHorizontal: 15 }}
@@ -366,6 +345,8 @@ class ListaSucursales extends Component {
                       }}
                       chevron={{ color: styles.white.color, size: 20 }}
                       onPress={(e) => {
+                        //setSucursal(data)
+                        //this.props.navigation.navigate('IngresoSintomas')
                         this.setState({
                           sucursalSelected: data,
                           isOverlayTurnoVisible: true
@@ -401,6 +382,7 @@ const mapStyles = StyleSheet.create({
 const mapDispatchToProps = (dispatch) => {
   return {
     calcularDistancia: (datos, sucursales) => dispatch({ type: CALCULAR_DISTANCIA, data: datos, suc: sucursales }),
+    setSucursal: (datos) => dispatch({ type: SET_SUCURSAL, data: datos })
   };
 };
 
