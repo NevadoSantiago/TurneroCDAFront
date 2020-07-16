@@ -32,6 +32,7 @@
     "react-native-color-matrix-image-filters": "^5.2.5",
     "react-native-dropdown-autocomplete": "^1.0.18",
     "react-native-elements": "^2.0.2",
+    "react-native-form-validator": "^0.3.2",
     "react-native-geocoder": "^0.5.0",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-google-places-autocomplete": "^1.7.2",
@@ -52,7 +53,10 @@
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "styled-components": "^5.1.1"
+    "save": "^2.4.0",
+    "styled-components": "^5.1.1",
+    "tcomb-form-native": "^0.6.20",
+    "validate.js": "^0.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

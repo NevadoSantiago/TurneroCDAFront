@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StatusBar, TextInput, StyleSheet } from 'react-native';
+import { View, Text, Image, StatusBar, TextInput, StyleSheet, TouchableHighlight, Alert } from 'react-native';
 import { Button, Input } from 'react-native-elements'
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
@@ -8,12 +8,19 @@ import { INICIAR_SESION, LIMPIAR_SESION,OBTENER_ESPECIALIDADES } from './Menu/co
 import { connect } from 'react-redux';
 import styles from "../../App.scss";
 import { URL_API_USUARIO, URL_API_ESPECIALIDAD } from './Menu/constantes/urlApi'
-
 import styled from 'styled-components';
 
 const datosIngresados = {
-  mail: null
+  emailAddress : null
 }
+
+function isEmail(email) {
+//  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return regex.test(email);
+}
+
+//const rules = {any: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/}
 
 const StyledInput = styled(Input).attrs({
   textAlign: 'left',
@@ -36,9 +43,12 @@ class HomeScreen extends React.Component {
     this.state = {
       id: null,
       logueado: false,
-      especialidadesGuardadas: false
+      especialidadesGuardadas: false,
+    }
     };
-  }
+  
+
+
 
   static navigationOptions = {
     headerShown: false,
@@ -48,13 +58,16 @@ class HomeScreen extends React.Component {
     },
   };
   mailIngresado = (mail) => {
-    datosIngresados.mail = mail
+    datosIngresados.emailAddress = mail
   }
 
   async realizarLogueo() {
 
     const { iniciarSesion } = this.props
-    await fetch(URL_API_USUARIO + '/api/usuario/ingresar/' + datosIngresados.mail, {
+    if(isEmail(datosIngresados.emailAddress)){
+
+    
+    await fetch(URL_API_USUARIO + '/api/usuario/ingresar/' + datosIngresados.emailAddress, {
       method: 'POST',
     })
       .then(function (response) {
@@ -68,7 +81,10 @@ class HomeScreen extends React.Component {
         })
 
       }.bind(this))
+  }else{
+    return((Alert.alert('Email', 'El formato del email es incorrecto')))
   }
+}
   getEspecialidades = async() => {
     const { guardarEspecialidades } = this.props
     await fetch(URL_API_ESPECIALIDAD + "/api/especialidad") 
@@ -83,7 +99,6 @@ class HomeScreen extends React.Component {
 
       }.bind(this))
   }
-
   render() {
     const {loading, theme,reserva } = this.props
     const { logueado,especialidadesGuardadas } = this.state
@@ -97,7 +112,8 @@ class HomeScreen extends React.Component {
       
     }
     return (
-      <View style={ styles['center-flex.white'] }>
+      <View style={ styles['center-flex.white']}>
+       
         <StatusBar
           backgroundColor={ styles.white.color }
           barStyle="dark-content"
@@ -121,11 +137,15 @@ class HomeScreen extends React.Component {
           titleStyle={ styles['button-center'] }
           title="Ingresar"
           onPress={() => this.realizarLogueo()}
+          
         />
       </View>
     );
+     
   }
 }
+
+
 
 const mapDispatchToProps = dispatch => {
   return {
