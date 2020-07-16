@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import {
   StyleSheet,
   Text,
@@ -15,15 +16,9 @@ import {
 import { Button } from 'react-native-elements'
 import { MAP_STYLE } from '../constantes/mapStyle'
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-
-import { markers, mapDarkStyle, mapStandardStyle } from './model/mapData';
-import StarRating from './components/StarRating';
-
+import {URL_API_RESERVA} from '../constantes/urlApi'
 import style from '../../../../App.scss'
+import {RESERVA_CANCELADA} from '../constantes/actionRedux'
 
 //import { useTheme } from '@react-navigation/native';
 import { withTheme } from 'react-native-elements';
@@ -34,12 +29,8 @@ const CARD_WIDTH = width * 0.9;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const MostrarReserva = (props) => {
+  const {turno} = props
   //const theme = useTheme();
-
-  console.log('----------- TURNO -----------')
-  var turno = props.turno
-  console.log(turno)
-
   const initialMapState = {
     //markers,
     markers: [
@@ -59,6 +50,25 @@ const MostrarReserva = (props) => {
       longitudeDelta: 0.01,
     },
   };
+  async function cancelarReserva (){
+    var url;
+
+    url = URL_API_RESERVA + "/api/reserva/cancelar/" + turno.idReserva
+    console.log(url)
+    await fetch(url,{
+      method: 'POST'
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(
+        function (myJson) {
+          {props.cancelar()}
+          props.nav.navigate("ListaEspecialidades")
+        }.bind(this)
+      );
+    
+  }
 
   const [state, setState] = React.useState(initialMapState);
 
@@ -143,7 +153,7 @@ const MostrarReserva = (props) => {
             ],
           };
           return (
-            <MapView.Marker key={index} coordinate={marker.coordinate} /*onPress={(e) => onMarkerPress(e)}*/ title={turno.nombreSucursal} description={turno.direccion}>
+            <MapView.Marker key={index} coordinate={marker.coordinate} onPress={(e) => onMarkerPress(e)} title={turno.nombreSucursal} description={turno.direccion}>
               <Animated.View style={[styles.markerWrap]}>
                 <Animated.Image
                   source={require('../../../../assets/map_marker.png')}
@@ -207,7 +217,7 @@ const MostrarReserva = (props) => {
                   onPress={() => {
                     Alert.alert('Cancelar', '¿Seguro que desea cancelar la reserva?',
                       [
-                        { text: 'SI', onPress: () => { console.warn('SI pressed') } },
+                        { text: 'SI', onPress: () => cancelarReserva()},
                         { text: 'NO', onPress: () => { console.warn('NO pressed') } }
                       ]
                     )
@@ -221,8 +231,22 @@ const MostrarReserva = (props) => {
     </View >
   );
 };
+const mapDispatchToProps = dispatch => {
+  return {
+  };
+}
 
-export default withTheme(MostrarReserva);
+const mapStateToProps = state => {
+  return {
+    reserva: state.user.reserva,
+  }
+}
+
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTheme(MostrarReserva));
 
 const styles = StyleSheet.create({
   container: {

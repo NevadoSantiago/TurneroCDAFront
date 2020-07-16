@@ -279,8 +279,8 @@ class ListaSucursales extends Component {
                     cantPersonas = data.cantidadPersonas
                   }
                   if(distancia > data.distanciaAPersona){
-
-                  
+                    console.log(data)
+                 // var distanciaAPersona = data.distanciaAPersona.fixed(1)
                   return (
                     <ListItem
                       Component={TouchableScale}
@@ -299,9 +299,9 @@ class ListaSucursales extends Component {
                         end: { x: 0.1, y: 5 },
                       }}
                       //leftAvatar={{ rounded: true, source: { uri: avatar_url } }}
-                      title={data.nombre}
-                      subtitle={data.direccion}
-                      rightIcon={(
+                      title={data.nombre} 
+                      subtitle={data.direccion + " (" +data.distanciaAPersona.toFixed(1)+"km)"}
+                      rightIcon={( 
                         <Icon
                           name='person'
                         />

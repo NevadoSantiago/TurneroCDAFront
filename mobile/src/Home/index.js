@@ -61,7 +61,6 @@ class HomeScreen extends React.Component {
         return response.json()
       })
       .then(function (myJson) {
-        console.log(myJson)
         iniciarSesion(myJson)
         this.getEspecialidades()
         this.setState({
@@ -92,6 +91,7 @@ class HomeScreen extends React.Component {
       if(reserva === null){
         this.props.navigation.navigate('ListaEspecialidades')
       }else{
+
         this.props.navigation.navigate('Reservas')
       }
       

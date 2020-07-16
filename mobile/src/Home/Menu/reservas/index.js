@@ -5,7 +5,7 @@ import { View, Text } from 'react-native'
 import MostrarReserva from '../Mostrar/mostrar'
 import { withTheme, Button } from 'react-native-elements';
 import styles from '../../../../App.scss'
-import {OBTENER_ESPECIALIDADES} from '../constantes/actionRedux'
+import {RESERVA_CANCELADA} from '../constantes/actionRedux'
 import ListaEspecialidades from './listaEspecialidades'
 import { URL_API_ESPECIALIDAD} from '../constantes/urlApi'
 import listaEspecialidades from './listaEspecialidades';
@@ -14,6 +14,9 @@ import listaEspecialidades from './listaEspecialidades';
 class Reservas extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      seCanceloReserva :false,
+    }
   }
 
   static navigationOptions = {
@@ -31,19 +34,40 @@ class Reservas extends Component {
     },
   };
 
+  cancelarRes = ()=>{
+    const {cancelarReserva} = this.props
+    this.setState({
+      seCanceloReserva:true
+    })
+    cancelarReserva()
+  }
+
 
   render() {
-    const { reserva } = this.props
-      return (
-        <MostrarReserva turno={reserva}></MostrarReserva>
+    const { reserva, cancelarReserva } = this.props
+    const {seCanceloReserva} = this.state
+    if(!seCanceloReserva){
+            return (
+        <MostrarReserva turno={reserva} nav={this.props.navigation} cancelar={this.cancelarRes}></MostrarReserva>
       )
+    }else{
+      this.props.navigation.navigate("Home")
+      return(
+        <View>
+          <Text>
+            No tiene reservas
+          </Text>
+        </View>
+      )
+    }
+
     
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    
+    cancelarReserva: () => dispatch({ type: RESERVA_CANCELADA }),
   };
 }
 

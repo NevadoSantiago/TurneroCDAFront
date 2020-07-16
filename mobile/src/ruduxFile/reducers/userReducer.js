@@ -1,5 +1,5 @@
 import { addons } from "react-native";
-import {CERRAR_SESION, INICIAR_SESION,ACTUALIZAR_TURNOS,SET_COORDENADAS,SET_FILTRO} from '../../Home/Menu/constantes/actionRedux'
+import {CERRAR_SESION, INICIAR_SESION,ACTUALIZAR_TURNOS,SET_COORDENADAS,SET_FILTRO, RESERVA_CANCELADA} from '../../Home/Menu/constantes/actionRedux'
 
 
 const initialState={
@@ -19,13 +19,21 @@ const UserReducer = (state = initialState, action) => {
     
     switch(action.type){   
         case(INICIAR_SESION):{
-
+            console.log(datos.detalleReserva)
             return{
                 ...state,
                 idUsuario : datos.idCliente,
                 reserva : datos.detalleReserva,
                 nombre: datos.nombre,
                 loading : false
+            }
+            
+        }
+        case(RESERVA_CANCELADA):{
+
+            return{
+                ...state,
+                reserva:null
             }
             
         }
