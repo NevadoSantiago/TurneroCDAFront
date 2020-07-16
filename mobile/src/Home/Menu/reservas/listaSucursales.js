@@ -258,7 +258,7 @@ class ListaSucursales extends Component {
             </View>
             <View style={styles['flex.light']}>
               <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-                <Text style={{ fontFamily: 'Nunito' }}>{distancia.toFixed(1)} km</Text>
+                <Text style={{ fontFamily: 'Nunito_bold' }}>{'Distancia máxima: ' + distancia.toFixed(1)} km</Text>
                 <Slider
                   value={this.state.distancia}
 
@@ -300,7 +300,7 @@ class ListaSucursales extends Component {
                       }}
                       //leftAvatar={{ rounded: true, source: { uri: avatar_url } }}
                       title={data.nombre}
-                      subtitle={data.direccion}
+                      subtitle={data.direccion + '\nDistancia: ' + data.distanciaAPersona.toFixed(1) + 'km'}
                       rightIcon={(
                         <Icon
                           name='person'
@@ -311,11 +311,12 @@ class ListaSucursales extends Component {
                       rightSubtitleStyle={{
                         color: styles.white.color,
                         fontFamily: 'Nunito',
-                        fontSize: 20
+                        fontSize: 20,
                       }}
                       subtitleStyle={{
                         color: styles.white.color,
-                        fontFamily: 'Nunito'
+                        fontFamily: 'Nunito',
+                        width: '150%'
                       }}
                       key={data.sucursalId}
                       titleStyle={{
