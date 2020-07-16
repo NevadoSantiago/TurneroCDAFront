@@ -12,10 +12,11 @@ import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, KeyboardAvoidingView } from "react-native";
 import { withTheme, ListItem, Icon, Slider } from "react-native-elements";
 import { SearchBar, Button, ButtonGroup, Overlay } from "react-native-elements";
-import {CALCULAR_DISTANCIA} from '../constantes/actionRedux'
+import { CALCULAR_DISTANCIA } from '../constantes/actionRedux'
 import MapView from "react-native-maps";
 import styles from '../../../../App.scss'
 import { getDistance } from 'geolib';
+import { Autocomplete } from "react-native-dropdown-autocomplete";
 
 const imageWidth = Dimensions.get("window").width;
 
@@ -30,10 +31,11 @@ class ListaSucursales extends Component {
       isOverlayTurnoVisible: false,
       selectedIndex: null,
       distancia: 3,
-      seCalculoDistancia:false,
+      seCalculoDistancia: false,
       selectedReservaIndex: null,
-      sucursalSelected: ''
-
+      sucursalSelected: '',
+      textoSucursal: 'Buscar una sucursal',
+      wasSelected: false
     }
     this.updateIndex = this.updateIndex.bind(this)
     this.reservarTurno = this.reservarTurno.bind(this)
@@ -116,24 +118,29 @@ class ListaSucursales extends Component {
   }
 
   render() {
-    const { theme, updateTheme, replaceTheme, ubicacion, sucursales,calcularDistancia } = this.props;
-    const { selectedIndex,seCalculoDistancia,selectedReservaIndex } = this.state
+    const { theme, updateTheme, replaceTheme, ubicacion, sucursales, calcularDistancia } = this.props;
+    const { selectedIndex, seCalculoDistancia, sucursalSelected, sucursalesFiltradas, wasSelected } = this.state
 
-    const { distancia} = this.state
+    const { distancia } = this.state
     var latitude, longitude
-    if (ubicacion == null) {
-      latitude = -34.6098896
-      longitude = -58.4612702
-    } else {
-      latitude = ubicacion.coords.latitude
-      longitude = ubicacion.coords.longitude
-    }
 
-    if (sucursales != null) {
-      if(!seCalculoDistancia){
-        calcularDistancia(ubicacion,sucursales)
+    latitude = ubicacion.coords.latitude
+    longitude = ubicacion.coords.longitude
+
+    if (sucursalesFiltradas != null) {
+      if (sucursalSelected != '' && wasSelected) {
+        var result = []
+        result.push(sucursalSelected)
         this.setState({
-          seCalculoDistancia:true
+          sucursalesFiltradas: result,
+          distancia: sucursalSelected.distanciaAPersona + 1,
+          wasSelected: false
+        })
+      }
+      if (!seCalculoDistancia) {
+        calcularDistancia(ubicacion, sucursalesFiltradas)
+        this.setState({
+          seCalculoDistancia: true
         })
       }
       return (
@@ -157,13 +164,13 @@ class ListaSucursales extends Component {
                 containerStyle={{ width: 60 }}
                 title="NO"
                 type="clear"
-                onPress={ () => { console.warn('NO pressed'), this.setState({ isOverlayTurnoVisible: false }) }}
+                onPress={() => { console.warn('NO pressed'), this.setState({ isOverlayTurnoVisible: false }) }}
               />
               <Button
                 containerStyle={{ width: 60, marginHorizontal: 15 }}
                 title="SI"
                 type="clear"
-                onPress={ () => { console.warn('SI pressed'), this.setState({ isOverlayTurnoVisible: false }) }}
+                onPress={() => { console.warn('SI pressed'), this.setState({ isOverlayTurnoVisible: false }) }}
               />
             </View>
           </Overlay>
@@ -184,103 +191,135 @@ class ListaSucursales extends Component {
               vertical={true}
             />
           </Overlay>
-            <View style={styles['flex-white']}>
-              {<SearchBar
-                ref="searchBar"
-                placeholder="Buscar sucursal"
-                lightTheme="true"
-                showsCancelButtonWhileEditing={true}
-                style={styles.white.color}
-              />}
-              <MapView
-                style={mapStyles.mapStyle}
-                showsUserLocation={false}
-                customMapStyle={
-                  MAP_STYLE
-                }
-                initialRegion={{
+          <View style={styles['flex-white']}>
+            <Autocomplete
+              onChangeText={() => {
+                this.setState({ writingSucursal: false, sucursalSelected: '', sucursalesFiltradas: sucursales, wasSelected: true })
+              }}
+              key={1}
+              style={{ maxHeight: 40 }}
+              placeholder={this.state.textoSucursal}
+              initialValue={(this.state && this.state.sucursalSelected)}
+              handleSelectItem={(item, id) => {
+                const { onDropdownClose } = this.props;
+                this.setState({ sucursalSelected: item });
+              }}
+              /*renderIcon={() => (
+                <Ionicons name="ios-add-circle-outline" size={20} color="#c7c6c1" style={{ position: "absolute", left: 28, top: 11, }} />
+              )}*/
+              onDropdownShow={() => onDropdownShow()}
+              inputStyle={{ borderWidth: 0, fontFamily: 'Nunito' }}
+              separatorStyle={{ backgroundColor: 'black' }}
+              listFooterStyle={{ backgroundColor: 'white' }}
+              listHeaderStyle={{ backgroundColor: 'red' }}
+              pickerStyle={{ borderColor: styles.primary.color }}
+              scrollStyle={{ borderColor: styles.primary.color }}
+              inputContainerStyle={{
+                display: "flex",
+                flexShrink: 0,
+                flexGrow: 0,
+                flexDirection: "row",
+                flexWrap: "wrap",
+                alignItems: "center",
+                borderColor: styles.primary.color,
+                justifyContent: "flex-start",
+              }}
+              data={sucursalesFiltradas}
+              minimumCharactersCount={1}
+              highlightText
+              noDataText="No hay resultados"
+              spinnerColor={styles.primary.color}
+              highLightColor={styles.primary.color}
+              valueExtractor={item => item.nombre}
+              rightTextExtractor={item => item.properties}
+            />
+            <MapView
+              style={mapStyles.mapStyle}
+              showsUserLocation={false}
+              customMapStyle={
+                MAP_STYLE
+              }
+              initialRegion={{
+                latitude: latitude,
+                longitude: longitude,
+                longitudeDelta: 0,
+                latitudeDelta: 0.2,
+              }}
+            >
+              <MapView.Marker
+                coordinate={{
                   latitude: latitude,
                   longitude: longitude,
-                  longitudeDelta: 0,
-                  latitudeDelta: 0.2,
                 }}
               >
-                <MapView.Marker
-                  coordinate={{
-                    latitude: latitude,
-                    longitude: longitude,
+                <View
+                  style={{
+                    height: 40,
+                    width: 40,
+                    borderRadius: 20,
+                    overflow: 'hidden',
+                    backgroundColor: 'rgba(0, 122, 255, 0.1)',
+                    borderWidth: 1,
+                    borderColor: 'rgba(0, 112, 255, 0.3)',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                 >
                   <View
                     style={{
-                      height: 40,
-                      width: 40,
-                      borderRadius: 20,
+                      height: 18,
+                      width: 18,
+                      borderWidth: 3,
+                      borderColor: 'white',
+                      borderRadius: 9,
                       overflow: 'hidden',
-                      backgroundColor: 'rgba(0, 122, 255, 0.1)',
-                      borderWidth: 1,
-                      borderColor: 'rgba(0, 112, 255, 0.3)',
-                      alignItems: 'center',
-                      justifyContent: 'center'
+                      backgroundColor: '#007AFF'
                     }}
                   >
-                    <View
-                      style={{
-                        height: 18,
-                        width: 18,
-                        borderWidth: 3,
-                        borderColor: 'white',
-                        borderRadius: 9,
-                        overflow: 'hidden',
-                        backgroundColor: '#007AFF'
-                      }}
-                    >
-                    </View>
                   </View>
-                </MapView.Marker>
-                {
-
-                  sucursales.map((s, i) => {                    
-                    return (
-                      <MapView.Marker
-                        coordinate={{
-                          latitude: Number.parseFloat(s.configuracion.cordLatitud),
-                          longitude: Number.parseFloat(s.configuracion.cordLongitud),
-                        }}
-                        title={s.nombre}
-                        description={s.direccion}
-                      ></MapView.Marker>
-                    )
-                  }
+                </View>
+              </MapView.Marker>
+              {
+                console.log(sucursalesFiltradas),
+                sucursalesFiltradas.map((s, i) => {
+                  return (
+                    <MapView.Marker
+                      coordinate={{
+                        latitude: Number.parseFloat(s.configuracion.cordLatitud),
+                        longitude: Number.parseFloat(s.configuracion.cordLongitud),
+                      }}
+                      title={s.nombre}
+                      description={s.direccion}
+                    ></MapView.Marker>
                   )
                 }
-              </MapView>
-            </View>
-            <View style={styles['flex.light']}>
-              <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
-                <Text style={{ fontFamily: 'Nunito' }}>{distancia.toFixed(1)} km</Text>
-                <Slider
-                  value={this.state.distancia}
+                )
+              }
+            </MapView>
+          </View>
+          <View style={styles['flex.light']}>
+            <View style={{ paddingHorizontal: 15, paddingVertical: 10 }}>
+              <Text style={{ fontFamily: 'Nunito_bold' }}>{'Distancia máxima: ' + distancia.toFixed(1)} km</Text>
+              <Slider
+                value={this.state.distancia}
 
-                  onValueChange={(value) => this.setState({
-                    distancia: value
-                  })}
-                  minimumValue={1}
-                  maximumValue={50}
-                  thumbTintColor={styles.primary.color}
-                />
-              </View>
-              <ScrollView style={styles['flex.light']}>
-                {sucursales.map((data, i) => {
-                  var cantPersonas;
-                  if (data.cantidadPersonas == 0) {
-                    cantPersonas = "0"
-                  } else {
-                    cantPersonas = data.cantidadPersonas
-                  }
-                  if(distancia > data.distanciaAPersona){
-                    console.log(data)
-                 // var distanciaAPersona = data.distanciaAPersona.fixed(1)
+                onValueChange={(value) => this.setState({
+                  distancia: value
+                })}
+                minimumValue={1}
+                maximumValue={50}
+                thumbTintColor={styles.primary.color}
+              />
+            </View>
+            <ScrollView style={styles['flex.light']}>
+              {sucursalesFiltradas.map((data, i) => {
+                var cantPersonas;
+                if (data.cantidadPersonas == 0) {
+                  cantPersonas = "0"
+                } else {
+                  cantPersonas = data.cantidadPersonas
+                }
+                if (distancia > data.distanciaAPersona) {
                   return (
                     <ListItem
                       Component={TouchableScale}
@@ -294,27 +333,30 @@ class ListaSucursales extends Component {
                       tension={100}
                       activeScale={0.95}
                       linearGradientProps={{
-                        colors: [theme.colors.primary, theme.colors.primary],
+                        colors: [styles.primary.color, styles.primary.color],
                         start: { x: 1, y: 3 },
                         end: { x: 0.1, y: 5 },
                       }}
                       //leftAvatar={{ rounded: true, source: { uri: avatar_url } }}
-                      title={data.nombre} 
-                      subtitle={data.direccion + " (" +data.distanciaAPersona.toFixed(1)+"km)"}
-                      rightIcon={( 
+
+                      title={data.nombre}
+                      subtitle={data.direccion + '\nDistancia: ' + data.distanciaAPersona.toFixed(1) + 'km'}
+                      rightIcon={(
                         <Icon
                           name='person'
+                          color='white'
                         />
                       )}
                       rightSubtitle={cantPersonas}
                       rightSubtitleStyle={{
                         color: styles.white.color,
                         fontFamily: 'Nunito',
-                        fontSize: 20
+                        fontSize: 20,
                       }}
                       subtitleStyle={{
                         color: styles.white.color,
-                        fontFamily: 'Nunito'
+                        fontFamily: 'Nunito',
+                        width: '150%'
                       }}
                       key={data.sucursalId}
                       titleStyle={{
@@ -330,29 +372,11 @@ class ListaSucursales extends Component {
                         })
                       }}
                     />
-                  );}
-                })}
-              </ScrollView>
-            </View>
-          <View>
-                      <Button
-            containerStyle={{ marginHorizontal: 10, bottom: 15 }}
-            buttonStyle={{ backgroundColor: styles.secondary.color, borderRadius: 15, height: 50 }}
-            titleStyle={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontFamily: 'Nunito_bold',
-              width: '100%'
-            }}
-            title='Filtrar lista de sucursales'
-            onPress={() => {
-              this.setState({
-                isVisible: true
-              })
-            }}
-          />
+                  );
+                }
+              })}
+            </ScrollView>
           </View>
-
         </KeyboardAvoidingView>
       );
     } else {
@@ -376,7 +400,7 @@ const mapStyles = StyleSheet.create({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    calcularDistancia: (datos,sucursales) => dispatch({ type: CALCULAR_DISTANCIA, data:datos, suc:sucursales }),
+    calcularDistancia: (datos, sucursales) => dispatch({ type: CALCULAR_DISTANCIA, data: datos, suc: sucursales }),
   };
 };
 
@@ -386,7 +410,7 @@ const mapStateToProps = (state) => {
     idUsuario: state.user.idUsuario,
     ubicacion: state.user.ubicacion,
     sucursales: state.turnos.sucursales,
-    sucursalesAMostrar:state.turnos.sucursalesAMostrar
+    sucursalesAMostrar: state.turnos.sucursalesAMostrar
   };
 };
 
