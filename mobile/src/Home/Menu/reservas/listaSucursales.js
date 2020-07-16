@@ -378,25 +378,6 @@ class ListaSucursales extends Component {
               })}
             </ScrollView>
           </View>
-          <View>
-            <Button
-              containerStyle={{ marginHorizontal: 10, bottom: 15 }}
-              buttonStyle={{ backgroundColor: styles.secondary.color, borderRadius: 15, height: 50 }}
-              titleStyle={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                fontFamily: 'Nunito_bold',
-                width: '100%'
-              }}
-              title='Filtrar lista de sucursales'
-              onPress={() => {
-                this.setState({
-                  isVisible: true
-                })
-              }}
-            />
-          </View>
-
         </KeyboardAvoidingView>
       );
     } else {
