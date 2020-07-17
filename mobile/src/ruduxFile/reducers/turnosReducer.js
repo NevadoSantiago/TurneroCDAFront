@@ -1,5 +1,5 @@
 import { addons } from "react-native";
-import { OBTENER_ESPECIALIDADES, SET_ESPECIALIDAD, SET_SUCURSALES, CALCULAR_DISTANCIA, SET_SUCURSAL } from '../../Home/Menu/constantes/actionRedux'
+import { OBTENER_ESPECIALIDADES, SET_ESPECIALIDAD, SET_SUCURSALES, CALCULAR_DISTANCIA, SET_SUCURSAL,LIMPIAR_SESION } from '../../Home/Menu/constantes/actionRedux'
 import { getDistance } from 'geolib';
 
 
@@ -65,6 +65,18 @@ const TurnosReducer = (state = initialState, action) => {
                 ...state,
                 sucursalesAMostrar: data,
                 sucursales: sucursalesActualizadas
+            }
+        }
+        case (LIMPIAR_SESION): {
+            return {
+                ...state,
+                listaEspecialidades: null,
+                sucursales: null,
+                sucursalesAMostrar: null,
+                Cargando: true,
+                idEspecialidad: null,
+                especialidadNotSelected: true,
+                sucursalSelected: null
             }
         }
     }

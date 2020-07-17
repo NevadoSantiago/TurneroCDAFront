@@ -100,7 +100,8 @@ class HomeScreen extends React.Component {
       }.bind(this))
   }
   render() {
-    const {loading, theme,reserva } = this.props
+
+    const {loading, theme,reserva} = this.props
     const { logueado,especialidadesGuardadas } = this.state
     if (!loading && logueado && especialidadesGuardadas) {
       if(reserva === null){

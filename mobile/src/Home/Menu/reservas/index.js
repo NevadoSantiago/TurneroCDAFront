@@ -5,7 +5,7 @@ import { View, Text } from 'react-native'
 import MostrarReserva from '../Mostrar/mostrar'
 import { withTheme, Button } from 'react-native-elements';
 import styles from '../../../../App.scss'
-import {RESERVA_CANCELADA} from '../constantes/actionRedux'
+import {RESERVA_CANCELADA, LIMPIAR_SESION} from '../constantes/actionRedux'
 import ListaEspecialidades from './listaEspecialidades'
 import { URL_API_ESPECIALIDAD} from '../constantes/urlApi'
 import listaEspecialidades from './listaEspecialidades';
@@ -18,20 +18,30 @@ class Reservas extends Component {
       seCanceloReserva :false,
     }
   }
+  salir = () => {
+    console.log("SALIO")
+    const{cerrarSesion} = this.props
+    this.props.navigation.navigate("Home")
+    cerrarSesion()
+  }
 
-  static navigationOptions = {
-    title: 'Mis reservas',
+  static navigationOptions =  () => {
+    return{
+          title: 'Mis reservas',
     headerStyle: {
       backgroundColor: styles.white.color,
       elevation: 0,
       shadowOpacity: 0,
     },
+    headerLeft:null,
     headerTintColor: styles.primary.color,
     headerTitleStyle: {
       fontWeight: 'normal',
       fontFamily: 'Nunito',
       color: styles.primary.color
     },
+    }
+
   };
 
   cancelarRes = ()=>{
@@ -46,10 +56,16 @@ class Reservas extends Component {
   render() {
     const { reserva, cancelarReserva } = this.props
     const {seCanceloReserva} = this.state
-    if(!seCanceloReserva){
+    if(!seCanceloReserva && reserva != null){
             return (
-        <MostrarReserva turno={reserva} nav={this.props.navigation} cancelar={this.cancelarRes}></MostrarReserva>
-      )
+              <React.Fragment>
+                 <Button
+                 title="Salir"
+                  onPress={() => {this.salir() }} >
+                  </Button>
+                 <MostrarReserva turno={reserva} nav={this.props.navigation} cancelar={this.cancelarRes}></MostrarReserva>
+              </React.Fragment>
+        )
     }else{
       this.props.navigation.navigate("Home")
       return(
@@ -68,6 +84,7 @@ class Reservas extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     cancelarReserva: () => dispatch({ type: RESERVA_CANCELADA }),
+    cerrarSesion: () => dispatch({ type: LIMPIAR_SESION }),
   };
 }
 

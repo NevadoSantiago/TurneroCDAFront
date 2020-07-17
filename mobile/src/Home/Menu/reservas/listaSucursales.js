@@ -12,11 +12,12 @@ import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, KeyboardAvoidingView } from "react-native";
 import { withTheme, ListItem, Icon, Slider } from "react-native-elements";
 import { Input, Button, ButtonGroup, Overlay } from "react-native-elements";
-import { CALCULAR_DISTANCIA, SET_SUCURSAL } from '../constantes/actionRedux'
+import { CALCULAR_DISTANCIA, SET_SUCURSAL, GUARDAR_RESERVA } from '../constantes/actionRedux'
 import MapView from "react-native-maps";
 import styles from '../../../../App.scss'
 import { getDistance } from 'geolib';
 import { Autocomplete } from "react-native-dropdown-autocomplete";
+import {URL_API_RESERVA} from '../constantes/urlApi'
 
 const imageWidth = Dimensions.get("window").width;
 
@@ -36,7 +37,7 @@ class ListaSucursales extends Component {
       sucursalSelected: '',
       textoSucursal: 'Buscar una sucursal',
       wasSelected: false,
-      sintomas: null
+      sintomas: " "
     }
     this.updateIndex = this.updateIndex.bind(this)
   }
@@ -85,9 +86,30 @@ class ListaSucursales extends Component {
         { latitude: element.configuracion.cordLatitud, longitude: element.configuracion.cordLongitud },
         { latitude: this.props.ubicacion.coords.latitude, longitude: this.props.ubicacion.coords.longitude }
       ) <= value * 1000) {
-        console.log("estoy aca nomas")
       }
     });
+  }
+  realizarReserva =async () =>{
+    const {sintomas, sucursalSelected} = this.state
+    const {idEspecialidad,idUsuario, guardarReserva, navigation} = this.props
+    var url = URL_API_RESERVA + '/api/reserva/crear/' + idUsuario
+    await fetch(url,{
+      method: 'POST',
+      body: JSON.stringify({
+        descSintomas:sintomas,
+         sucursalId:sucursalSelected.sucursalId,
+         especialidadId:idEspecialidad,
+       })
+      }
+    )
+       .then(function (response) {
+        return response.json()
+      })
+      .then(function (myJson) { 
+        guardarReserva(myJson)
+        navigation.navigate('Reservas')
+  }
+      )
   }
 
   render() {
@@ -142,14 +164,15 @@ class ListaSucursales extends Component {
                 containerStyle={{ width: 60 }}
                 title="NO"
                 type="clear"
-                onPress={() => { console.warn('NO pressed'), console.log(this.state.sintomas), this.setState({ isOverlayTurnoVisible: false }) }}
+                onPress={() => {this.setState({ isOverlayTurnoVisible: false }) }}
                 
               />
               <Button
                 containerStyle={{ width: 60, marginHorizontal: 15 }}
                 title="SI"
                 type="clear"
-                onPress={() => { console.warn('SI pressed'), this.setState({ isOverlayTurnoVisible: false }) }}
+                onPress={() => { this.setState({ isOverlayTurnoVisible: false }), 
+                  this.realizarReserva() }}
               />
             </View>
           </Overlay>
@@ -259,7 +282,6 @@ class ListaSucursales extends Component {
                 </View>
               </MapView.Marker>
               {
-                console.log(sucursalesFiltradas),
                 sucursalesFiltradas.map((s, i) => {
                   return (
                     <MapView.Marker
@@ -382,7 +404,8 @@ const mapStyles = StyleSheet.create({
 const mapDispatchToProps = (dispatch) => {
   return {
     calcularDistancia: (datos, sucursales) => dispatch({ type: CALCULAR_DISTANCIA, data: datos, suc: sucursales }),
-    setSucursal: (datos) => dispatch({ type: SET_SUCURSAL, data: datos })
+    setSucursal: (datos) => dispatch({ type: SET_SUCURSAL, data: datos }),
+    guardarReserva: (datos) => dispatch({type: GUARDAR_RESERVA, data:datos})
   };
 };
 
