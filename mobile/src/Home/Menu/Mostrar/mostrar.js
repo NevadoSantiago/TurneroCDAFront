@@ -13,7 +13,7 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { Button } from 'react-native-elements'
+import { Button, Overlay, ButtonGroup } from 'react-native-elements'
 import { MAP_STYLE } from '../constantes/mapStyle'
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { URL_API_RESERVA } from '../constantes/urlApi'
@@ -33,8 +33,11 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 const MostrarReserva = (props) => {
   const { turno } = props
   //const theme = useTheme();
+
   const initialMapState = {
     //markers,
+    isVisible: false,
+    selectedIndex: null,
     markers: [
       {
         coordinate: {
@@ -122,6 +125,33 @@ const MostrarReserva = (props) => {
     return { scale };
   });
 
+  const updateIndex = (selectedIndex) => {
+
+    switch (selectedIndex) {
+      case 0: // DISTANCIA 
+        setState({
+          isVisible: false,
+          markers: state.markers
+        })
+        break;
+      case 1: // Personas en cola
+        setState({
+          isVisible: false,
+          markers: state.markers
+        })
+        break;
+      case 2: //NOMBRE
+        setState({
+          isVisible: false,
+          markers: state.markers
+        })
+        break;
+      default:
+        break;
+    }
+    setState({ selectedIndex, markers: state.markers })
+  }
+
   const onMarkerPress = (mapEventData) => {
     const markerID = mapEventData._targetInst.return.key;
 
@@ -136,9 +166,32 @@ const MostrarReserva = (props) => {
   const _map = React.useRef(null);
   const _scrollView = React.useRef(null);
   const apiQR = URL_API_RESERVA + '/api/reserva/QR/' + turno.idReserva;
-  console.log(apiQR)
   return (
     <View style={styles.container}>
+      <Overlay
+        isVisible={state.isVisible}
+        onBackdropPress={() => { setState({ isVisible: false, markers: state.markers }) }}
+        overlayStyle={{ padding: -100, width: '75%' }}
+      >
+        <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold', fontSize: 19 }}>
+          Código QR
+        </Text>
+        <View style={{ height: 240 }}>
+          <Image
+            source={{ uri: apiQR }}
+            style={{ width: '100%', height: '100%', alignSelf: 'center', marginTop: -10 }}
+          >
+          </Image>
+        </View>
+        <ButtonGroup
+          onPress={() => { setState({ isVisible: false, markers: state.markers }) }}
+          selectedIndex={state.selectedIndex}
+          buttons={['OK']}
+          containerStyle={{ height: 45, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: style.dark.color }}
+          textStyle={{ fontFamily: 'Nunito' }}
+          vertical={true}
+        />
+      </Overlay>
       <MapView
         ref={_map}
         initialRegion={state.region}
@@ -207,12 +260,13 @@ const MostrarReserva = (props) => {
               <Text numberOfLines={1} style={styles.cardtitle}>-</Text>
               <Text numberOfLines={1} style={styles.cardDescription}>{turno.sintomas}</Text>
               <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}>
-                <View style={styles.qr}>
+                <TouchableOpacity style={styles.qr} onPress={() => { console.log(state.markers), setState({ isVisible: true, markers: state.markers }) }}>
                   <Image
                     source={{ uri: apiQR }}
-                    style={{ width: '100%', height: '100%' }}>
+                    style={{ width: '100%', height: '100%' }}
+                  >
                   </Image>
-                </View>
+                </TouchableOpacity>
                 <Button
                   buttonStyle={{ backgroundColor: style.secondary.color, borderRadius: 15, height: 50 }}
                   titleStyle={{

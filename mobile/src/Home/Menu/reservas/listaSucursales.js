@@ -153,23 +153,6 @@ class ListaSucursales extends Component {
               />
             </View>
           </Overlay>
-          <Overlay
-            isVisible={this.state.isVisible}
-            onBackdropPress={() => this.setState({ isVisible: false })}
-            overlayStyle={{ padding: -100, width: '75%' }}
-          >
-            <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito' }}>
-              Filtrar lista de sucursales
-            </Text>
-            <ButtonGroup
-              onPress={this.updateIndex}
-              selectedIndex={selectedIndex}
-              buttons={['Distancia', 'Nombre', 'Cantidad de personas']}
-              containerStyle={{ height: 120, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: styles.dark.color }}
-              textStyle={{ fontFamily: 'Nunito' }}
-              vertical={true}
-            />
-          </Overlay>
           <View style={styles['flex-white']}>
             <Autocomplete
               onChangeText={() => {
