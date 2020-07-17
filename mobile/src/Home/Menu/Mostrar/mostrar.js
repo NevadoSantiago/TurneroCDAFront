@@ -13,12 +13,12 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { Button } from 'react-native-elements'
+import { Button, Overlay, ButtonGroup } from 'react-native-elements'
 import { MAP_STYLE } from '../constantes/mapStyle'
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import {URL_API_RESERVA} from '../constantes/urlApi'
+import { URL_API_RESERVA } from '../constantes/urlApi'
 import style from '../../../../App.scss'
-import {RESERVA_CANCELADA} from '../constantes/actionRedux'
+import { RESERVA_CANCELADA } from '../constantes/actionRedux'
 
 //import { useTheme } from '@react-navigation/native';
 import { withTheme } from 'react-native-elements';
@@ -31,10 +31,13 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 
 const MostrarReserva = (props) => {
-  const {turno} = props
+  const { turno } = props
   //const theme = useTheme();
+
   const initialMapState = {
     //markers,
+    isVisible: false,
+    selectedIndex: null,
     markers: [
       {
         coordinate: {
@@ -52,12 +55,12 @@ const MostrarReserva = (props) => {
       longitudeDelta: 0.01,
     },
   };
-  async function cancelarReserva (){
+  async function cancelarReserva() {
     var url;
 
     url = URL_API_RESERVA + "/api/reserva/cancelar/" + turno.idReserva
     console.log(url)
-    await fetch(url,{
+    await fetch(url, {
       method: 'POST'
     })
       .then(function (response) {
@@ -65,11 +68,11 @@ const MostrarReserva = (props) => {
       })
       .then(
         function (myJson) {
-          {props.cancelar()}
+          { props.cancelar() }
           props.nav.navigate("ListaEspecialidades")
         }.bind(this)
       );
-    
+
   }
 
   const [state, setState] = React.useState(initialMapState);
@@ -122,6 +125,33 @@ const MostrarReserva = (props) => {
     return { scale };
   });
 
+  const updateIndex = (selectedIndex) => {
+
+    switch (selectedIndex) {
+      case 0: // DISTANCIA 
+        setState({
+          isVisible: false,
+          markers: state.markers
+        })
+        break;
+      case 1: // Personas en cola
+        setState({
+          isVisible: false,
+          markers: state.markers
+        })
+        break;
+      case 2: //NOMBRE
+        setState({
+          isVisible: false,
+          markers: state.markers
+        })
+        break;
+      default:
+        break;
+    }
+    setState({ selectedIndex, markers: state.markers })
+  }
+
   const onMarkerPress = (mapEventData) => {
     const markerID = mapEventData._targetInst.return.key;
 
@@ -130,16 +160,38 @@ const MostrarReserva = (props) => {
       x = x - SPACING_FOR_CARD_INSET;
     }
 
-    _scrollView.current.scrollTo({ x: x, y: 0, animated: true })
-    //_scrollView.current.scrollTo({ x: x, y: 0, animated: true });
+    //_scrollView.current.scrollTo({ x: x, y: 0, animated: true })
   }
 
   const _map = React.useRef(null);
   const _scrollView = React.useRef(null);
-  const apiQR = URL_API_RESERVA + '/api/reserva/QR/'+ turno.idReserva; 
-  console.log(apiQR)
+  const apiQR = URL_API_RESERVA + '/api/reserva/QR/' + turno.idReserva;
   return (
     <View style={styles.container}>
+      <Overlay
+        isVisible={state.isVisible}
+        onBackdropPress={() => { setState({ isVisible: false, markers: state.markers }) }}
+        overlayStyle={{ padding: -100, width: '75%' }}
+      >
+        <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold', fontSize: 19 }}>
+          Código QR
+        </Text>
+        <View style={{ height: 240 }}>
+          <Image
+            source={{ uri: apiQR }}
+            style={{ width: '100%', height: '100%', alignSelf: 'center', marginTop: -10 }}
+          >
+          </Image>
+        </View>
+        <ButtonGroup
+          onPress={() => { setState({ isVisible: false, markers: state.markers }) }}
+          selectedIndex={state.selectedIndex}
+          buttons={['OK']}
+          containerStyle={{ height: 45, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: style.dark.color }}
+          textStyle={{ fontFamily: 'Nunito' }}
+          vertical={true}
+        />
+      </Overlay>
       <MapView
         ref={_map}
         initialRegion={state.region}
@@ -208,12 +260,13 @@ const MostrarReserva = (props) => {
               <Text numberOfLines={1} style={styles.cardtitle}>-</Text>
               <Text numberOfLines={1} style={styles.cardDescription}>{turno.sintomas}</Text>
               <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}>
-              <View style={styles.qr}>
-            <Image
-                  source = {{ uri : apiQR }}
-                  style={{ width: '100%', height: '100%'}}>
-               </Image>
-               </View>
+                <TouchableOpacity style={styles.qr} onPress={() => { console.log(state.markers), setState({ isVisible: true, markers: state.markers }) }}>
+                  <Image
+                    source={{ uri: apiQR }}
+                    style={{ width: '100%', height: '100%' }}
+                  >
+                  </Image>
+                </TouchableOpacity>
                 <Button
                   buttonStyle={{ backgroundColor: style.secondary.color, borderRadius: 15, height: 50 }}
                   titleStyle={{
@@ -226,7 +279,7 @@ const MostrarReserva = (props) => {
                   onPress={() => {
                     Alert.alert('Cancelar', '¿Seguro que desea cancelar la reserva?',
                       [
-                        { text: 'SI', onPress: () => cancelarReserva()},
+                        { text: 'SI', onPress: () => cancelarReserva() },
                         { text: 'NO', onPress: () => { console.warn('NO pressed') } }
                       ]
                     )
@@ -311,7 +364,7 @@ const styles = StyleSheet.create({
   card: {
     // padding: 10,
     elevation: 2,
-    backgroundColor: "whitesmoke",
+    backgroundColor: "white",
     //borderTopLeftRadius: 5,
     //borderTopRightRadius: 5,
     borderRadius: 5,
@@ -323,7 +376,7 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
     overflow: "hidden",
-   // flexDirection: 'row',
+    // flexDirection: 'row',
   },
   cardImage: {
     flex: 3,
@@ -350,11 +403,11 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     color: "#444",
   },
-  qr:{
+  qr: {
     alignSelf: 'flex-end',
-    backgroundColor:'whitesmoke',
-    width : '40%',
-    height: '180%',
+    backgroundColor: 'whitesmoke',
+    width: '35%',
+    height: '210%',
   },
 
   markerWrap: {
