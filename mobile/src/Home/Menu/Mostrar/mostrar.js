@@ -16,9 +16,9 @@ import {
 import { Button } from 'react-native-elements'
 import { MAP_STYLE } from '../constantes/mapStyle'
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import {URL_API_RESERVA} from '../constantes/urlApi'
+import { URL_API_RESERVA } from '../constantes/urlApi'
 import style from '../../../../App.scss'
-import {RESERVA_CANCELADA} from '../constantes/actionRedux'
+import { RESERVA_CANCELADA } from '../constantes/actionRedux'
 
 //import { useTheme } from '@react-navigation/native';
 import { withTheme } from 'react-native-elements';
@@ -31,7 +31,7 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 
 const MostrarReserva = (props) => {
-  const {turno} = props
+  const { turno } = props
   //const theme = useTheme();
   const initialMapState = {
     //markers,
@@ -52,12 +52,12 @@ const MostrarReserva = (props) => {
       longitudeDelta: 0.01,
     },
   };
-  async function cancelarReserva (){
+  async function cancelarReserva() {
     var url;
 
     url = URL_API_RESERVA + "/api/reserva/cancelar/" + turno.idReserva
     console.log(url)
-    await fetch(url,{
+    await fetch(url, {
       method: 'POST'
     })
       .then(function (response) {
@@ -65,11 +65,11 @@ const MostrarReserva = (props) => {
       })
       .then(
         function (myJson) {
-          {props.cancelar()}
+          { props.cancelar() }
           props.nav.navigate("ListaEspecialidades")
         }.bind(this)
       );
-    
+
   }
 
   const [state, setState] = React.useState(initialMapState);
@@ -130,13 +130,12 @@ const MostrarReserva = (props) => {
       x = x - SPACING_FOR_CARD_INSET;
     }
 
-    _scrollView.current.scrollTo({ x: x, y: 0, animated: true })
-    //_scrollView.current.scrollTo({ x: x, y: 0, animated: true });
+    //_scrollView.current.scrollTo({ x: x, y: 0, animated: true })
   }
 
   const _map = React.useRef(null);
   const _scrollView = React.useRef(null);
-  const apiQR = URL_API_RESERVA + '/api/reserva/QR/'+ turno.idReserva; 
+  const apiQR = URL_API_RESERVA + '/api/reserva/QR/' + turno.idReserva;
   console.log(apiQR)
   return (
     <View style={styles.container}>
@@ -208,12 +207,12 @@ const MostrarReserva = (props) => {
               <Text numberOfLines={1} style={styles.cardtitle}>-</Text>
               <Text numberOfLines={1} style={styles.cardDescription}>{turno.sintomas}</Text>
               <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}>
-              <View style={styles.qr}>
-            <Image
-                  source = {{ uri : apiQR }}
-                  style={{ width: '100%', height: '100%'}}>
-               </Image>
-               </View>
+                <View style={styles.qr}>
+                  <Image
+                    source={{ uri: apiQR }}
+                    style={{ width: '100%', height: '100%' }}>
+                  </Image>
+                </View>
                 <Button
                   buttonStyle={{ backgroundColor: style.secondary.color, borderRadius: 15, height: 50 }}
                   titleStyle={{
@@ -226,7 +225,7 @@ const MostrarReserva = (props) => {
                   onPress={() => {
                     Alert.alert('Cancelar', '¿Seguro que desea cancelar la reserva?',
                       [
-                        { text: 'SI', onPress: () => cancelarReserva()},
+                        { text: 'SI', onPress: () => cancelarReserva() },
                         { text: 'NO', onPress: () => { console.warn('NO pressed') } }
                       ]
                     )
@@ -311,7 +310,7 @@ const styles = StyleSheet.create({
   card: {
     // padding: 10,
     elevation: 2,
-    backgroundColor: "whitesmoke",
+    backgroundColor: "white",
     //borderTopLeftRadius: 5,
     //borderTopRightRadius: 5,
     borderRadius: 5,
@@ -323,7 +322,7 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
     overflow: "hidden",
-   // flexDirection: 'row',
+    // flexDirection: 'row',
   },
   cardImage: {
     flex: 3,
@@ -350,11 +349,11 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     color: "#444",
   },
-  qr:{
+  qr: {
     alignSelf: 'flex-end',
-    backgroundColor:'whitesmoke',
-    width : '40%',
-    height: '180%',
+    backgroundColor: 'whitesmoke',
+    width: '35%',
+    height: '210%',
   },
 
   markerWrap: {
