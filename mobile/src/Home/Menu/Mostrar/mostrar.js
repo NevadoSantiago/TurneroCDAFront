@@ -22,11 +22,13 @@ import {RESERVA_CANCELADA} from '../constantes/actionRedux'
 
 //import { useTheme } from '@react-navigation/native';
 import { withTheme } from 'react-native-elements';
+import { Row } from 'native-base';
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = 180;
 const CARD_WIDTH = width * 0.9;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
+
 
 const MostrarReserva = (props) => {
   const {turno} = props
@@ -134,7 +136,8 @@ const MostrarReserva = (props) => {
 
   const _map = React.useRef(null);
   const _scrollView = React.useRef(null);
-
+  const apiQR = URL_API_RESERVA + '/api/reserva/QR/'+ turno.idReserva; 
+  console.log(apiQR)
   return (
     <View style={styles.container}>
       <MapView
@@ -205,6 +208,12 @@ const MostrarReserva = (props) => {
               <Text numberOfLines={1} style={styles.cardtitle}>-</Text>
               <Text numberOfLines={1} style={styles.cardDescription}>{turno.sintomas}</Text>
               <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}>
+              <View style={styles.qr}>
+            <Image
+                  source = {{ uri : apiQR }}
+                  style={{ width: '100%', height: '100%'}}>
+               </Image>
+               </View>
                 <Button
                   buttonStyle={{ backgroundColor: style.secondary.color, borderRadius: 15, height: 50 }}
                   titleStyle={{
@@ -314,6 +323,7 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
     overflow: "hidden",
+   // flexDirection: 'row',
   },
   cardImage: {
     flex: 3,
@@ -322,23 +332,31 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   textContent: {
-    flex: 2,
+    flex: 1,
     padding: 10,
+
   },
   cardtitle: {
     fontSize: 17,
     // marginTop: 5,
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
     paddingBottom: 5,
     fontFamily: 'Nunito_bold',
   },
   cardDescription: {
     fontFamily: 'Nunito',
     fontSize: 13,
-    alignSelf: 'center',
+    alignSelf: 'flex-start',
     paddingBottom: 5,
     color: "#444",
   },
+  qr:{
+    alignSelf: 'flex-end',
+    backgroundColor:'whitesmoke',
+    width : '40%',
+    height: '180%',
+  },
+
   markerWrap: {
     alignItems: "center",
     justifyContent: "center",

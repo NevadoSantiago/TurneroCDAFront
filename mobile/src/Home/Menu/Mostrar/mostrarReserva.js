@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { withTheme, Text, Button } from 'react-native-elements';
-import { View, Dimensions, KeyboardAvoidingView } from 'react-native';
+import { View, Dimensions, KeyboardAvoidingView, Image } from 'react-native';
 import MapView from "react-native-maps";
 import { MAP_STYLE } from '../constantes/mapStyle'
 import styles from '../../../../App.scss'
-
+import {URL_API_RESERVA} from '../constantes/urlApi'
 class MostrarReserva extends Component {
 
 
@@ -12,9 +12,10 @@ class MostrarReserva extends Component {
 		super(props);
 	}
 
-	render() {
-		var { turno } = this.props
 
+
+	render() {
+		var { turno} = this.props
 		return (
 			<React.Fragment>
 				<View style={{ paddingBottom: 15, backgroundColor: styles.white.color }}>
