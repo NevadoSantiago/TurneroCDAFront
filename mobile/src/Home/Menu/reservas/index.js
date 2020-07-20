@@ -60,7 +60,8 @@ class Reservas extends Component {
             return (
               <React.Fragment>
                  <Button
-                 title="Salir"
+                  buttonStyle={{ borderRadius: -50 }}
+                  title="Salir"
                   onPress={() => {this.salir() }} >
                   </Button>
                  <MostrarReserva turno={reserva} nav={this.props.navigation} cancelar={this.cancelarRes}></MostrarReserva>
