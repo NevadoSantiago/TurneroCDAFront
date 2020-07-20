@@ -17,7 +17,7 @@ import MapView from "react-native-maps";
 import styles from '../../../../App.scss'
 import { getDistance } from 'geolib';
 import { Autocomplete } from "react-native-dropdown-autocomplete";
-import {URL_API_RESERVA} from '../constantes/urlApi'
+import { URL_API_RESERVA } from '../constantes/urlApi'
 
 const imageWidth = Dimensions.get("window").width;
 
@@ -89,26 +89,26 @@ class ListaSucursales extends Component {
       }
     });
   }
-  realizarReserva =async () =>{
-    const {sintomas, sucursalSelected} = this.state
-    const {idEspecialidad,idUsuario, guardarReserva, navigation} = this.props
+  realizarReserva = async () => {
+    const { sintomas, sucursalSelected } = this.state
+    const { idEspecialidad, idUsuario, guardarReserva, navigation } = this.props
     var url = URL_API_RESERVA + '/api/reserva/crear/' + idUsuario
-    await fetch(url,{
+    await fetch(url, {
       method: 'POST',
       body: JSON.stringify({
-        descSintomas:sintomas,
-         sucursalId:sucursalSelected.sucursalId,
-         especialidadId:idEspecialidad,
-       })
-      }
+        descSintomas: sintomas,
+        sucursalId: sucursalSelected.sucursalId,
+        especialidadId: idEspecialidad,
+      })
+    }
     )
-       .then(function (response) {
+      .then(function (response) {
         return response.json()
       })
-      .then(function (myJson) { 
+      .then(function (myJson) {
         guardarReserva(myJson)
         navigation.navigate('Reservas')
-  }
+      }
       )
   }
 
@@ -148,33 +148,37 @@ class ListaSucursales extends Component {
             onBackdropPress={() => this.setState({ isOverlayTurnoVisible: false })}
             overlayStyle={{ padding: -100, width: '75%' }}
           >
-            <Text style={{ alignSelf: 'flex-start', padding: 15, fontFamily: 'Nunito_bold', fontSize: 18 }}>
-              Reservar turno
+            <React.Fragment>
+              <Text style={{ alignSelf: 'flex-start', padding: 15, fontFamily: 'Nunito_bold', fontSize: 18 }}>
+                Reservar turno
             </Text>
-            <Input
-              placeholder='Síntomas (opcional)'
-              containerStyle={{ alignSelf: 'center', width: '96%' }}
-              onChangeText={(text) => this.setState({sintomas: text})}
-            />
-            <Text style={{ alignSelf: 'flex-start', paddingBottom: 15, paddingHorizontal: 15, fontFamily: 'Nunito' }}>
-              Desea reservar un turno en {this.state.sucursalSelected.nombre} ahora?
+              <Input
+                placeholder='Síntomas (opcional)'
+                containerStyle={{ alignSelf: 'center', width: '96%' }}
+                onChangeText={(text) => this.setState({ sintomas: text })}
+              />
+              <Text style={{ alignSelf: 'flex-start', paddingBottom: 15, paddingHorizontal: 15, fontFamily: 'Nunito' }}>
+                Desea reservar un turno en {this.state.sucursalSelected.nombre} ahora?
             </Text>
-            <View style={{ alignItems: 'flex-end', flexDirection: 'row-reverse', paddingHorizontal: 5, paddingBottom: 10 }}>
-              <Button
-                containerStyle={{ width: 60 }}
-                title="NO"
-                type="clear"
-                onPress={() => {this.setState({ isOverlayTurnoVisible: false }) }}
-                
-              />
-              <Button
-                containerStyle={{ width: 60, marginHorizontal: 15 }}
-                title="SI"
-                type="clear"
-                onPress={() => { this.setState({ isOverlayTurnoVisible: false }), 
-                  this.realizarReserva() }}
-              />
-            </View>
+              <View style={{ alignItems: 'flex-end', flexDirection: 'row-reverse', paddingHorizontal: 5, paddingBottom: 10 }}>
+                <Button
+                  containerStyle={{ width: 60 }}
+                  title="NO"
+                  type="clear"
+                  onPress={() => { this.setState({ isOverlayTurnoVisible: false }) }}
+
+                />
+                <Button
+                  containerStyle={{ width: 60, marginHorizontal: 15 }}
+                  title="SI"
+                  type="clear"
+                  onPress={() => {
+                    this.setState({ isOverlayTurnoVisible: false }),
+                    this.realizarReserva()
+                  }}
+                />
+              </View>
+            </React.Fragment>
           </Overlay>
           <View style={styles['flex-white']}>
             <Autocomplete
@@ -388,7 +392,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     calcularDistancia: (datos, sucursales) => dispatch({ type: CALCULAR_DISTANCIA, data: datos, suc: sucursales }),
     setSucursal: (datos) => dispatch({ type: SET_SUCURSAL, data: datos }),
-    guardarReserva: (datos) => dispatch({type: GUARDAR_RESERVA, data:datos})
+    guardarReserva: (datos) => dispatch({ type: GUARDAR_RESERVA, data: datos })
   };
 };
 

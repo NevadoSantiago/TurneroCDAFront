@@ -5,9 +5,9 @@ import { View, Text } from 'react-native'
 import MostrarReserva from '../Mostrar/mostrar'
 import { withTheme, Button } from 'react-native-elements';
 import styles from '../../../../App.scss'
-import {RESERVA_CANCELADA, LIMPIAR_SESION} from '../constantes/actionRedux'
+import { RESERVA_CANCELADA, LIMPIAR_SESION } from '../constantes/actionRedux'
 import ListaEspecialidades from './listaEspecialidades'
-import { URL_API_ESPECIALIDAD} from '../constantes/urlApi'
+import { URL_API_ESPECIALIDAD } from '../constantes/urlApi'
 import listaEspecialidades from './listaEspecialidades';
 
 
@@ -15,39 +15,39 @@ class Reservas extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      seCanceloReserva :false,
+      seCanceloReserva: false,
     }
   }
   salir = () => {
     console.log("SALIO")
-    const{cerrarSesion} = this.props
+    const { cerrarSesion } = this.props
     this.props.navigation.navigate("Home")
     cerrarSesion()
   }
 
-  static navigationOptions =  () => {
-    return{
-          title: 'Mis reservas',
-    headerStyle: {
-      backgroundColor: styles.white.color,
-      elevation: 0,
-      shadowOpacity: 0,
-    },
-    headerLeft:null,
-    headerTintColor: styles.primary.color,
-    headerTitleStyle: {
-      fontWeight: 'normal',
-      fontFamily: 'Nunito',
-      color: styles.primary.color
-    },
+  static navigationOptions = () => {
+    return {
+      title: 'Mis reservas',
+      headerStyle: {
+        backgroundColor: styles.white.color,
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+      headerLeft: () => null,
+      headerTintColor: styles.primary.color,
+      headerTitleStyle: {
+        fontWeight: 'normal',
+        fontFamily: 'Nunito',
+        color: styles.primary.color
+      },
     }
 
   };
 
-  cancelarRes = ()=>{
-    const {cancelarReserva} = this.props
+  cancelarRes = () => {
+    const { cancelarReserva } = this.props
     this.setState({
-      seCanceloReserva:true
+      seCanceloReserva: true
     })
     cancelarReserva()
   }
@@ -55,21 +55,21 @@ class Reservas extends Component {
 
   render() {
     const { reserva, cancelarReserva } = this.props
-    const {seCanceloReserva} = this.state
-    if(!seCanceloReserva && reserva != null){
-            return (
-              <React.Fragment>
-                 <Button
-                  buttonStyle={{ borderRadius: -50 }}
-                  title="Salir"
-                  onPress={() => {this.salir() }} >
-                  </Button>
-                 <MostrarReserva turno={reserva} nav={this.props.navigation} cancelar={this.cancelarRes}></MostrarReserva>
-              </React.Fragment>
-        )
-    }else{
+    const { seCanceloReserva } = this.state
+    if (!seCanceloReserva && reserva != null) {
+      return (
+        <React.Fragment>
+          <Button
+            buttonStyle={{ borderRadius: -50 }}
+            title="Salir"
+            onPress={() => { this.salir() }} >
+          </Button>
+          <MostrarReserva turno={reserva} nav={this.props.navigation} cancelar={this.cancelarRes}></MostrarReserva>
+        </React.Fragment>
+      )
+    } else {
       this.props.navigation.navigate("Home")
-      return(
+      return (
         <View>
           <Text>
             No tiene reservas
@@ -78,7 +78,7 @@ class Reservas extends Component {
       )
     }
 
-    
+
   }
 }
 
