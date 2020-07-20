@@ -15,13 +15,16 @@ const initialState = {
 
 calcularDistancia = (data, suc) => {
     var distanciaAPersona
-    suc.forEach(s => {
+    if(suc!=null){
+            suc.forEach(s => {
         distanciaAPersona = getDistance(
             { latitude: s.configuracion.cordLatitud, longitude: s.configuracion.cordLongitud },
             { latitude: data.coords.latitude, longitude: data.coords.longitude }
         )
         s.distanciaAPersona = distanciaAPersona / 1000
-    });
+    })
+    }
+;
     return suc
 }
 const TurnosReducer = (state = initialState, action) => {

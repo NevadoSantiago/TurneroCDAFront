@@ -91,14 +91,16 @@ class ListaSucursales extends Component {
   }
   realizarReserva =async () =>{
     const {sintomas, sucursalSelected} = this.state
-    const {idEspecialidad,idUsuario, guardarReserva, navigation} = this.props
+    const {idEspecialidad,idUsuario, guardarReserva, navigation,ubicacion} = this.props
     var url = URL_API_RESERVA + '/api/reserva/crear/' + idUsuario
     await fetch(url,{
       method: 'POST',
       body: JSON.stringify({
         descSintomas:sintomas,
          sucursalId:sucursalSelected.sucursalId,
-         especialidadId:idEspecialidad,
+         especialidadId : idEspecialidad,
+         latitud : ubicacion.coords.latitude.toString(),
+         longitud : ubicacion.coords.longitude.toString(),
        })
       }
     )
@@ -122,7 +124,7 @@ class ListaSucursales extends Component {
     latitude = ubicacion.coords.latitude
     longitude = ubicacion.coords.longitude
 
-    if (sucursalesFiltradas != null) {
+    if (sucursalesFiltradas != null || sucursales) {
       if (sucursalSelected != '' && wasSelected) {
         var result = []
         result.push(sucursalSelected)
