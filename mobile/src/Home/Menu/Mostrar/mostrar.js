@@ -173,24 +173,26 @@ const MostrarReserva = (props) => {
         onBackdropPress={() => { setState({ isVisible: false, markers: state.markers }) }}
         overlayStyle={{ padding: -100, width: '75%' }}
       >
-        <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold', fontSize: 19 }}>
-          Código QR
+        <React.Fragment>
+          <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold', fontSize: 19 }}>
+            Código QR
         </Text>
-        <View style={{ height: 240 }}>
-          <Image
-            source={{ uri: apiQR }}
-            style={{ width: '100%', height: '100%', alignSelf: 'center', marginTop: -10 }}
-          >
-          </Image>
-        </View>
-        <ButtonGroup
-          onPress={() => { setState({ isVisible: false, markers: state.markers }) }}
-          selectedIndex={state.selectedIndex}
-          buttons={['OK']}
-          containerStyle={{ height: 45, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: style.dark.color }}
-          textStyle={{ fontFamily: 'Nunito' }}
-          vertical={true}
-        />
+          <View style={{ height: 240 }}>
+            <Image
+              source={{ uri: apiQR }}
+              style={{ width: '100%', height: '100%', alignSelf: 'center', marginTop: -10 }}
+            >
+            </Image>
+          </View>
+          <ButtonGroup
+            onPress={() => { setState({ isVisible: false, markers: state.markers }) }}
+            selectedIndex={state.selectedIndex}
+            buttons={['OK']}
+            containerStyle={{ height: 45, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: style.dark.color }}
+            textStyle={{ fontFamily: 'Nunito' }}
+            vertical={true}
+          />
+        </React.Fragment>
       </Overlay>
       <MapView
         ref={_map}

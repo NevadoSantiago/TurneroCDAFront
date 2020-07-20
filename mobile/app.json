@@ -26,7 +26,12 @@
     },
     "android": {
       "package": "com.cda.turnero",
-      "versionCode": 1
+      "versionCode": 1,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDUraAd3ifDQzrT0BY3c7u0rdU-RC2d1RI"
+        }
+      }
     },
     "packagerOpts": {
       "config": "metro.config.js",
