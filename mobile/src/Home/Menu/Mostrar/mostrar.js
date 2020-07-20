@@ -25,7 +25,7 @@ import { withTheme } from 'react-native-elements';
 import { Row } from 'native-base';
 
 const { width, height } = Dimensions.get("window");
-const CARD_HEIGHT = 200;
+const CARD_HEIGHT = 180;
 const CARD_WIDTH = width * 0.9;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
@@ -257,41 +257,37 @@ const MostrarReserva = (props) => {
         {state.markers.map((marker, index) => (
           <View style={styles.card} key={index}>
             <View style={styles.textContent}>
-              <View style={{ flex: 1, flexDirection: 'row' }}>
-                <View style={{ flexDirection: 'column' }}>
-                  <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
-                  <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
-                  <Text numberOfLines={1} style={styles.cardtitle}>-</Text>
-                  <Text numberOfLines={1} style={styles.cardDescription}>{turno.sintomas}</Text>
-                </View>
-                <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end', paddingLeft: 50, height: CARD_HEIGHT - 83, marginLeft: 35 }}>
-                  <TouchableOpacity style={{  }} onPress={() => { console.log(state.markers), setState({ isVisible: true, markers: state.markers }) }}>
-                    <Image
-                      source={{ uri: apiQR }}
-                      style={{ width: '100%', height: '100%', alignSelf: 'flex-end', marginRight: 0.5 }}
-                    >
-                    </Image>
-                  </TouchableOpacity>
-                </View>
+              <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
+              <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
+              <Text numberOfLines={1} style={styles.cardtitle}>-</Text>
+              <Text numberOfLines={1} style={styles.cardDescription}>{turno.sintomas}</Text>
+              <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}>
+                <TouchableOpacity style={styles.qr} onPress={() => { console.log(state.markers), setState({ isVisible: true, markers: state.markers }) }}>
+                  <Image
+                    source={{ uri: apiQR }}
+                    style={{ width: '100%', height: '100%' }}
+                  >
+                  </Image>
+                </TouchableOpacity>
+                <Button
+                  buttonStyle={{ backgroundColor: style.secondary.color, borderRadius: 15, height: 50 }}
+                  titleStyle={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    fontFamily: 'Nunito_bold',
+                    width: '100%'
+                  }}
+                  title="Cancelar turno"
+                  onPress={() => {
+                    Alert.alert('Cancelar', '¿Seguro que desea cancelar la reserva?',
+                      [
+                        { text: 'SI', onPress: () => cancelarReserva() },
+                        { text: 'NO', onPress: () => { console.warn('NO pressed') } }
+                      ]
+                    )
+                  }}
+                ></Button>
               </View>
-              <Button
-                buttonStyle={{ backgroundColor: style.secondary.color, borderRadius: 15, height: 50 }}
-                titleStyle={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  fontFamily: 'Nunito_bold',
-                  width: '100%'
-                }}
-                title="Cancelar turno"
-                onPress={() => {
-                  Alert.alert('Cancelar', '¿Seguro que desea cancelar la reserva?',
-                    [
-                      { text: 'SI', onPress: () => cancelarReserva() },
-                      { text: 'NO', onPress: () => { console.warn('NO pressed') } }
-                    ]
-                  )
-                }}
-              ></Button>
             </View>
           </View>
         ))}
@@ -413,7 +409,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     backgroundColor: 'whitesmoke',
     width: '35%',
-    height: '150%',
+    height: '210%',
   },
 
   markerWrap: {
