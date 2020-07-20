@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import {
   StyleSheet,
   Text,
-  TextInput,
   View,
-  ScrollView,
   Animated,
   Image,
   TouchableOpacity,
@@ -13,18 +11,15 @@ import {
   Platform,
   Alert,
 } from "react-native";
-import { Button, Overlay, ButtonGroup } from 'react-native-elements'
+import { Button, Overlay, ButtonGroup, Icon } from 'react-native-elements'
 import { MAP_STYLE } from '../constantes/mapStyle'
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { URL_API_RESERVA } from '../constantes/urlApi'
 import style from '../../../../App.scss'
-import { RESERVA_CANCELADA } from '../constantes/actionRedux'
 
-//import { useTheme } from '@react-navigation/native';
 import { withTheme } from 'react-native-elements';
-import { Row } from 'native-base';
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 180;
 const CARD_WIDTH = width * 0.9;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
@@ -32,10 +27,8 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const MostrarReserva = (props) => {
   const { turno } = props
-  //const theme = useTheme();
 
   const initialMapState = {
-    //markers,
     isVisible: false,
     selectedIndex: null,
     markers: [
@@ -72,7 +65,6 @@ const MostrarReserva = (props) => {
           props.nav.navigate("ListaEspecialidades")
         }.bind(this)
       );
-
   }
 
   const [state, setState] = React.useState(initialMapState);
@@ -159,8 +151,6 @@ const MostrarReserva = (props) => {
     if (Platform.OS === 'ios') {
       x = x - SPACING_FOR_CARD_INSET;
     }
-
-    //_scrollView.current.scrollTo({ x: x, y: 0, animated: true })
   }
 
   const _map = React.useRef(null);
@@ -257,18 +247,23 @@ const MostrarReserva = (props) => {
         {state.markers.map((marker, index) => (
           <View style={styles.card} key={index}>
             <View style={styles.textContent}>
-              <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
-              <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
-              <Text numberOfLines={1} style={styles.cardtitle}>-</Text>
-              <Text numberOfLines={1} style={styles.cardDescription}>{turno.sintomas}</Text>
+              <View>
+                <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
+                  <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
+                  <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
+                  <Text numberOfLines={1} style={styles.cardtitle}>-</Text>
+                  <Text numberOfLines={1} style={styles.cardDescription}>{turno.sintomas}</Text>
+                </View>
+                <View style={{ alignSelf: 'flex-end', marginTop: -10, marginRight: -7 }}>
+                  <Icon
+                    raised
+                    name='qrcode'
+                    type='font-awesome'
+                    color={style.black.color}
+                    onPress={() => { console.log(state.markers), setState({ isVisible: true, markers: state.markers }) }} />
+                </View>
+              </View>
               <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}>
-                <TouchableOpacity style={styles.qr} onPress={() => { console.log(state.markers), setState({ isVisible: true, markers: state.markers }) }}>
-                  <Image
-                    source={{ uri: apiQR }}
-                    style={{ width: '100%', height: '100%' }}
-                  >
-                  </Image>
-                </TouchableOpacity>
                 <Button
                   buttonStyle={{ backgroundColor: style.secondary.color, borderRadius: 15, height: 50 }}
                   titleStyle={{
@@ -295,6 +290,7 @@ const MostrarReserva = (props) => {
     </View >
   );
 };
+
 const mapDispatchToProps = dispatch => {
   return {
   };
@@ -305,7 +301,6 @@ const mapStateToProps = state => {
     reserva: state.user.reserva,
   }
 }
-
 
 export default connect(
   mapStateToProps,
@@ -364,11 +359,8 @@ const styles = StyleSheet.create({
     paddingRight: width - CARD_WIDTH,
   },
   card: {
-    // padding: 10,
     elevation: 2,
     backgroundColor: "white",
-    //borderTopLeftRadius: 5,
-    //borderTopRightRadius: 5,
     borderRadius: 5,
     marginHorizontal: -10,
     shadowColor: "#000",
@@ -377,8 +369,7 @@ const styles = StyleSheet.create({
     shadowOffset: { x: 2, y: -2 },
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
-    overflow: "hidden",
-    // flexDirection: 'row',
+    overflow: "hidden"
   },
   cardImage: {
     flex: 3,
@@ -388,12 +379,10 @@ const styles = StyleSheet.create({
   },
   textContent: {
     flex: 1,
-    padding: 10,
-
+    padding: 10
   },
   cardtitle: {
     fontSize: 17,
-    // marginTop: 5,
     alignSelf: 'flex-start',
     paddingBottom: 5,
     fontFamily: 'Nunito_bold',
@@ -405,13 +394,6 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     color: "#444",
   },
-  qr: {
-    alignSelf: 'flex-end',
-    backgroundColor: 'whitesmoke',
-    width: '35%',
-    height: '210%',
-  },
-
   markerWrap: {
     alignItems: "center",
     justifyContent: "center",
