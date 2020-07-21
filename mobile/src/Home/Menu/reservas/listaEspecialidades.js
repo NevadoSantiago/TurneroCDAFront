@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import { View, Text } from "react-native";
 import { connect } from "react-redux";
-import TouchableScale from "react-native-touchable-scale";
-import { Alert } from 'react-native'
-import { withTheme, ListItem, Button } from "react-native-elements";
+import { withTheme } from "react-native-elements";
 import MostrarEspecialidades from '../Mostrar/mostrarEspecialidades'
-
 import styles from '../../../../App.scss'
 import { ScrollView } from "react-native-gesture-handler";
-import { SET_ESPECIALIDAD, SET_COORDENADAS, FILTRAR_CANTIDAD,FILTRAR_DISTANCIA } from '../constantes/actionRedux';
+import { SET_ESPECIALIDAD, SET_COORDENADAS } from '../constantes/actionRedux';
 
 class ListaEspecialidades extends Component {
   constructor(props) {
@@ -30,43 +27,38 @@ class ListaEspecialidades extends Component {
     },
   };
 
-
   render() {
-    const { especialidades, especialidadNotSelected, navigation} = this.props
+    const { especialidades, navigation } = this.props
     if (especialidades == null) {
       return (
         <View>
           <Text>
             No hay especialidades
           </Text>
-				</View>)
-		} else {
-			return (
-				<React.Fragment>
-					<ScrollView style={{ backgroundColor: styles.white.color }}>
-						{
-							this.props.especialidades.map((e, i) => {
-								return (
-									<MostrarEspecialidades especialidad={e} nav = {navigation} />
-								)
-							}
-							)
-						}
-					</ScrollView>
-
-					<View style={{ flexDirection: 'row', alignSelf: 'center', backgroundColor: styles.white.color }}>
-						
-					</View>
-				</React.Fragment>
-			)
-		}
-	}
+        </View>)
+    } else {
+      return (
+        <React.Fragment>
+          <ScrollView style={{ backgroundColor: styles.white.color }}>
+            {
+              this.props.especialidades.map((e, i) => {
+                return (
+                  <MostrarEspecialidades especialidad={e} nav={navigation} />
+                )
+              }
+              )
+            }
+          </ScrollView>
+        </React.Fragment>
+      )
+    }
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setEspecialidad: (datos) => dispatch({ type: SET_ESPECIALIDAD, data: datos }),
-    setCoordenadas: (datos, tipoBusqueda) => dispatch({ type: SET_COORDENADAS,busqueda: tipoBusquedatipoBusqueda, data: datos })
+    setCoordenadas: (datos, tipoBusqueda) => dispatch({ type: SET_COORDENADAS, busqueda: tipoBusqueda, data: datos })
   };
 };
 
@@ -82,4 +74,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withTheme(ListaEspecialidades));
-
