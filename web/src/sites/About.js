@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '../style.css';
 import {connect} from 'react-redux'
+import {ADMIN} from '../constantes/tiposUsuarios'
 
 class About extends React.Component {
 	constructor() {
@@ -12,10 +13,15 @@ class About extends React.Component {
 	}
 
 	render() {
-		const {usuario} = this.props
+		const {tipoUsuario} = this.props
+		debugger
+		if(tipoUsuario != ADMIN ){
+			this.props.history.push("/home")
+		}
 		return (
 			<div className="hero-body">
-				<p className="title">{usuario}</p>
+				<p className="title">{tipoUsuario}</p>
+				<p >Si no lees admin, no tendrias que estar aca</p>
 			</div>
 		);
 	}
@@ -28,7 +34,7 @@ const mapDispatchToProps = (dispatch) => {
   
 const mapStateToProps = (state) => {
     return {
-      usuario: state.user.usuario,
+		tipoUsuario: state.user.tipoUsuario,
     };
   };
   

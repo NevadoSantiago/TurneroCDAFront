@@ -1,24 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
-import Home from './sites/Home'
+import { BrowserRouter as Router, Route,Switch} from "react-router-dom";
 import About from './sites/About'
-import Navbar from './sites/import/Navbar'
+import { ADMIN, EMPLEADO } from "./constantes/tiposUsuarios"
+import NoAutorizado from './sites/NoAutorizado'
 import Login from './sites/Login'
-//import './App.css';
+import Home from './sites/Home'
 import './style.css'
+import AuthRoutePrivate from './sites/import/AuthRoute'
+import NavBar from './sites/import/Navbar'
 
-function App() {
-	return (
-		<Router>
-			<Navbar />
-			<div className="container">
-				<Route path="/" exact component={Home} />
-				<Route path="/about" component={About} />
-        <Route path="/login" component={Login} />
-			</div>
-		</Router >
-	);
+class App extends React.Component {
+  render() {
+    return (    
+    <Router>    
+    <NavBar/>
+      <Switch>
+        <Route exact path="/login" component={Login}></Route>
+        <Route path="/noAutorizado" component={NoAutorizado}></Route>
+        <AuthRoutePrivate path="/about" component={About} autorizado={ADMIN} autorizado2={null}></AuthRoutePrivate>
+        <AuthRoutePrivate path="/" component={Home} autorizado={ADMIN} autorizado2={EMPLEADO} ></AuthRoutePrivate>
+      </Switch>
+    </Router>
+    )
+  }
+
 }
-
 export default App;
