@@ -38,6 +38,7 @@ class ListaSucursales extends Component {
       sintomas: " "
     }
   }
+
   static navigationOptions = {
     title: 'Seleccione una sucursal',
     headerStyle: {
@@ -62,6 +63,7 @@ class ListaSucursales extends Component {
       }
     });
   }
+
   realizarReserva = async () => {
     const { sintomas, sucursalSelected } = this.state
     const { idEspecialidad, idUsuario, guardarReserva, navigation, ubicacion } = this.props
@@ -347,6 +349,7 @@ class ListaSucursales extends Component {
     }
   }
 }
+
 const mapStyles = StyleSheet.create({
   container: styles['center-flex.white'],
   mapStyle: {

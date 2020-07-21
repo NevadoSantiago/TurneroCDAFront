@@ -124,7 +124,7 @@ class ListadoPaisesYProv extends Component {
   }
 
   seleccionarProvincia = (provincias, finished) => {
-    const { scrollToInput, onDropdownClose, onDropdownShow } = this.props;
+    const { onDropdownShow } = this.props;
     const { textoProvincia } = this.state
 
     if (finished) {
@@ -144,7 +144,6 @@ class ListadoPaisesYProv extends Component {
           placeholder={textoProvincia}
           initialValue={(this.state && this.state.pickerProvinciaValue)}
           handleSelectItem={(item, id) => {
-            const { onDropdownClose } = this.props;
             this.getLocalidades(item.provinciaId)
             this.setState({ pickerProvinciaValue: item.nombre, provinciaSelected: item });
             writingProvincia = false
@@ -185,7 +184,7 @@ class ListadoPaisesYProv extends Component {
   }
 
   formularioTurno = (state) => {
-    var { localidades, provincias, localidadSelected, finishWriting } = state
+    var { localidades, provincias, finishWriting } = state
 
     if (finishWriting == false) {
       if (localidades != null && writingProvincia == false && writingLocalidad == true) {
@@ -247,12 +246,7 @@ class ListadoPaisesYProv extends Component {
                     longitude: parseFloat(localidadSelected.longitud)
                   }
                 }
-                console.log('----- UBICACIÓN CONFIRMADA -----')
-                //console.log(localidadSelected)
-                //console.log('--------------------------------')
                 setCoordenadas(posicion, FILTRAR_CANTIDAD)
-                console.log(posicion)
-                console.log('--------------------------------')
                 this.props.navigation.navigate("ListaSucursales")
               }}
             ></Button>
@@ -277,7 +271,7 @@ class ListadoPaisesYProv extends Component {
   }
 
   render() {
-    const { provincias, localidades, provinciaSelected, localidadSelected } = this.state
+    const { provincias } = this.state
 
     if (provincias == null) {
       return (

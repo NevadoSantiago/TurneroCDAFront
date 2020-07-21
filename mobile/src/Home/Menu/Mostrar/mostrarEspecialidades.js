@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, Alert } from 'react-native';
 import { connect } from "react-redux";
-import { ListItem, withTheme, Icon, Overlay, ButtonGroup } from "react-native-elements";
+import { ListItem, withTheme } from "react-native-elements";
 import styles from '../../../../App.scss'
 import TouchableScale from "react-native-touchable-scale";
-import { URL_API, URL_API_ESPECIALIDAD } from '../constantes/urlApi'
+import { URL_API } from '../constantes/urlApi'
 import {
   SET_SUCURSALES,
   SET_ESPECIALIDAD, SET_COORDENADAS, FILTRAR_CANTIDAD, FILTRAR_DISTANCIA, SET_FILTRO, FILTRAR_NOMBRE
@@ -24,7 +23,7 @@ class MostrarEspecialidades extends Component {
 
 
   getSucursalesOrdenadoCantidad = async (idEspecialidad) => {
-    const {setSucursales} = this.props
+    const { setSucursales } = this.props
     var url;
     url = URL_API + "/api/sucursal/filtrar/cantidadPersonas/" + idEspecialidad
 
@@ -39,11 +38,11 @@ class MostrarEspecialidades extends Component {
       );
   }
 
-  
   async navegarListaSucursales(idEspecialidad) {
     await this.getSucursalesOrdenadoCantidad(idEspecialidad)
     this.encontrarCoordenadas(FILTRAR_DISTANCIA)
   }
+  
   encontrarCoordenadas = async (filtro) => {
     const { setCoordenadas } = this.props
     await navigator.geolocation.getCurrentPosition(
@@ -60,8 +59,7 @@ class MostrarEspecialidades extends Component {
   };
 
   render() {
-    const { especialidad, setEspecialidad, theme, idEspecialidad } = this.props
-    const { selectedIndex } = this.state
+    const { especialidad, setEspecialidad } = this.props
     var color, textColor
     color = styles.gray.color
     textColor = styles.dark.color
@@ -101,7 +99,6 @@ class MostrarEspecialidades extends Component {
     )
   }
 }
-
 
 const mapDispatchToProps = (dispatch) => {
   return {

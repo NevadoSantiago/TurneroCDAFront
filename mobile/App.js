@@ -1,18 +1,15 @@
 import React from 'react';
-import { View, Text, StatusBar } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import ReducerStore from './src/ruduxFile/store'
 import HomeScreen from './src/Home'
-import {ThemeProvider } from 'react-native-elements';
+import { ThemeProvider } from 'react-native-elements';
 import Reservas from './src/Home/Menu/reservas'
-import DatosTablas from './src/Home/Menu/reservas/datosTablas'
 import ListaSucursales from './src/Home/Menu/reservas/listaSucursales'
 import ListadoPaisesYProv from './src/Home/Menu/reservas/listadoPaisesYProv'
-import ListaTiendas from './src/Home/Menu/reservas/listaTiendas'
-import ListaTurnos from './src/Home/Menu/reservas/listaTurnos'
 import { AppLoading } from 'expo';
 import * as Font from 'expo-font'
 import ListaEspecialidades from './src/Home/Menu/reservas/listaEspecialidades'
@@ -27,7 +24,6 @@ const theme = {
   },
   Button: {
     raised: true,
-    //type: "clear",
     titleStyle: {
       fontFamily: 'Nunito'
     }
@@ -45,33 +41,31 @@ const theme = {
   }
 };
 
-const AppNavigator = createStackNavigator(  
-  {  
-      Home: HomeScreen,  
-      Reservas: Reservas,
-      ListaTiendas: ListaTiendas,
-      ListaSucursales: ListaSucursales,
-      ListaTurnos: ListaTurnos,
-      DatosTablas : DatosTablas,
-      ListaEspecialidades : ListaEspecialidades,
-      ListadoPaisesYProv : ListadoPaisesYProv, 
-      IngresoSintomas : IngresoSintomas,
-  },  
-  {  
-      initialRouteName: "Home"  
-  }  
-);  
-const AppContainer = createAppContainer(AppNavigator); 
+const AppNavigator = createStackNavigator(
+  {
+    Home: HomeScreen,
+    Reservas: Reservas,
+    ListaSucursales: ListaSucursales,
+    ListaEspecialidades: ListaEspecialidades,
+    ListadoPaisesYProv: ListadoPaisesYProv,
+    IngresoSintomas: IngresoSintomas,
+  },
+  {
+    initialRouteName: "Home"
+  }
+);
+
+const AppContainer = createAppContainer(AppNavigator);
 
 let store = createStore(ReducerStore);
 
-export default class App extends React.Component{
+export default class App extends React.Component {
 
   state = {
     isReady: false
   }
 
-  componentDidMount = async() => {
+  componentDidMount = async () => {
     await Font.loadAsync({
       Nunito: require('./assets/fonts/NunitoSans-Regular.ttf'),
       Nunito_bold: require('./assets/fonts/NunitoSans-Bold.ttf')
@@ -82,9 +76,9 @@ export default class App extends React.Component{
   render() {
     if (this.state.isReady) {
       return (
-        <Provider store = {store}>
+        <Provider store={store}>
           <ThemeProvider theme={theme}>
-            <AppContainer/>
+            <AppContainer />
           </ThemeProvider>
         </Provider>
       );
@@ -100,4 +94,3 @@ export default class App extends React.Component{
     }
   }
 }
-//export default App;

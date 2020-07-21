@@ -1,7 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import '../style.css';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 class Home extends React.Component {
 	constructor() {
@@ -10,9 +8,6 @@ class Home extends React.Component {
 
 		};
 	}
-	navegar = (e) =>{
-		console.log("NAVEGAR")
-	}
 
 	render() {
 		const {usuario,history} = this.props
@@ -20,7 +15,7 @@ class Home extends React.Component {
 			<React.Fragment>
 			<div className="hero-body">
 				<p className="title">{usuario}</p>
-				<p >Si no lees admin, no tendrias que estar aca</p>
+				<p >Si no lees admin o empleado, no tendrias que estar aca</p>
 			</div>
 			</React.Fragment>
 
