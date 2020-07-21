@@ -1,15 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { View, Text } from 'react-native'
-//import MostrarReserva from '../Mostrar/mostrarReserva'
 import MostrarReserva from '../Mostrar/mostrar'
 import { withTheme, Button } from 'react-native-elements';
 import styles from '../../../../App.scss'
 import { RESERVA_CANCELADA, LIMPIAR_SESION } from '../constantes/actionRedux'
-import ListaEspecialidades from './listaEspecialidades'
-import { URL_API_ESPECIALIDAD } from '../constantes/urlApi'
-import listaEspecialidades from './listaEspecialidades';
-
 
 class Reservas extends Component {
   constructor(props) {
@@ -18,6 +13,7 @@ class Reservas extends Component {
       seCanceloReserva: false,
     }
   }
+
   salir = () => {
     console.log("SALIO")
     const { cerrarSesion } = this.props
@@ -41,7 +37,6 @@ class Reservas extends Component {
         color: styles.primary.color
       },
     }
-
   };
 
   cancelarRes = () => {
@@ -52,9 +47,8 @@ class Reservas extends Component {
     cancelarReserva()
   }
 
-
   render() {
-    const { reserva, cancelarReserva } = this.props
+    const { reserva } = this.props
     const { seCanceloReserva } = this.state
     if (!seCanceloReserva && reserva != null) {
       return (
@@ -77,8 +71,6 @@ class Reservas extends Component {
         </View>
       )
     }
-
-
   }
 }
 
@@ -94,6 +86,5 @@ const mapStateToProps = state => {
     reserva: state.user.reserva,
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTheme(Reservas))

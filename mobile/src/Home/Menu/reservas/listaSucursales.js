@@ -11,15 +11,13 @@ import TouchableScale from "react-native-touchable-scale";
 import { ScrollView } from "react-native-gesture-handler";
 import { StyleSheet, KeyboardAvoidingView } from "react-native";
 import { withTheme, ListItem, Icon, Slider } from "react-native-elements";
-import { Input, Button, ButtonGroup, Overlay } from "react-native-elements";
+import { Input, Button, Overlay } from "react-native-elements";
 import { CALCULAR_DISTANCIA, SET_SUCURSAL, GUARDAR_RESERVA } from '../constantes/actionRedux'
 import MapView from "react-native-maps";
 import styles from '../../../../App.scss'
 import { getDistance } from 'geolib';
 import { Autocomplete } from "react-native-dropdown-autocomplete";
 import { URL_API_RESERVA } from '../constantes/urlApi'
-
-const imageWidth = Dimensions.get("window").width;
 
 class ListaSucursales extends Component {
   constructor(props) {
@@ -39,7 +37,6 @@ class ListaSucursales extends Component {
       wasSelected: false,
       sintomas: " "
     }
-    this.updateIndex = this.updateIndex.bind(this)
   }
   static navigationOptions = {
     title: 'Seleccione una sucursal',
@@ -55,30 +52,6 @@ class ListaSucursales extends Component {
       color: styles.primary.color
     },
   };
-
-  updateIndex(selectedIndex) {
-
-    switch (selectedIndex) {
-      case 0: // DISTANCIA 
-        this.setState({
-          isVisible: false
-        })
-        break;
-      case 1: // Personas en cola
-        this.setState({
-          isVisible: false
-        })
-        break;
-      case 2: //NOMBRE
-        this.setState({
-          isVisible: false
-        })
-        break;
-      default:
-        break;
-    }
-    this.setState({ selectedIndex })
-  }
 
   filtrarSucursalesDistancia(value) {
     this.props.sucursales.forEach(element => {
@@ -115,8 +88,8 @@ class ListaSucursales extends Component {
   }
 
   render() {
-    const { theme, updateTheme, replaceTheme, ubicacion, sucursales, calcularDistancia, setSucursal } = this.props;
-    const { selectedIndex, seCalculoDistancia, sucursalSelected, sucursalesFiltradas, wasSelected } = this.state
+    const { ubicacion, sucursales, calcularDistancia } = this.props;
+    const { seCalculoDistancia, sucursalSelected, sucursalesFiltradas, wasSelected } = this.state
 
     const { distancia } = this.state
     var latitude, longitude
@@ -192,12 +165,8 @@ class ListaSucursales extends Component {
               placeholder={this.state.textoSucursal}
               initialValue={(this.state && this.state.sucursalSelected)}
               handleSelectItem={(item, id) => {
-                const { onDropdownClose } = this.props;
                 this.setState({ sucursalSelected: item });
               }}
-              /*renderIcon={() => (
-                <Ionicons name="ios-add-circle-outline" size={20} color="#c7c6c1" style={{ position: "absolute", left: 28, top: 11, }} />
-              )}*/
               onDropdownShow={() => onDropdownShow()}
               inputStyle={{ borderWidth: 0, fontFamily: 'Nunito' }}
               separatorStyle={{ backgroundColor: 'black' }}
@@ -327,8 +296,6 @@ class ListaSucursales extends Component {
                         start: { x: 1, y: 3 },
                         end: { x: 0.1, y: 5 },
                       }}
-                      //leftAvatar={{ rounded: true, source: { uri: avatar_url } }}
-
                       title={data.nombre}
                       subtitle={data.direccion + '\nDistancia: ' + data.distanciaAPersona.toFixed(1) + 'km'}
                       rightIcon={(
@@ -356,8 +323,6 @@ class ListaSucursales extends Component {
                       }}
                       chevron={{ color: styles.white.color, size: 20 }}
                       onPress={(e) => {
-                        //setSucursal(data)
-                        //this.props.navigation.navigate('IngresoSintomas')
                         this.setState({
                           sucursalSelected: data,
                           isOverlayTurnoVisible: true
