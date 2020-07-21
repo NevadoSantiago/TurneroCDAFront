@@ -19,7 +19,6 @@ class MostrarEspecialidades extends Component {
       selectedIndex: null,
       sucursalesCargadas: null
     }
-    this.updateIndex = this.updateIndex.bind(this)
   }
 
 
@@ -39,42 +38,11 @@ class MostrarEspecialidades extends Component {
       );
   }
 
-
-  navegarListaSucursales(idEspecialidad) {
-    this.getSucursalesOrdenadoCantidad(idEspecialidad)
+  async navegarListaSucursales(idEspecialidad) {
+    await this.getSucursalesOrdenadoCantidad(idEspecialidad)
     this.encontrarCoordenadas(FILTRAR_DISTANCIA)
   }
-
-  updateIndex(selectedIndex) {
-
-    switch (selectedIndex) {
-      case 0:
-        this.getSucursales()
-        this.encontrarCoordenadas(FILTRAR_DISTANCIA)
-        this.setState({
-          isVisible: false
-        })
-        break;
-      case 1:
-        this.getSucursalesOrdenadoCantidad()
-        { this.props.nav.navigate("ListaSucursales") }
-        this.setState({
-          isVisible: false
-        })
-        break;
-      case 2:
-        this.getSucursales()
-        this.encontrarCoordenadas(FILTRAR_CANTIDAD)
-        this.setState({
-          isVisible: false
-        })
-        break;
-      default:
-        break;
-    }
-    this.setState({ selectedIndex })
-  }
-
+  
   encontrarCoordenadas = async (filtro) => {
     const { setCoordenadas } = this.props
     await navigator.geolocation.getCurrentPosition(
