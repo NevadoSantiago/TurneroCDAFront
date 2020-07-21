@@ -26,6 +26,13 @@ export default class Navbar extends React.Component {
                         <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Home</NavLink>
                         <NavLink to="/about" className="navbar-item" activeClassName='navbar-item active'>About</NavLink>
                     </div>
+                    <div className="navbar-end">
+                        <div className="navbar-item">
+                            <div className="buttons">
+                                <NavLink to="/login" className="button is-primary" activeClassName='button is-warning'>Iniciar sesión</NavLink>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </nav>
         )
