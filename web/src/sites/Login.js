@@ -56,7 +56,6 @@ class Login extends React.Component {
               console.log(myJson)
               iniciarSesion(myJson)
             })
-          this.props.history.push("/about")
         } else {
           this.setState({ error: "Datos Incorrectos" })
         }
