@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Component } from "react";
 import { connect } from 'react-redux';
 import {
   StyleSheet,
@@ -6,7 +6,6 @@ import {
   View,
   Animated,
   Image,
-  TouchableOpacity,
   Dimensions,
   Platform,
   Alert,
@@ -16,42 +15,44 @@ import { MAP_STYLE } from '../constantes/mapStyle'
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { URL_API_RESERVA } from '../constantes/urlApi'
 import style from '../../../../App.scss'
-
 import { withTheme } from 'react-native-elements';
 
+let mapIndex = 0;
+let mapAnimation = new Animated.Value(0);
 const { width } = Dimensions.get("window");
 const CARD_HEIGHT = 180;
 const CARD_WIDTH = width * 0.9;
 const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
-
-const MostrarReserva = (props) => {
-  const { turno } = props
-
-  const initialMapState = {
-    isVisible: false,
-    selectedIndex: null,
-    markers: [
-      {
-        coordinate: {
-          latitude: parseFloat(turno.latitud),
-          longitude: parseFloat(turno.longitud),
-        },
-        title: turno.nombreSucursal,
-        description: turno.direccion
+class MostrarReserva extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isVisible: false,
+      selectedIndex: null,
+      markers: [
+        {
+          coordinate: {
+            latitude: parseFloat(this.props.turno.latitud),
+            longitude: parseFloat(this.props.turno.longitud),
+          },
+          title: this.props.turno.nombreSucursal,
+          description: this.props.turno.direccion
+        }
+      ],
+      region: {
+        latitude: parseFloat(this.props.turno.latitud),
+        longitude: parseFloat(this.props.turno.longitud),
+        latitudeDelta: 0.0012,
+        longitudeDelta: 0.01,
       }
-    ],
-    region: {
-      latitude: parseFloat(turno.latitud),
-      longitude: parseFloat(turno.longitud),
-      latitudeDelta: 0.0012,
-      longitudeDelta: 0.01,
-    },
-  };
-  async function cancelarReserva() {
-    var url;
+    }
+  }
 
-    url = URL_API_RESERVA + "/api/reserva/cancelar/" + turno.idReserva
+  cancelarReserva = async () => {
+    const { turno } = this.props
+    var url = URL_API_RESERVA + "/api/reserva/cancelar/" + turno.idReserva
+    
     console.log(url)
     await fetch(url, {
       method: 'POST'
@@ -60,23 +61,18 @@ const MostrarReserva = (props) => {
         return response.json();
       })
       .then(
-        function (myJson) {
-          { props.cancelar() }
-          props.nav.navigate("ListaEspecialidades")
+        function () {
+          { this.props.cancelar() }
+          this.props.navigation.navigate("ListaEspecialidades")
         }.bind(this)
       );
   }
 
-  const [state, setState] = React.useState(initialMapState);
-
-  let mapIndex = 0;
-  let mapAnimation = new Animated.Value(0);
-
-  useEffect(() => {
+  useEffect = () => {
     mapAnimation.addListener(({ value }) => {
       let index = Math.floor(value / CARD_WIDTH + 0.3); // animate 30% away from landing on the next item
-      if (index >= state.markers.length) {
-        index = state.markers.length - 1;
+      if (index >= this.state.markers.length) {
+        index = this.state.markers.length - 1;
       }
       if (index <= 0) {
         index = 0;
@@ -87,64 +83,21 @@ const MostrarReserva = (props) => {
       const regionTimeout = setTimeout(() => {
         if (mapIndex !== index) {
           mapIndex = index;
-          const { coordinate } = state.markers[index];
+          const { coordinate } = this.state.markers[index];
           _map.current.animateToRegion(
             {
               ...coordinate,
-              latitudeDelta: state.region.latitudeDelta,
-              longitudeDelta: state.region.longitudeDelta,
+              latitudeDelta: this.state.region.latitudeDelta,
+              longitudeDelta: this.state.region.longitudeDelta,
             },
             350
           );
         }
       }, 10);
     });
-  });
+  };
 
-  const interpolations = state.markers.map((marker, index) => {
-    const inputRange = [
-      (index - 1) * CARD_WIDTH,
-      index * CARD_WIDTH,
-      ((index + 1) * CARD_WIDTH),
-    ];
-
-    const scale = mapAnimation.interpolate({
-      inputRange,
-      outputRange: [1, 1.5, 1],
-      extrapolate: "clamp"
-    });
-
-    return { scale };
-  });
-
-  const updateIndex = (selectedIndex) => {
-
-    switch (selectedIndex) {
-      case 0: // DISTANCIA 
-        setState({
-          isVisible: false,
-          markers: state.markers
-        })
-        break;
-      case 1: // Personas en cola
-        setState({
-          isVisible: false,
-          markers: state.markers
-        })
-        break;
-      case 2: //NOMBRE
-        setState({
-          isVisible: false,
-          markers: state.markers
-        })
-        break;
-      default:
-        break;
-    }
-    setState({ selectedIndex, markers: state.markers })
-  }
-
-  const onMarkerPress = (mapEventData) => {
+  onMarkerPress = (mapEventData) => {
     const markerID = mapEventData._targetInst.return.key;
 
     let x = (markerID * CARD_WIDTH) + (markerID * 20);
@@ -153,200 +106,141 @@ const MostrarReserva = (props) => {
     }
   }
 
-  const _map = React.useRef(null);
-  const _scrollView = React.useRef(null);
-  const apiQR = URL_API_RESERVA + '/api/reserva/QR/' + turno.idReserva;
-  return (
-    <View style={styles.container}>
-      <Overlay
-        isVisible={state.isVisible}
-        onBackdropPress={() => { setState({ isVisible: false, markers: state.markers }) }}
-        overlayStyle={{ padding: -100, width: '75%' }}
-      >
-        <React.Fragment>
-          <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold', fontSize: 19 }}>
-            Código QR
+  render() {
+    const { isVisible, selectedIndex, region, markers } = this.state
+    const { turno } = this.props
+    return (
+      <View style={styles.container}>
+        <Overlay
+          isVisible={isVisible}
+          onBackdropPress={() => { this.setState({ isVisible: false, markers: markers }) }}
+          overlayStyle={{ padding: -100, width: '75%' }}
+        >
+          <React.Fragment>
+            <Text style={{ alignSelf: 'center', padding: 15, fontFamily: 'Nunito_bold', fontSize: 19 }}>
+              Código QR
         </Text>
-          <View style={{ height: 240 }}>
-            <Image
-              source={{ uri: apiQR }}
-              style={{ width: '100%', height: '100%', alignSelf: 'center', marginTop: -10 }}
-            >
-            </Image>
-          </View>
-          <ButtonGroup
-            onPress={() => { setState({ isVisible: false, markers: state.markers }) }}
-            selectedIndex={state.selectedIndex}
-            buttons={['OK']}
-            containerStyle={{ height: 45, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: style.dark.color }}
-            textStyle={{ fontFamily: 'Nunito' }}
-            vertical={true}
-          />
-        </React.Fragment>
-      </Overlay>
-      <MapView
-        ref={_map}
-        initialRegion={state.region}
-        style={styles.container}
-        provider={PROVIDER_GOOGLE}
-        customMapStyle={MAP_STYLE}
-      >
-        {state.markers.map((marker, index) => {
-          const scaleStyle = {
-            transform: [
+            <View style={{ height: 240 }}>
+              <Image
+                source={{ uri: URL_API_RESERVA + '/api/reserva/QR/' + turno.idReserva }}
+                style={{ width: '100%', height: '100%', alignSelf: 'center', marginTop: -10 }}
+              >
+              </Image>
+            </View>
+            <ButtonGroup
+              onPress={() => { this.setState({ isVisible: false, markers: markers }) }}
+              selectedIndex={selectedIndex}
+              buttons={['OK']}
+              containerStyle={{ height: 45, width: '100%', alignSelf: 'center', marginBottom: 0, marginTop: 0, borderWidth: 0, borderRadius: 0, borderBottomEndRadius: 3, borderBottomStartRadius: 3, borderTopWidth: 2, borderTopColor: style.dark.color }}
+              textStyle={{ fontFamily: 'Nunito' }}
+              vertical={true}
+            />
+          </React.Fragment>
+        </Overlay>
+        <MapView
+          initialRegion={region}
+          style={styles.container}
+          provider={PROVIDER_GOOGLE}
+          customMapStyle={MAP_STYLE}
+        >
+          {markers.map((marker, index) => {
+            const scaleStyle = {
+            };
+            return (
+              <MapView.Marker key={index} coordinate={marker.coordinate} onPress={(e) => this.onMarkerPress(e)} title={turno.nombreSucursal} description={turno.direccion}>
+                <Animated.View style={[styles.markerWrap]}>
+                  <Animated.Image
+                    source={require('../../../../assets/map_marker.png')}
+                    style={[styles.marker, scaleStyle]}
+                    resizeMode="cover"
+                  />
+                </Animated.View>
+              </MapView.Marker>
+            );
+          })}
+        </MapView>
+
+        <Animated.ScrollView
+          horizontal
+          pagingEnabled
+          scrollEventThrottle={1}
+          showsHorizontalScrollIndicator={false}
+          snapToInterval={CARD_WIDTH + 20}
+          snapToAlignment="center"
+          style={styles.scrollView}
+          contentInset={{
+            top: 0,
+            left: SPACING_FOR_CARD_INSET,
+            bottom: 0,
+            right: SPACING_FOR_CARD_INSET
+          }}
+          contentContainerStyle={{
+            paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0
+          }}
+          onScroll={Animated.event(
+            [
               {
-                scale: interpolations[index].scale,
+                nativeEvent: {
+                  contentOffset: {
+                    x: mapAnimation,
+                  }
+                },
               },
             ],
-          };
-          return (
-            <MapView.Marker key={index} coordinate={marker.coordinate} onPress={(e) => onMarkerPress(e)} title={turno.nombreSucursal} description={turno.direccion}>
-              <Animated.View style={[styles.markerWrap]}>
-                <Animated.Image
-                  source={require('../../../../assets/map_marker.png')}
-                  style={[styles.marker, scaleStyle]}
-                  resizeMode="cover"
-                />
-              </Animated.View>
-            </MapView.Marker>
-          );
-        })}
-      </MapView>
-
-      <Animated.ScrollView
-        ref={_scrollView}
-        horizontal
-        pagingEnabled
-        scrollEventThrottle={1}
-        showsHorizontalScrollIndicator={false}
-        snapToInterval={CARD_WIDTH + 20}
-        snapToAlignment="center"
-        style={styles.scrollView}
-        contentInset={{
-          top: 0,
-          left: SPACING_FOR_CARD_INSET,
-          bottom: 0,
-          right: SPACING_FOR_CARD_INSET
-        }}
-        contentContainerStyle={{
-          paddingHorizontal: Platform.OS === 'android' ? SPACING_FOR_CARD_INSET : 0
-        }}
-        onScroll={Animated.event(
-          [
-            {
-              nativeEvent: {
-                contentOffset: {
-                  x: mapAnimation,
-                }
-              },
-            },
-          ],
-          { useNativeDriver: true }
-        )}
-      >
-        {state.markers.map((marker, index) => (
-          <View style={styles.card} key={index}>
-            <View style={styles.textContent}>
-              <View>
-                <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
-                  <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
-                  <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
-                  <Text numberOfLines={1} style={styles.cardtitle}>-</Text>
-                  <Text numberOfLines={1} style={styles.cardDescription}>{turno.sintomas}</Text>
+            { useNativeDriver: true }
+          )}
+        >
+          {markers.map((marker, index) => (
+            <View style={styles.card} key={index}>
+              <View style={styles.textContent}>
+                <View>
+                  <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
+                    <Text numberOfLines={1} style={styles.cardtitle}>{marker.title}</Text>
+                    <Text numberOfLines={1} style={styles.cardDescription}>{marker.description}</Text>
+                    <Text numberOfLines={1} style={styles.cardtitle}>-</Text>
+                    <Text numberOfLines={1} style={styles.cardDescription}>{turno.sintomas}</Text>
+                  </View>
+                  <View style={{ alignSelf: 'flex-end', marginTop: -10, marginRight: -7 }}>
+                    <Icon
+                      raised
+                      name='qrcode'
+                      type='font-awesome'
+                      color={style.black.color}
+                      onPress={() => { console.log(markers), this.setState({ isVisible: true, markers: markers }) }} />
+                  </View>
                 </View>
-                <View style={{ alignSelf: 'flex-end', marginTop: -10, marginRight: -7 }}>
-                  <Icon
-                    raised
-                    name='qrcode'
-                    type='font-awesome'
-                    color={style.black.color}
-                    onPress={() => { console.log(state.markers), setState({ isVisible: true, markers: state.markers }) }} />
+                <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}>
+                  <Button
+                    buttonStyle={{ backgroundColor: style.secondary.color, borderRadius: 15, height: 50 }}
+                    titleStyle={{
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      fontFamily: 'Nunito_bold',
+                      width: '100%'
+                    }}
+                    title="Cancelar turno"
+                    onPress={() => {
+                      Alert.alert('Cancelar', '¿Seguro que desea cancelar la reserva?',
+                        [
+                          { text: 'SI', onPress: () => this.cancelarReserva() },
+                          { text: 'NO', onPress: () => { console.warn('NO pressed') } }
+                        ]
+                      )
+                    }}
+                  ></Button>
                 </View>
-              </View>
-              <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}>
-                <Button
-                  buttonStyle={{ backgroundColor: style.secondary.color, borderRadius: 15, height: 50 }}
-                  titleStyle={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    fontFamily: 'Nunito_bold',
-                    width: '100%'
-                  }}
-                  title="Cancelar turno"
-                  onPress={() => {
-                    Alert.alert('Cancelar', '¿Seguro que desea cancelar la reserva?',
-                      [
-                        { text: 'SI', onPress: () => cancelarReserva() },
-                        { text: 'NO', onPress: () => { console.warn('NO pressed') } }
-                      ]
-                    )
-                  }}
-                ></Button>
               </View>
             </View>
-          </View>
-        ))}
-      </Animated.ScrollView>
-    </View >
-  );
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-  };
-}
-
-const mapStateToProps = state => {
-  return {
-    reserva: state.user.reserva,
+          ))}
+        </Animated.ScrollView>
+      </View >
+    )
   }
 }
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withTheme(MostrarReserva));
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  searchBox: {
-    position: 'absolute',
-    marginTop: Platform.OS === 'ios' ? 40 : 20,
-    flexDirection: "row",
-    backgroundColor: '#fff',
-    width: '90%',
-    alignSelf: 'center',
-    borderRadius: 5,
-    padding: 10,
-    shadowColor: '#ccc',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    elevation: 10,
-  },
-  chipsScrollView: {
-    position: 'absolute',
-    top: Platform.OS === 'ios' ? 90 : 80,
-    paddingHorizontal: 10
-  },
-  chipsIcon: {
-    marginRight: 5,
-  },
-  chipsItem: {
-    flexDirection: "row",
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 8,
-    paddingHorizontal: 20,
-    marginHorizontal: 10,
-    height: 35,
-    shadowColor: '#ccc',
-    shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.5,
-    shadowRadius: 5,
-    elevation: 10,
   },
   scrollView: {
     position: "absolute",
@@ -354,9 +248,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     paddingVertical: 10,
-  },
-  endPadding: {
-    paddingRight: width - CARD_WIDTH,
   },
   card: {
     elevation: 2,
@@ -370,12 +261,6 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     width: CARD_WIDTH,
     overflow: "hidden"
-  },
-  cardImage: {
-    flex: 3,
-    width: "100%",
-    height: "100%",
-    alignSelf: "center",
   },
   textContent: {
     flex: 1,
@@ -404,19 +289,20 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
-  button: {
-    alignItems: 'center',
-    marginTop: 5
-  },
-  signIn: {
-    width: '100%',
-    padding: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 3
-  },
-  textSign: {
-    fontSize: 14,
-    fontWeight: 'bold'
-  }
 });
+
+const mapDispatchToProps = dispatch => {
+  return {
+  };
+}
+
+const mapStateToProps = state => {
+  return {
+    reserva: state.user.reserva,
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTheme(MostrarReserva));
