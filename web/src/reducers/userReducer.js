@@ -1,26 +1,24 @@
+import {INICIAR_SESION} from '../constantes/actionRedux'
 
 const initialState={
-    mail: null,
-    idUsuario:null,
-    nombre: null,
-    loading:true,
-    nuevoTurno:false,
-    reserva:null,
-    ubicacion:null,
-    filtro:null
+    usuario : null,
+    tipoUsuario : null,
+    idUsuario : null,
+    idSucursal : null
 };
 
 const UserReducer = (state = initialState, action) => {
     var datos = action.data
     
     switch(action.type){   
-        case("INICIAR_SESION"):{
+        case(INICIAR_SESION):{
+            debugger
             return{
                 ...state,
-                idUsuario : datos.idCliente,
-                reserva : datos.detalleReserva,
-                nombre: datos.nombre,
-                loading : false
+                usuario : datos.usuario,
+                tipoUsuario:datos.tipoUsuario,
+                idUsuario:datos.idUsuario,
+                idSucursal:datos.sucursalId
             }
         }
         default:{
