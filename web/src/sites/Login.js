@@ -55,7 +55,6 @@ class Login extends React.Component {
               console.log(myJson)
               iniciarSesion(myJson)
             })
-          this.props.history.push("/about")
         } else {
           this.setState({ error: "Datos incorrectos" })
         }
@@ -65,6 +64,10 @@ class Login extends React.Component {
 
   render() {
     const { error } = this.state;
+    const { estaLogueado } = this.props
+    if (estaLogueado) {
+      this.props.history.push("/home")
+    }
     return (
       <div className="hero-body">
         <form onSubmit={this.login}>
@@ -99,6 +102,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return {
     usuario: state.user.usuario,
+    estaLogueado: state.user.estaLogueado
   };
 };
 

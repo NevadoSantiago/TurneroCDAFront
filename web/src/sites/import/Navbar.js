@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import '../../style.css';
 import { connect } from 'react-redux'
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import {CERRAR_SESION} from "../../constantes/actionRedux"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class Navbar extends React.Component {
@@ -11,6 +12,10 @@ class Navbar extends React.Component {
         this.state = {
 
         };
+    }
+    cerrarSesion = () =>{
+        const {cerrarSesion} = this.props
+        cerrarSesion()
     }
 
     render() {
@@ -51,7 +56,7 @@ class Navbar extends React.Component {
                             </div>
                             <div className="navbar-item">
                                 <div className="buttons">
-                                    <NavLink to="#" className="button is-danger" activeClassName='button is-warning'>Cerrar sesión</NavLink>
+                                    <NavLink to="/login" onClick={() => this.cerrarSesion()} className="button is-danger" activeClassName='button is-warning'>Cerrar sesión</NavLink>                             
                                 </div>
                             </div>
                         </div>
@@ -89,6 +94,7 @@ class Navbar extends React.Component {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
+        cerrarSesion: (datos) => dispatch({ type: CERRAR_SESION }),
     };
 };
 

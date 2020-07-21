@@ -11,7 +11,7 @@ class About extends React.Component {
 	}
 
 	render() {
-		const { usuario, tipoUsuario } = this.props
+		const { tipoUsuario } = this.props
 		return (
 			<div className="hero-body">
 				<p className="title">{tipoUsuario}</p>
@@ -24,7 +24,7 @@ class About extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		usuario: state.user.usuario,
+		tipoUsuario: state.user.tipoUsuario,
 	};
 };
 
