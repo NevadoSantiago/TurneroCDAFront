@@ -1,7 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import '../style.css';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 class About extends React.Component {
 	constructor() {
@@ -12,7 +11,7 @@ class About extends React.Component {
 	}
 
 	render() {
-		const {usuario} = this.props
+		const { usuario } = this.props
 		return (
 			<div className="hero-body">
 				<p className="title">{usuario}</p>
@@ -20,18 +19,17 @@ class About extends React.Component {
 		);
 	}
 }
+
 const mapDispatchToProps = (dispatch) => {
-    return {
-      iniciarSesion: (datos) => dispatch({ type: "INICIAR_SESION", data: datos }),
-    };
-  };
-  
+	return {
+		iniciarSesion: (datos) => dispatch({ type: "INICIAR_SESION", data: datos }),
+	};
+};
+
 const mapStateToProps = (state) => {
-    return {
-      usuario: state.user.usuario,
-    };
-  };
-  
+	return {
+		usuario: state.user.usuario,
+	};
+};
 
-
-export default connect(mapStateToProps,mapDispatchToProps)(About)
+export default connect(mapStateToProps, mapDispatchToProps)(About)

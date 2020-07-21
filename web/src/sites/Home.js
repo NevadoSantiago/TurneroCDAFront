@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { connect } from 'react-redux'
 
-export default class Home extends React.Component {
+class Home extends React.Component {
 	constructor() {
 		super();
 		this.state = {
@@ -10,10 +10,33 @@ export default class Home extends React.Component {
 	}
 
 	render() {
-		return (
-			<div className="hero-body">
-				<p className="title">Inicio</p>
-			</div>
-		);
+		const { usuario } = this.props
+		if (usuario != null) {
+			return (
+				<div className="hero-body">
+					<p className="title">{'Hola ' + usuario}</p>
+				</div>
+			);
+		} else {
+			return (
+				<div className="hero-body">
+					<p className="title">Home</p>
+				</div>
+			);
+		}
 	}
 }
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		iniciarSesion: (datos) => dispatch({ type: "INICIAR_SESION", data: datos }),
+	};
+};
+
+const mapStateToProps = (state) => {
+	return {
+		usuario: state.user.usuario,
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
