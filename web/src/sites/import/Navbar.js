@@ -14,7 +14,7 @@ class Navbar extends React.Component {
     }
 
     render() {
-        const { usuario } = this.props
+        const { usuario, autorizado, autorizado2, tipoUsuario } = this.props
 
         if (usuario != null) {
             return (
@@ -33,14 +33,24 @@ class Navbar extends React.Component {
                             <NavLink to="/about" className="navbar-item" activeClassName='navbar-item active'>About</NavLink>
                         </div>
                         <div className="navbar-end">
+                            <div className="navbar-item has-dropdown is-hoverable">
+                                <div className="navbar-item">
+                                    <span className="icon has-text-info">
+                                        <FontAwesomeIcon icon={faUser} />
+                                    </span>
+                                    <span>{usuario}</span>
+                                </div>
+                                <div className="navbar-dropdown">
+                                    <p class="navbar-item">
+                                        {autorizado}
+                                    </p>
+                                    <p class="navbar-item">
+                                        {autorizado2}
+                                    </p>
+                                </div>
+                            </div>
                             <div className="navbar-item">
                                 <div className="buttons">
-                                    <NavLink to="#" className="button is-primary-light" activeClassName='button is-warning'>
-                                        <span className="icon has-text-info">
-                                            <FontAwesomeIcon icon={faUser} />
-                                        </span>
-                                        <span>{usuario}</span>
-                                    </NavLink>
                                     <NavLink to="#" className="button is-danger" activeClassName='button is-warning'>Cerrar sesión</NavLink>
                                 </div>
                             </div>

@@ -2,7 +2,6 @@ import React from 'react';
 import '../style.css';
 import { connect } from 'react-redux'
 
-
 class About extends React.Component {
 	constructor() {
 		super();
@@ -12,7 +11,7 @@ class About extends React.Component {
 	}
 
 	render() {
-		const { usuario } = this.props
+		const { usuario, tipoUsuario } = this.props
 		return (
 			<div className="hero-body">
 				<p className="title">{tipoUsuario}</p>

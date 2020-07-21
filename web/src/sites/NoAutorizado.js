@@ -11,7 +11,7 @@ export default class NoAutorizado extends React.Component {
 	render() {
 		return (
 			<div className="hero-body">
-				<p className="title">No esta autorizado</p>
+				<p className="title">No está autorizado</p>
 			</div>
 		);
 	}
