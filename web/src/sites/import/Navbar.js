@@ -3,9 +3,10 @@ import { NavLink } from "react-router-dom";
 import '../../style.css';
 import { connect } from 'react-redux'
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import {CERRAR_SESION} from "../../constantes/actionRedux"
-import {ADMIN, EMPLEADO} from '../../constantes/tiposUsuarios'
+import {SET_CONTROL_ES,SET_RECEPCIONISTAS,CERRAR_SESION} from "../../constantes/actionRedux"
+import {ADMIN, EMPLEADO, CONTROL_ES, RECEPCION} from '../../constantes/tiposUsuarios'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {getEmpleadoBySucursalYRol} from '../../servicios/AdminServices'
 
 class Navbar extends React.Component {
     constructor() {
@@ -18,9 +19,33 @@ class Navbar extends React.Component {
         const {cerrarSesion} = this.props
         cerrarSesion()
     }
+    getEmpleadosSucRol = async (idSucursal, rol) =>{
+        const {setControlES, setRecepcionistas,recepcionistas,controlES} = this.props
+    switch(rol){
+        case CONTROL_ES:{
+            if(controlES == null){
+                const empleados = await getEmpleadoBySucursalYRol(idSucursal, rol) 
+                setControlES(empleados)
+            }
+            break;
+        }
+        case RECEPCION:{
+            if(recepcionistas==null){
+                const empleados = await getEmpleadoBySucursalYRol(idSucursal, rol) 
+                setRecepcionistas(empleados)
+            }
+
+            break;
+        }
+        default:{
+            console.log("ERROR")
+            break;
+        }
+    }
+    }
 
     render() {
-        const { usuario, tipoUsuario } = this.props
+        const { usuario, tipoUsuario,sucursal} = this.props
 
         if (tipoUsuario != null) {
             switch(tipoUsuario){
@@ -45,14 +70,19 @@ class Navbar extends React.Component {
                                     </a>
 
                                     <div class="navbar-dropdown">
-                                    <a class="navbar-item" href="/listado/ES">
-                                        Control E/S
-                                    </a>
-                                    <a class="navbar-item" href="/listado/recepcion">
-                                        Recepción
-                                    </a>
-                                </div>
-                            </div>                               
+                                        <NavLink 
+                                        to="/listaES" 
+                                        onClick={()=>this.getEmpleadosSucRol(sucursal.sucursalId,CONTROL_ES)} 
+                                        className="navbar-item" activeClassName='navbar-item active'>
+                                        Control E/S</NavLink>
+                                        <NavLink 
+                                        to="/listaRecepcion" 
+                                        onClick={()=>this.getEmpleadosSucRol(sucursal.sucursalId,RECEPCION)} 
+                                        className="navbar-item"
+                                         activeClassName='navbar-item active'>
+                                        Recepcion</NavLink>
+                                    </div>
+                                </div>                               
 
                                 <div className="navbar-end">
                                     <div className="navbar-item has-dropdown is-hoverable">
@@ -145,14 +175,19 @@ class Navbar extends React.Component {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        cerrarSesion: (datos) => dispatch({ type: CERRAR_SESION }),
+        setControlES: (datos) => dispatch({ type: SET_CONTROL_ES, data:datos }),
+        setRecepcionistas: (datos) => dispatch({ type: SET_RECEPCIONISTAS, data:datos }),
+        cerrarSesion:()=>dispatch({type:CERRAR_SESION})
     };
 };
 
 const mapStateToProps = (state) => {
     return {
         usuario: state.user.usuario,
-        tipoUsuario: state.user.tipoUsuario
+        sucursal:state.user.sucursal,
+        tipoUsuario: state.user.tipoUsuario,
+        recepcionistas: state.empleado.recepcionistas,
+        controlES: state.empleado.controlES,
     };
 };
 

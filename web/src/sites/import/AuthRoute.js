@@ -8,7 +8,6 @@ class AuthRoutePrivate extends React.Component {
     }
     render() {
       const { tipoUsuario, path, component:Component, autorizado,autorizado2, ...props } = this.props
-      debugger
       return (
         <Route 
           {...props} 
