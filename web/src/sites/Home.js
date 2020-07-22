@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { ADMIN, EMPLEADO } from '../constantes/tiposUsuarios'
 import DatosSucursal from '../sites/mostrar/DatosSucursal'
+import Mapa from './mostrar/Mapa'
 
 class Home extends React.Component {
 	constructor() {
@@ -12,17 +13,14 @@ class Home extends React.Component {
 	}
 
 	render() {
-		const { usuario, history, tipoUsuario } = this.props
+		const {tipoUsuario } = this.props
 
 		switch (tipoUsuario) {
 			case EMPLEADO:
 				return (
 					<React.Fragment>
-						<div className="hero-body">
-							<p className="title">Sos un empleado</p>
-							<p className="subtitle">Datos de tu sucursal</p>
-						</div>
-					</React.Fragment>
+						<Mapa/>
+					</React.Fragment >
 				);
 			case ADMIN:
 				return (

@@ -45,11 +45,11 @@ class Navbar extends React.Component {
                                     </a>
 
                                     <div class="navbar-dropdown">
-                                    <a class="navbar-item">
+                                    <a class="navbar-item" href="/listado/ES">
                                         Control E/S
                                     </a>
-                                    <a class="navbar-item">
-                                        Recepcion
+                                    <a class="navbar-item" href="/listado/recepcion">
+                                        Recepción
                                     </a>
                                 </div>
                             </div>                               
