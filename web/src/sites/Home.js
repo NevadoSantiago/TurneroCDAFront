@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { ADMIN, EMPLEADO } from '../constantes/tiposUsuarios'
 import DatosSucursal from '../sites/mostrar/DatosSucursal'
-import Mapa from './mostrar/Mapa'
+import DashboardEmpleado from './mostrar/DashboardEmpleado'
 
 class Home extends React.Component {
 	constructor() {
@@ -13,20 +13,18 @@ class Home extends React.Component {
 	}
 
 	render() {
-		const {tipoUsuario } = this.props
+		const { tipoUsuario } = this.props
 
 		switch (tipoUsuario) {
 			case EMPLEADO:
 				return (
-					<React.Fragment>
-						<Mapa/>
-					</React.Fragment >
+					<DashboardEmpleado />
 				);
 			case ADMIN:
 				return (
 					<React.Fragment>
 						<div className="contenedorSucursal">
-							<DatosSucursal/>
+							<DatosSucursal />
 						</div>
 					</React.Fragment>
 				);
@@ -43,7 +41,6 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
 	return {
-		usuario: state.user.usuario,
 		tipoUsuario: state.user.tipoUsuario
 	};
 };
