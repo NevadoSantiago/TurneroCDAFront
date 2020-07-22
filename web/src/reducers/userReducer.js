@@ -4,7 +4,7 @@ const initialState={
     usuario : null,
     tipoUsuario : null,
     idUsuario : null,
-    idSucursal : null,
+    sucursal : null,
     estaLogueado : false
 };
 
@@ -18,7 +18,7 @@ const UserReducer = (state = initialState, action) => {
                 usuario : datos.usuario,
                 tipoUsuario:datos.tipoUsuario,
                 idUsuario:datos.idUsuario,
-                idSucursal:datos.sucursalId,
+                sucursal:datos.sucursal,
                 estaLogueado : true,
             }
         }
@@ -28,7 +28,7 @@ const UserReducer = (state = initialState, action) => {
                 usuario : null,
                 tipoUsuario:null,
                 idUsuario:null,
-                idSucursal:null,
+                sucursal:null,
                 estaLogueado:false
             }
         }
