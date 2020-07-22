@@ -4,6 +4,7 @@ import '../../style.css';
 import { connect } from 'react-redux'
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import {CERRAR_SESION} from "../../constantes/actionRedux"
+import {ADMIN, EMPLEADO} from '../../constantes/tiposUsuarios'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class Navbar extends React.Component {
@@ -21,45 +22,102 @@ class Navbar extends React.Component {
     render() {
         const { usuario, tipoUsuario } = this.props
 
-        if (usuario != null) {
-            return (
-                <nav className="navbar" role="navigation" aria-label="main navigation">
-                    <div className="navbar-brand">
-                        <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                        </a>
-                    </div>
+        if (tipoUsuario != null) {
+            switch(tipoUsuario){
+                case ADMIN:{
+                    return (
+                        <nav className="navbar" role="navigation" aria-label="main navigation">
+                            <div className="navbar-brand">
+                                <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                                    <span aria-hidden="true"></span>
+                                    <span aria-hidden="true"></span>
+                                    <span aria-hidden="true"></span>
+                                </a>
+                            </div>
+                            <div className="navbar-start">
+                                <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Inicio</NavLink>
+                            </div>
+        
+                            <div id="navbarBasicExample" class="navbar-menu">
+                                <div class="navbar-item has-dropdown is-hoverable">
+                                    <a class="navbar-link">
+                                    Administrador de Personal
+                                    </a>
 
-                    <div id="navbarBasicExample" class="navbar-menu">
-                        <div className="navbar-start">
-                            <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Home</NavLink>
-                            <NavLink to="/about" className="navbar-item" activeClassName='navbar-item active'>About</NavLink>
-                        </div>
-                        <div className="navbar-end">
-                            <div className="navbar-item has-dropdown is-hoverable">
-                                <div className="navbar-item">
-                                    <span className="icon has-text-info">
-                                        <FontAwesomeIcon icon={faUser} />
-                                    </span>
-                                    <span>{usuario}</span>
+                                    <div class="navbar-dropdown">
+                                    <a class="navbar-item">
+                                        Control E/S
+                                    </a>
+                                    <a class="navbar-item">
+                                        Recepcion
+                                    </a>
                                 </div>
-                                <div className="navbar-dropdown">
-                                    <p class="navbar-item">
-                                        {tipoUsuario}
-                                    </p>
+                            </div>                               
+
+                                <div className="navbar-end">
+                                    <div className="navbar-item has-dropdown is-hoverable">
+                                        <div className="navbar-item">
+                                            <span className="icon has-text-info">
+                                                <FontAwesomeIcon icon={faUser} />
+                                            </span>
+                                            <span>{usuario}</span>
+                                        </div>
+                                        <div className="navbar-dropdown">
+                                            <p class="navbar-item">
+                                                {tipoUsuario}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="navbar-item">
+                                        <div className="buttons">
+                                            <NavLink to="/login" onClick={() => this.cerrarSesion()} className="button is-danger" activeClassName='button is-warning'>Cerrar sesión</NavLink>                             
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="navbar-item">
-                                <div className="buttons">
-                                    <NavLink to="/login" onClick={() => this.cerrarSesion()} className="button is-danger" activeClassName='button is-warning'>Cerrar sesión</NavLink>                             
+                        </nav>
+                    )
+                }
+                case EMPLEADO:{
+                    return (
+                        <nav className="navbar" role="navigation" aria-label="main navigation">
+                            <div className="navbar-brand">
+                                <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                                    <span aria-hidden="true"></span>
+                                    <span aria-hidden="true"></span>
+                                    <span aria-hidden="true"></span>
+                                </a>
+                            </div>
+        
+                            <div id="navbarBasicExample" class="navbar-menu">
+                                <div className="navbar-start">
+                                    <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Home</NavLink>
+                                </div>
+                                <div className="navbar-end">
+                                    <div className="navbar-item has-dropdown is-hoverable">
+                                        <div className="navbar-item">
+                                            <span className="icon has-text-info">
+                                                <FontAwesomeIcon icon={faUser} />
+                                            </span>
+                                            <span>{usuario}</span>
+                                        </div>
+                                        <div className="navbar-dropdown">
+                                            <p class="navbar-item">
+                                                {tipoUsuario}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="navbar-item">
+                                        <div className="buttons">
+                                            <NavLink to="/login" onClick={() => this.cerrarSesion()} className="button is-danger" activeClassName='button is-warning'>Cerrar sesión</NavLink>                             
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </nav>
-            )
+                        </nav>
+                    )
+                }
+            }
         } else {
             return (
                 <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -72,10 +130,6 @@ class Navbar extends React.Component {
                     </div>
 
                     <div id="navbarBasicExample" class="navbar-menu">
-                        <div className="navbar-start">
-                            <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Home</NavLink>
-                            <NavLink to="/about" className="navbar-item" activeClassName='navbar-item active'>About</NavLink>
-                        </div>
                         <div className="navbar-end">
                             <div className="navbar-item">
                                 <div className="buttons">

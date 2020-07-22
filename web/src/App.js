@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import About from './sites/About'
+import AdministrarPersonal from './sites/AdministrarPersonal'
 import { ADMIN, EMPLEADO } from "./constantes/tiposUsuarios"
 import NoAutorizado from './sites/NoAutorizado'
 import Login from './sites/Login'
@@ -18,7 +18,7 @@ class App extends React.Component {
 					<Switch>
 						<Route exact path="/login" component={Login}></Route>
 						<Route path="/noAutorizado" component={NoAutorizado}></Route>
-						<AuthRoutePrivate path="/about" component={About} autorizado={ADMIN} autorizado2={null}></AuthRoutePrivate>
+						<AuthRoutePrivate path="/administrarPersona" component={AdministrarPersonal} autorizado={ADMIN} autorizado2={null}></AuthRoutePrivate>
 						<AuthRoutePrivate path="/" component={Home} autorizado={ADMIN} autorizado2={EMPLEADO} ></AuthRoutePrivate>
 					</Switch>
 				</div>

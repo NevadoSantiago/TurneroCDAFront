@@ -2,7 +2,7 @@ import React from 'react';
 import '../style.css';
 import { connect } from 'react-redux'
 
-class About extends React.Component {
+class AdministrarPersonal extends React.Component {
 	constructor() {
 		super();
 		this.state = {
@@ -28,4 +28,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, null)(About)
+export default connect(mapStateToProps, null)(AdministrarPersonal)

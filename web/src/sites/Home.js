@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { ADMIN, EMPLEADO } from '../constantes/tiposUsuarios'
+import DatosSucursal from '../sites/mostrar/DatosSucursal'
 
 class Home extends React.Component {
 	constructor() {
@@ -26,9 +27,8 @@ class Home extends React.Component {
 			case ADMIN:
 				return (
 					<React.Fragment>
-						<div className="hero-body">
-							<p className="title">Sos un administrador</p>
-							<p className="subtitle">Sucursales</p>
+						<div className="contenedorSucursal">
+							<DatosSucursal/>
 						</div>
 					</React.Fragment>
 				);
