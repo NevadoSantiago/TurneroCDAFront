@@ -19,7 +19,7 @@ class Navbar extends React.Component {
     }
 
     render() {
-        const { usuario, autorizado, autorizado2, tipoUsuario } = this.props
+        const { usuario, tipoUsuario } = this.props
 
         if (usuario != null) {
             return (
@@ -47,10 +47,7 @@ class Navbar extends React.Component {
                                 </div>
                                 <div className="navbar-dropdown">
                                     <p class="navbar-item">
-                                        {autorizado}
-                                    </p>
-                                    <p class="navbar-item">
-                                        {autorizado2}
+                                        {tipoUsuario}
                                     </p>
                                 </div>
                             </div>
@@ -101,6 +98,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
     return {
         usuario: state.user.usuario,
+        tipoUsuario: state.user.tipoUsuario
     };
 };
 

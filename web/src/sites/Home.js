@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
+import { ADMIN, EMPLEADO } from '../constantes/tiposUsuarios'
 
 class Home extends React.Component {
 	constructor() {
@@ -10,16 +11,30 @@ class Home extends React.Component {
 	}
 
 	render() {
-		const { usuario, history } = this.props
-		return (
-			<React.Fragment>
-				<div className="hero-body">
-					<p className="title">{usuario}</p>
-					<p >Si no lees admin o empleado, no tendrias que estar aca</p>
-				</div>
-			</React.Fragment>
+		const { usuario, history, tipoUsuario } = this.props
 
-		);
+		switch (tipoUsuario) {
+			case EMPLEADO:
+				return (
+					<React.Fragment>
+						<div className="hero-body">
+							<p className="title">Sos un empleado</p>
+							<p className="subtitle">Datos de tu sucursal</p>
+						</div>
+					</React.Fragment>
+				);
+			case ADMIN:
+				return (
+					<React.Fragment>
+						<div className="hero-body">
+							<p className="title">Sos un administrador</p>
+							<p className="subtitle">Sucursales</p>
+						</div>
+					</React.Fragment>
+				);
+			default:
+				break;
+		}
 	}
 }
 const mapDispatchToProps = (dispatch) => {
@@ -31,6 +46,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
 	return {
 		usuario: state.user.usuario,
+		tipoUsuario: state.user.tipoUsuario
 	};
 };
 

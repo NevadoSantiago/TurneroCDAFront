@@ -13,7 +13,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<Router>
-				<NavBar autorizado={ADMIN} autorizado2={EMPLEADO} />
+				<NavBar />
 				<div className="container">
 					<Switch>
 						<Route exact path="/login" component={Login}></Route>
