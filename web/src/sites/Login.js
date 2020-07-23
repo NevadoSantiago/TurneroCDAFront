@@ -51,8 +51,6 @@ class Login extends React.Component {
         if (response.status == 200) {
           const json = response.json()
             .then(myJson => {
-              debugger
-              console.log(myJson)
               iniciarSesion(myJson)
             })
         } else {

@@ -12,7 +12,6 @@ const UserReducer = (state = initialState, action) => {
     var datos = action.data
     switch(action.type){   
         case(INICIAR_SESION):{
-            debugger
             return{
                 ...state,
                 usuario : datos.usuario,
