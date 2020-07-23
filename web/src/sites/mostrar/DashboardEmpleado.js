@@ -10,7 +10,9 @@ class DashboardEmpleado extends React.Component {
     constructor(props) {
         super();
         this.state = {
-            highlightEnEspera: false
+            highlightNuevoEnEspera: false,
+            highlightUnoMenosEnEspera: false,
+            highlight: false
         }
     }
     getEspecialidades = async (idSucursal) => {
@@ -21,13 +23,24 @@ class DashboardEmpleado extends React.Component {
     getCantidadDeGenteEnEspera = async () => {
         const { sucursal, setCantidadDeGente, cantidadGente } = this.props
         const cant = await getCantGenteEnSucursal(sucursal.sucursalId)
-        if (cant != cantidadGente) {
-            console.log('cambio')
+        if (cant > cantidadGente) {
             this.setState({
-                highlightEnEspera: true
+                highlightNuevoEnEspera: true,
+                highlight: true
             })
             setInterval(() => this.setState({
-                highlightEnEspera: false
+                highlightNuevoEnEspera: false,
+                highlight: false
+            }), 3000)
+        }
+        else if (cant < cantidadGente) {
+            this.setState({
+                highlightUnoMenosEnEspera: true,
+                highlight: true
+            })
+            setInterval(() => this.setState({
+                highlightUnoMenosEnEspera: false,
+                highlight: false
             }), 2000)
         }
         setCantidadDeGente(cant)
@@ -41,7 +54,7 @@ class DashboardEmpleado extends React.Component {
 
     render() {
         const { usuario, sucursal, cantidadGente } = this.props
-        const { highlightEnEspera } = this.state
+        const { highlight, highlightNuevoEnEspera, highlightUnoMenosEnEspera } = this.state
         this.getCantidadDeGenteEnEspera()
         return (
             <React.Fragment>
@@ -58,7 +71,8 @@ class DashboardEmpleado extends React.Component {
                         </div>
                         <div className="column" style={{ display: 'flex', margin: '-10px' }}>
                             <div
-                                className={`${highlightEnEspera ? "highlighted" : "highlight-whitesmoke"}`}
+                                className={
+                                    `${highlight ? highlightNuevoEnEspera ? "highlighted" : highlightUnoMenosEnEspera ? "highlighted-error" : "highlight-whitesmoke" : "highlight-whitesmoke"}`}
                                 style={{
                                     //backgroundColor: 'whitesmoke', 
                                     textAlign: 'end',
