@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faUserPlus, faQrcode, faChartPie } from "@fortawesome/free-solid-svg-icons";
-import {getEspecialidadesPorSucursal,getCantGenteEnSucursal} from '../../servicios/EmpleadoServices'
+import {getEspecialidadesPorSucursal,getCantGenteEnSucursal,getRolesDeUsuario} from '../../servicios/EmpleadoServices'
 import {SET_ESPECIALIDADES,SET_CANTIDAD_GENTE} from '../../constantes/actionRedux'
 
 class DashboardEmpleado extends React.Component {
@@ -11,7 +11,7 @@ class DashboardEmpleado extends React.Component {
         super();
         
     }
-    getEspecialidades = async (idSucursal) =>{
+    getEspecialidadesYRoles = async (idSucursal) =>{
         const {setEspecialidades} = this.props
         const especialidades = await getEspecialidadesPorSucursal(idSucursal)
         setEspecialidades(especialidades)
@@ -19,6 +19,7 @@ class DashboardEmpleado extends React.Component {
     getCantidadDeGenteEnEspera = async () =>{
         const { sucursal,setCantidadDeGente } = this.props
         const cant = await getCantGenteEnSucursal(sucursal.sucursalId)
+
         setCantidadDeGente(cant)
     }
     componentDidMount (){    
@@ -64,7 +65,7 @@ class DashboardEmpleado extends React.Component {
                             </span>
                             <span>Escanear código QR</span>
                         </button>
-                        <NavLink to="/nuevo" onClick={()=>this.getEspecialidades(sucursal.sucursalId)} className="button is-rounded is-outlined" exact={true} activeClassName='button is-rounded is-outlined' style={{ margin: 5 }}>
+                        <NavLink to="/nuevo" onClick={()=>this.getEspecialidadesYRoles(sucursal.sucursalId)} className="button is-rounded is-outlined" exact={true} activeClassName='button is-rounded is-outlined' style={{ margin: 5 }}>
                             <span className="icon">
                                 <FontAwesomeIcon icon={faUserPlus} />
                             </span>

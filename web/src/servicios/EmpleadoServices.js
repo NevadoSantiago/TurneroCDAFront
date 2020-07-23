@@ -26,3 +26,14 @@ export const getCantGenteEnSucursal = async (idSucursal) =>{
     return cantidad;
 
 }
+export const getRolesDeUsuario = async () =>{
+    var roles
+    const url = URL_API + "/api/usuario/get/roles";
+    await fetch(url)
+    .then(response=>{return response.json()})
+    .then(response=>{
+        roles = response
+    }
+    )
+    return roles;
+}

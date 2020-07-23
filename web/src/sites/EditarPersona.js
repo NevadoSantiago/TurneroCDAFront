@@ -3,87 +3,46 @@ import { connect } from 'react-redux'
 import Error from '../servicios/alertas/Error'
 import Correcto from '../servicios/alertas/Correcto'
 import { URL_API_RESERVA } from '../constantes/urlApi'
+import {getRolesDeUsuario} from '../servicios/EmpleadoServices'
+
+
+var datos = {
+    nombre:null,
+    apellido:null,
+    mail:null
+
+}
 
 class EditarPersona extends React.Component {
     constructor() {
         super();
         this.state = {
             error: null,
-            correcto: null
+            correcto: null,
+            roles:null
         };
     }
-
-    validateData = (nombre, apellido, mail) => {
-        if (!nombre) {
-            return "Ingrese un nombre";
-        }
-        else if (!apellido) {
-            return "Ingrese un apellido";
-        }
-        else if (!mail) {
-            return "Ingrese un correo electrónico";
-        }
-    }
-
-    editarDatos = async e => {
-        const { location } = this.props
-        e.preventDefault();
-        const nombre = e.target.elements.nombre.value;
-        const apellido = e.target.elements.apellido.value;
-        const mail = e.target.elements.mail.value;
-        const rol = e.target.elements.rol.value;
-
-        const error = this.validateData(nombre, apellido, mail);
-        if (error) {
-            this.setState({
-                error
-            });
-            return false;
-        } else {
-            var url = URL_API_RESERVA + '/api/usuario/editar'
-            this.setState({ error: null })
-            await fetch(
-                url, {
-                method: 'POST',
-                body: JSON.stringify({
-                    idEmpleado: location.user.idEmpleado,
-                    nombre: nombre,
-                    apellido: apellido,
-                    mail: mail,
-                    rol: parseInt(rol)
-                })
-            }
-            ).then(response => {
-                if (response.status == 200) {
-                    const json = response.json()
-                        .then(myJson => {
-                            debugger
-                            console.log(myJson)
-                            this.setState({
-                                correcto: 'Datos editados correctamente!'
-                            })
-                        })
-                } else {
-                    this.setState({ error: "El servidor respondió con error " + response.status.toString() })
-                }
-            })
-        };
-    }
-
     mostrarOpcion = (opcion) => {
         return (
-            <option value={opcion.rolId}>{opcion.nombre}</option>
+            <option value={opcion.tipoId}>{opcion.detalle}</option>
         )
+    }
+    getRoles = async () =>{
+        const roles = await getRolesDeUsuario()
+        this.setState({
+            roles
+        })
+    }
+    componentDidMount () {
+        this.getRoles()
     }
 
     render() {
-        const { error, correcto } = this.state
-        const { location, roles } = this.props
+        const { error, correcto,roles } = this.state
+        const { location } = this.props
 
-        console.log('USER SELECTED')
-        console.log(location.user)
-
-        if (location.user != null) {
+        if (location.user != null && roles !=null) {
+            const {user} = location
             return (
                 <React.Fragment>
                     <div className="hero-body">
@@ -94,19 +53,19 @@ class EditarPersona extends React.Component {
                             <div className="field">
                                 <label className="label">Nombre</label>
                                 <div className="control">
-                                    <input className="input is-black" type="text" value={location.user.nombre} name="nombre"></input>
+                                    <input className="input is-black" type="text" value={datos.nombre} name="nombre"></input>
                                 </div>
                             </div>
                             <div className="field">
                                 <label className="label">Apellido</label>
                                 <div className="control">
-                                    <input className="input is-black" type="text" value={location.user.apellido} name="apellido"></input>
+                                    <input className="input is-black" type="text" value={datos.apellido} name="apellido"></input>
                                 </div>
                             </div>
                             <div className="field">
                                 <label className="label">Correo electrónico</label>
                                 <div className="control">
-                                    <input className="input is-black" type="text" value={location.user.mail} name="mail"></input>
+                                    <input className="input is-black" type="text" value={datos.mail} name="mail"></input>
                                 </div>
                             </div>
                             <div className="field">
@@ -117,9 +76,24 @@ class EditarPersona extends React.Component {
                                             <div className="select is-fullwidth is-black">
                                                 <select name="rol">
                                                     {
-                                                        /*roles.map((e, i) =>
-                                                            this.mostrarOpcion(e)
-                                                        )*/
+                                                        roles.map((r, i) =>{
+                                                            if(location.user.rol == r.detalle){
+                                                                return(
+                                                                <option 
+                                                                selected 
+                                                                value={r.tipoId}>
+                                                                    {r.detalle}
+                                                                </option>  
+                                                                )
+                                                            }else{
+                                                                return(
+                                                                     this.mostrarOpcion(r)
+                                                                )
+                                                            }
+                                                           
+                                                        }
+                                                            
+                                                        )
                                                     }
                                                 </select>
                                             </div>

@@ -6,6 +6,7 @@ const initialState={
     recepcionistas : null,
     especialidades:null,
     cantidadGente:null,
+    roles:null,
 };
 
 const eliminarEmpleadoStore = (idEmpleado,state) =>{
@@ -52,7 +53,8 @@ const EmpleadoReducer = (state = initialState, action) => {
     case SET_ESPECIALIDADES:{
         return{
             ...state,
-            especialidades : datos
+            especialidades : datos.especialidades,
+            roles: datos.roles
         }
     }
         default:{

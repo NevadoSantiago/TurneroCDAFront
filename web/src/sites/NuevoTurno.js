@@ -132,7 +132,7 @@ const mapStateToProps = (state) => {
         usuario: state.user.usuario,
         tipoUsuario: state.user.tipoUsuario,
         sucursal: state.user.sucursal,
-        especialidades: state.empleado.especialidades
+        especialidades: state.empleado.especialidades,
     };
 };
 
