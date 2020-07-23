@@ -14,7 +14,7 @@ class NuevoTurno extends React.Component {
     }
 
     validateData = (sintomas) => {
-        if (!sintomas) {
+         if (!sintomas) {
             return "Ingrese los síntomas";
         }
     }

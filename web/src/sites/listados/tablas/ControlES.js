@@ -23,15 +23,17 @@ export const HeaderES = () => {
 
 }
 
+
 class DatosES extends React.Component {
-    /*     eliminarYActualizar = async (idEmpleado) => {
-            const {setControlES, sucursal} = this.props
-            await eliminarEmpleado(idEmpleado)
-            var empleados = await getEmpleadoBySucursalYRol(sucursal.sucursalId, CONTROL_ES)
-            setControlES(empleados);
-        } */
+    eliminarEmpleado = () =>{
+        const {eliminarEmpleado, empleado } = this.props
+        if(window.confirm("Seguro que desea eliminar a " + empleado.nombre + "?")){
+            eliminarEmpleado(empleado.idEmpleado)
+           {this.props.refresh()}
+        }
+    }
     render() {
-        const { empleado, eliminarEmpleado } = this.props
+        const {empleado} = this.props
         return (
             <tbody>
                 <tr>
@@ -42,7 +44,7 @@ class DatosES extends React.Component {
                     <td style={{ display: 'inline-table', margin: '-5px' }}>
                         <button 
                             className="button is-danger"
-                            onClick={() => eliminarEmpleado(empleado.idEmpleado)}
+                            onClick={() => this.eliminarEmpleado()}
                             style={{ margin: '5px' }}
                         >
                             Eliminar
