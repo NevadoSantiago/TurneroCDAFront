@@ -6,6 +6,7 @@ import NoAutorizado from './sites/NoAutorizado'
 import Login from './sites/Login'
 import Home from './sites/Home'
 import NuevoTurno from './sites/NuevoTurno'
+import EditarPersona from './sites/EditarPersona'
 import Recepcion from './sites/listados/Recepcion'
 import ControlES from './sites/listados/ControlES'
 import './style.css'
@@ -22,6 +23,7 @@ class App extends React.Component {
 						<Route exact path="/login" component={Login}></Route>
 						<Route path="/noAutorizado" component={NoAutorizado}></Route>
 						<AuthRoutePrivate path="/nuevo" component={NuevoTurno} autorizado={ADMIN} autorizado2={EMPLEADO} ></AuthRoutePrivate>
+						<AuthRoutePrivate path="/editar" component={EditarPersona} autorizado={ADMIN} autorizado2={EMPLEADO} ></AuthRoutePrivate>
 						<AuthRoutePrivate path="/listaES" exact component={ControlES} autorizado={ADMIN} autorizado2={null} ></AuthRoutePrivate>
 						<AuthRoutePrivate path="/listaRecepcion" exact component={Recepcion} autorizado={ADMIN} autorizado2={null} ></AuthRoutePrivate>
 						<AuthRoutePrivate path="/administrarPersona" exact component={AdministrarPersonal} autorizado={ADMIN} autorizado2={null}></AuthRoutePrivate>

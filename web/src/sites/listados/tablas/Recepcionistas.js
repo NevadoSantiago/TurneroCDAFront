@@ -1,5 +1,8 @@
 import React from 'react';
 import { eliminarEmpleadoServ } from '../../../servicios/AdminServices'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink } from "react-router-dom";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 
 export const HeaderRecepcionistas = () => {
     return (
@@ -31,12 +34,12 @@ export const DatosRecepcionistas = ({ empleado }) => {
                     >
                         Eliminar
                         </button>
-                    <button
-                        className="button is-warning"
-                        style={{ margin: '5px' }}
-                    >
-                        Editar
-                        </button>
+                    <NavLink to={{ pathname: '/editar', user: empleado }} className="button is-warning" exact={true} activeClassName='button is-warning' style={{ margin: '5px' }}>
+                        <span className="icon">
+                            <FontAwesomeIcon icon={faEdit} />
+                        </span>
+                        <span>Editar</span>
+                    </NavLink>
                 </td>
             </tr>
         </tbody>
