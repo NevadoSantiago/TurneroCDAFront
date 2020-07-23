@@ -3,22 +3,30 @@ import { connect } from 'react-redux'
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faUserPlus, faQrcode, faChartPie } from "@fortawesome/free-solid-svg-icons";
-import NuevoTurno from '../NuevoTurno';
-import {getEspecialidadesPorSucursal} from '../../servicios/EmpleadoServices'
-import {SET_ESPECIALIDADES} from '../../constantes/actionRedux'
+import {getEspecialidadesPorSucursal,getCantGenteEnSucursal} from '../../servicios/EmpleadoServices'
+import {SET_ESPECIALIDADES,SET_CANTIDAD_GENTE} from '../../constantes/actionRedux'
 
 class DashboardEmpleado extends React.Component {
     constructor(props) {
         super();
+        
     }
     getEspecialidades = async (idSucursal) =>{
         const {setEspecialidades} = this.props
         const especialidades = await getEspecialidadesPorSucursal(idSucursal)
         setEspecialidades(especialidades)
     }
+    getCantidadDeGenteEnEspera = async () =>{
+        const { sucursal,setCantidadDeGente } = this.props
+        const cant = await getCantGenteEnSucursal(sucursal.sucursalId)
+        setCantidadDeGente(cant)
+    }
+    componentDidMount (){
+        this.getCantidadDeGenteEnEspera()
+    }
 
     render() {
-        const { usuario, sucursal } = this.props
+        const { usuario, sucursal, cantidadGente} = this.props
 
         return (
             <React.Fragment>
@@ -36,7 +44,7 @@ class DashboardEmpleado extends React.Component {
                         <div className="column" style={{ display: 'flex', margin: '-10px' }}>
                             <div style={{ backgroundColor: 'whitesmoke', textAlign: 'end', borderTopLeftRadius: '500px', borderBottomLeftRadius: '500px', width: '50%', padding: '10px' }}>
                                 <p className="subtitle">{'En espera'}</p>
-                                <p className="title">{'7'}</p>
+                                <p className="title">{cantidadGente}</p>
                             </div>
                             <div style={{ backgroundColor: 'whitesmoke', textAlign: 'start', borderTopRightRadius: '500px', borderBottomRightRadius: '500px', width: '50%', padding: '10px', borderLeft: 'dashed', borderColor: '#CCCCCC' }}>
                                 <p className="subtitle">{'Atendidos'}</p>
@@ -81,6 +89,7 @@ class DashboardEmpleado extends React.Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         setEspecialidades: (datos) => dispatch({ type: SET_ESPECIALIDADES, data: datos }),
+        setCantidadDeGente: (datos) => dispatch({ type: SET_CANTIDAD_GENTE, data: datos }),
     };
 };
 
@@ -88,7 +97,8 @@ const mapStateToProps = (state) => {
     return {
         usuario: state.user.usuario,
         tipoUsuario: state.user.tipoUsuario,
-        sucursal: state.user.sucursal
+        sucursal: state.user.sucursal,
+        cantidadGente:state.empleado.cantidadGente
     };
 };
 
