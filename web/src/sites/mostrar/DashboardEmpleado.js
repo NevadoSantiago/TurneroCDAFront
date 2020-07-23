@@ -21,13 +21,16 @@ class DashboardEmpleado extends React.Component {
         const cant = await getCantGenteEnSucursal(sucursal.sucursalId)
         setCantidadDeGente(cant)
     }
-    componentDidMount (){
-        this.getCantidadDeGenteEnEspera()
+    componentDidMount (){    
+        this.interval = setInterval(() => this.setState({ time: Date.now() }), 10000);
     }
+      componentWillUnmount() {
+        clearInterval(this.interval);
+      }
 
     render() {
         const { usuario, sucursal, cantidadGente} = this.props
-
+        this.getCantidadDeGenteEnEspera()
         return (
             <React.Fragment>
                 <div className="hero-body">
