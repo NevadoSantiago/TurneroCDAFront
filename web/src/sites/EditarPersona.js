@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux'
 import Error from '../servicios/alertas/Error'
 import Correcto from '../servicios/alertas/Correcto'
-import { URL_API_RESERVA, URL_API_ESPECIALIDAD } from '../constantes/urlApi'
+import { URL_API_RESERVA } from '../constantes/urlApi'
 
-class NuevoTurno extends React.Component {
+class EditarPersona extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -13,34 +13,44 @@ class NuevoTurno extends React.Component {
         };
     }
 
-    validateData = (sintomas) => {
-        if (!sintomas) {
-            return "Ingrese los síntomas";
+    validateData = (nombre, apellido, mail) => {
+        if (!nombre) {
+            return "Ingrese un nombre";
+        }
+        else if (!apellido) {
+            return "Ingrese un apellido";
+        }
+        else if (!mail) {
+            return "Ingrese un correo electrónico";
         }
     }
 
-    nuevoTurno = async e => {
-        const { sucursal } = this.props
+    editarDatos = async e => {
+        const { location } = this.props
         e.preventDefault();
-        const sintomas = e.target.elements.sintomas.value;
-        const idEspecialidad = e.target.elements.especialidad.value;
+        const nombre = e.target.elements.nombre.value;
+        const apellido = e.target.elements.apellido.value;
+        const mail = e.target.elements.mail.value;
+        const rol = e.target.elements.rol.value;
 
-        const error = this.validateData(sintomas);
+        const error = this.validateData(nombre, apellido, mail);
         if (error) {
             this.setState({
                 error
             });
             return false;
         } else {
-            var url = URL_API_RESERVA + '/api/reserva/crear/entrada/'
+            var url = URL_API_RESERVA + '/api/usuario/editar'
             this.setState({ error: null })
             await fetch(
                 url, {
                 method: 'POST',
                 body: JSON.stringify({
-                    descSintomas: sintomas,
-                    especialidadId: parseInt(idEspecialidad),
-                    sucursalId: sucursal.sucursalId
+                    idEmpleado: location.user.idEmpleado,
+                    nombre: nombre,
+                    apellido: apellido,
+                    mail: mail,
+                    rol: parseInt(rol)
                 })
             }
             ).then(response => {
@@ -50,7 +60,7 @@ class NuevoTurno extends React.Component {
                             debugger
                             console.log(myJson)
                             this.setState({
-                                correcto: 'Turno creado correctamente!'
+                                correcto: 'Datos editados correctamente!'
                             })
                         })
                 } else {
@@ -59,39 +69,57 @@ class NuevoTurno extends React.Component {
             })
         };
     }
+
     mostrarOpcion = (opcion) => {
         return (
-            <option value={opcion.especialidadId}>{opcion.nombre}</option>
+            <option value={opcion.rolId}>{opcion.nombre}</option>
         )
     }
+
     render() {
         const { error, correcto } = this.state
-        const { especialidades } = this.props
-        if (especialidades != null) {
+        const { location, roles } = this.props
+
+        console.log('USER SELECTED')
+        console.log(location.user)
+
+        if (location.user != null) {
             return (
                 <React.Fragment>
                     <div className="hero-body">
-                        <p className="title">{'Nuevo turno'}</p>
+                        <p className="title">{'Editar persona'}</p>
                     </div>
                     <div className="container" style={{ flex: 1, backgroundColor: 'white', padding: '20px', borderRadius: '15px', marginRight: '15px', marginLeft: '15px', marginBottom: '15px' }}>
-                        <form onSubmit={this.nuevoTurno}>
+                        <form onSubmit={this.editarDatos}>
                             <div className="field">
-                                <label className="label">Síntomas</label>
+                                <label className="label">Nombre</label>
                                 <div className="control">
-                                    <input className="input is-black" type="text" placeholder="" name="sintomas"></input>
+                                    <input className="input is-black" type="text" value={location.user.nombre} name="nombre"></input>
                                 </div>
                             </div>
                             <div className="field">
-                                <label className="label">Especialidad</label>
+                                <label className="label">Apellido</label>
+                                <div className="control">
+                                    <input className="input is-black" type="text" value={location.user.apellido} name="nombre"></input>
+                                </div>
+                            </div>
+                            <div className="field">
+                                <label className="label">Correo electrónico</label>
+                                <div className="control">
+                                    <input className="input is-black" type="text" value={location.user.mail} name="mail"></input>
+                                </div>
+                            </div>
+                            <div className="field">
+                                <label className="label">Rol</label>
                                 <div className="field-body">
                                     <div className="field">
                                         <div className="control">
                                             <div className="select is-fullwidth is-black">
-                                                <select name="especialidad">
+                                                <select name="rol">
                                                     {
-                                                        especialidades.map((e, i) =>
+                                                        /*roles.map((e, i) =>
                                                             this.mostrarOpcion(e)
-                                                        )
+                                                        )*/
                                                     }
                                                 </select>
                                             </div>
@@ -133,8 +161,8 @@ const mapStateToProps = (state) => {
         usuario: state.user.usuario,
         tipoUsuario: state.user.tipoUsuario,
         sucursal: state.user.sucursal,
-        especialidades: state.empleado.especialidades
+        roles: state.empleado.roles
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(NuevoTurno)
+export default connect(mapStateToProps, mapDispatchToProps)(EditarPersona)
