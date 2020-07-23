@@ -13,3 +13,16 @@ export const getEspecialidadesPorSucursal = async (idSucursal) =>{
     return especialidades;
 
 }
+export const getCantGenteEnSucursal = async (idSucursal) =>{
+
+    var cantidad
+    const url = URL_API + "/api/sucursal/get/espera/" + idSucursal;
+    await fetch(url)
+    .then(response=>{return response.json()})
+    .then(response=>{
+        cantidad = response
+    }
+    )
+    return cantidad;
+
+}
