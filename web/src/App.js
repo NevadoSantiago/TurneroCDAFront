@@ -5,6 +5,7 @@ import { ADMIN, EMPLEADO } from "./constantes/tiposUsuarios"
 import NoAutorizado from './sites/NoAutorizado'
 import Login from './sites/Login'
 import Home from './sites/Home'
+import NuevoTurno from './sites/NuevoTurno'
 import Recepcion from './sites/listados/Recepcion'
 import ControlES from './sites/listados/ControlES'
 import './style.css'
@@ -20,11 +21,11 @@ class App extends React.Component {
 					<Switch>
 						<Route exact path="/login" component={Login}></Route>
 						<Route path="/noAutorizado" component={NoAutorizado}></Route>
-            <AuthRoutePrivate path="/listaES" exact component={ControlES} autorizado={ADMIN} autorizado2={null} ></AuthRoutePrivate>
-            <AuthRoutePrivate path="/listaRecepcion" exact component={Recepcion} autorizado={ADMIN} autorizado2={null} ></AuthRoutePrivate>
+						<AuthRoutePrivate path="/nuevo" component={NuevoTurno} autorizado={ADMIN} autorizado2={EMPLEADO} ></AuthRoutePrivate>
+						<AuthRoutePrivate path="/listaES" exact component={ControlES} autorizado={ADMIN} autorizado2={null} ></AuthRoutePrivate>
+						<AuthRoutePrivate path="/listaRecepcion" exact component={Recepcion} autorizado={ADMIN} autorizado2={null} ></AuthRoutePrivate>
 						<AuthRoutePrivate path="/administrarPersona" exact component={AdministrarPersonal} autorizado={ADMIN} autorizado2={null}></AuthRoutePrivate>
 						<AuthRoutePrivate path="/" component={Home} autorizado={ADMIN} autorizado2={EMPLEADO} ></AuthRoutePrivate>
-            
 					</Switch>
 				</div>
 			</Router>

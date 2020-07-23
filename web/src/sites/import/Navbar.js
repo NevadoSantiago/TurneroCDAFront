@@ -15,6 +15,43 @@ class Navbar extends React.Component {
 
         };
     }
+
+    componentDidMount() {
+        const script = document.createElement('script');
+
+        script.type = 'text/javascript'
+        script.async = true
+        script.innerHTML =
+        `
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+            
+            if ($navbarBurgers.length > 0) {
+            
+                $navbarBurgers.forEach( el => {
+                    el.addEventListener('click', () => {
+            
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target);
+            
+                        el.classList.toggle('is-active');
+                        $target.classList.toggle('is-active');
+
+                        const $navbarDropdowns = Array.prototype.slice.call(document.querySelectorAll('.dropdown'), 0);
+
+                        $navbarDropdowns.forEach( drop => {
+                            drop.classList.toggle('is-right');
+                        });
+                    });
+                });
+            }
+        });
+        `
+        
+        document.body.appendChild(script);
+    }
+
     cerrarSesion = () => {
         const { cerrarSesion } = this.props
         cerrarSesion()
@@ -63,9 +100,9 @@ class Navbar extends React.Component {
                                 <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Inicio</NavLink>
                             </div>
 
-                            <div id="navbarBasicExample" class="navbar-menu">
-                                <div class="navbar-item has-dropdown is-hoverable">
-                                    <a class="navbar-link">
+                            <div id="navbarBasicExample" className="navbar-menu">
+                                <div className="navbar-item has-dropdown is-hoverable">
+                                    <a className="navbar-link">
                                         Administrador de Personal
                                     </a>
 
@@ -94,7 +131,7 @@ class Navbar extends React.Component {
                                                             <FontAwesomeIcon icon={faUser} />
                                                         </span>
                                                         <span>{usuario}</span>
-                                                        <span class="icon is-small">
+                                                        <span className="icon is-small">
                                                             <FontAwesomeIcon icon={faAngleDown} />
                                                         </span>
                                                     </button>
@@ -131,7 +168,7 @@ class Navbar extends React.Component {
 
                             <div id="navbarBasicExample" class="navbar-menu">
                                 <div className="navbar-start">
-                                    <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Home</NavLink>
+                                    <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Inicio</NavLink>
                                 </div>
                                 <div className="navbar-end">
                                     <div className="navbar-item">
@@ -143,7 +180,7 @@ class Navbar extends React.Component {
                                                             <FontAwesomeIcon icon={faUser} />
                                                         </span>
                                                         <span>{usuario}</span>
-                                                        <span class="icon is-small">
+                                                        <span className="icon is-small">
                                                             <FontAwesomeIcon icon={faAngleDown} />
                                                         </span>
                                                     </button>
