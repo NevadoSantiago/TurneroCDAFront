@@ -11,8 +11,6 @@ class ControlES extends React.Component {
 
 		};
 	}
-
-
 	render() {
 		const { controlES } = this.props
 		if (controlES != null) {

@@ -25,10 +25,6 @@ class NuevoTurno extends React.Component {
         }
     }
 
-    especialidades = async e => {
-        const url = URL_API_ESPECIALIDAD + '/api/usuario/auth'
-    }
-
     nuevoTurno = async e => {
         const { sucursal } = this.props
         e.preventDefault();
@@ -71,9 +67,15 @@ class NuevoTurno extends React.Component {
             })
         };
     }
-
+    mostrarOpcion = (opcion) =>{
+        return(
+            <option value={opcion.especialidadId}>{opcion.nombre}</option>
+        )
+    }
     render() {
-        const { error, correcto } = this.state
+        const { error,correcto } = this.state
+        const {especialidades} = this.props
+        if(especialidades != null){
         return (
             <React.Fragment>
                 <div className="hero-body">
@@ -106,9 +108,11 @@ class NuevoTurno extends React.Component {
                                     <div className="control">
                                         <div className="select is-fullwidth is-black">
                                             <select name="especialidad">
-                                                <option value="1">Opción 1</option>
-                                                <option value="2">Opción 2</option>
-                                                <option value="3">Opción 3</option>
+                                                {
+                                                    especialidades.map((e,i)=>
+                                                    this.mostrarOpcion(e)
+                                                    )
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -126,6 +130,12 @@ class NuevoTurno extends React.Component {
                 </div>
             </React.Fragment>
         )
+        }else{
+            return(
+                <p>Cargando...</p>
+            )
+        }
+
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -138,7 +148,8 @@ const mapStateToProps = (state) => {
     return {
         usuario: state.user.usuario,
         tipoUsuario: state.user.tipoUsuario,
-        sucursal: state.user.sucursal
+        sucursal: state.user.sucursal,
+        especialidades: state.empleado.especialidades
     };
 };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import {eliminarEmpleado} from '../../../servicios/AdminServices'
+import {eliminarEmpleadoServ} from '../../../servicios/AdminServices'
 
 export const HeaderRecepcionistas = () => {
     return(
@@ -25,7 +25,7 @@ export const DatosRecepcionistas = ({empleado}) => {
             <td>{empleado.mail}</td>
             <td>
                 <button className="button is-danger" 
-                onClick={()=>eliminarEmpleado(empleado.idEmpleado)}>Eliminar</button>
+                onClick={()=>eliminarEmpleadoServ(empleado.idEmpleado)}>Eliminar</button>
                 <button className="button is-warning">Editar</button>
             </td>
             </tr>
