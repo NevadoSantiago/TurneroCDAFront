@@ -1,6 +1,12 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito:400,700");
 @import url("https://fonts.googleapis.com/css?family=Google+Sans:100,300,400,500,700,900,100i,300i,400i,500i,700i,900i");
 @import url("https://fonts.googleapis.com/css?family=Amatic+SC|Comfortaa:500|Sacramento&display=swap");
+.highlighted {
+  background-color: lightgreen; }
+
+.highlight-whitesmoke {
+  background-color: whitesmoke; }
+
 @keyframes spinAround {
   from {
     transform: rotate(0deg); }

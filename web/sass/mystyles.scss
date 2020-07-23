@@ -23,6 +23,13 @@ $control-border-width: 2px;
 $input-border-color: transparent;
 $input-shadow: none;
 
+.highlighted {
+    background-color: lightgreen;
+}
+.highlight-whitesmoke {
+    background-color: whitesmoke;
+}
+
 @import "../node_modules/bulma/sass/utilities/_all.sass";
 @import "../node_modules/bulma/sass/base/_all.sass";
 @import "../node_modules/bulma/sass/elements/_all.sass";
