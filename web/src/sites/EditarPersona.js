@@ -100,7 +100,7 @@ class EditarPersona extends React.Component {
                             <div className="field">
                                 <label className="label">Apellido</label>
                                 <div className="control">
-                                    <input className="input is-black" type="text" value={location.user.apellido} name="nombre"></input>
+                                    <input className="input is-black" type="text" value={location.user.apellido} name="apellido"></input>
                                 </div>
                             </div>
                             <div className="field">
