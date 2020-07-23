@@ -47,12 +47,11 @@ class NuevoTurno extends React.Component {
                 if (response.status == 200) {
                     const json = response.json()
                         .then(myJson => {
-                            debugger
-                            console.log(myJson)
                             this.setState({
                                 correcto: 'Turno creado correctamente!'
                             })
                         })
+                        setTimeout(()=>{this.props.history.push("/home")}, 1500)
                 } else {
                     this.setState({ error: "El servidor respondió con error " + response.status.toString() })
                 }
