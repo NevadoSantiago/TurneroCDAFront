@@ -67,72 +67,76 @@ class NuevoTurno extends React.Component {
             })
         };
     }
-    mostrarOpcion = (opcion) =>{
-        return(
+    mostrarOpcion = (opcion) => {
+        return (
             <option value={opcion.especialidadId}>{opcion.nombre}</option>
         )
     }
     render() {
-        const { error,correcto } = this.state
-        const {especialidades} = this.props
-        if(especialidades != null){
-        return (
-            <React.Fragment>
-                <div className="hero-body">
-                    <p className="title">{'Nuevo turno'}</p>
-                </div>
-                <div className="container" style={{ flex: 1, backgroundColor: 'white', padding: '20px', borderRadius: '15px', marginRight: '15px', marginLeft: '15px', marginBottom: '15px' }}>
-                    <form onSubmit={this.nuevoTurno}>
-                        <div className="field">
-                            <label className="label">Nombre y apellido</label>
-                            <div className="control">
-                                <input className="input is-black" type="text" placeholder="" name="nombre"></input>
+        const { error, correcto } = this.state
+        const { especialidades } = this.props
+        if (especialidades != null) {
+            return (
+                <React.Fragment>
+                    <div className="hero-body">
+                        <p className="title">{'Nuevo turno'}</p>
+                    </div>
+                    <div className="container" style={{ flex: 1, backgroundColor: 'white', padding: '20px', borderRadius: '15px', marginRight: '15px', marginLeft: '15px', marginBottom: '15px' }}>
+                        <form onSubmit={this.nuevoTurno}>
+                            <div className="field">
+                                <label className="label">Nombre y apellido</label>
+                                <div className="control">
+                                    <input className="input is-black" type="text" placeholder="" name="nombre"></input>
+                                </div>
                             </div>
-                        </div>
-                        <div className="field">
-                            <label className="label">Número de documento</label>
-                            <div className="control">
-                                <input className="input is-black" type="text" placeholder="" name="dni"></input>
+                            <div className="field">
+                                <label className="label">Número de documento</label>
+                                <div className="control">
+                                    <input className="input is-black" type="text" placeholder="" name="dni"></input>
+                                </div>
                             </div>
-                        </div>
-                        <div className="field">
-                            <label className="label">Síntomas</label>
-                            <div className="control">
-                                <input className="input is-black" type="text" placeholder="" name="sintomas"></input>
+                            <div className="field">
+                                <label className="label">Síntomas</label>
+                                <div className="control">
+                                    <input className="input is-black" type="text" placeholder="" name="sintomas"></input>
+                                </div>
                             </div>
-                        </div>
-                        <div className="field">
-                            <label className="label">Especialidad</label>
-                            <div className="field-body">
-                                <div className="field">
-                                    <div className="control">
-                                        <div className="select is-fullwidth is-black">
-                                            <select name="especialidad">
-                                                {
-                                                    especialidades.map((e,i)=>
-                                                    this.mostrarOpcion(e)
-                                                    )
-                                                }
-                                            </select>
+                            <div className="field">
+                                <label className="label">Especialidad</label>
+                                <div className="field-body">
+                                    <div className="field">
+                                        <div className="control">
+                                            <div className="select is-fullwidth is-black">
+                                                <select name="especialidad">
+                                                    {
+                                                        especialidades.map((e, i) =>
+                                                            this.mostrarOpcion(e)
+                                                        )
+                                                    }
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="field is-grouped is-grouped-centered">
-                            <div className="control">
-                                <button className="button is-primary" type="submit">Confirmar</button>
+                            <div className="field is-grouped is-grouped-centered">
+                                <div className="control">
+                                    <button className="button is-primary" type="submit">Confirmar</button>
+                                </div>
                             </div>
-                        </div>
-                        {error && <Error message={error} />}
-                        {correcto && <Correcto message={correcto} />}
-                    </form>
+                            {error && <Error message={error} />}
+                            {correcto && <Correcto message={correcto} />}
+                        </form>
+                    </div>
+                </React.Fragment>
+            )
+        } else {
+            return (
+                <div className="hero-body">
+                    <div className="container" style={{ textAlign: 'center' }}>
+                        <p className="subtitle">Cargando...</p>
+                    </div>
                 </div>
-            </React.Fragment>
-        )
-        }else{
-            return(
-                <p>Cargando...</p>
             )
         }
 

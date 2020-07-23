@@ -23,7 +23,7 @@ class Home extends React.Component {
 			case ADMIN:
 				return (
 					<React.Fragment>
-						<div className="contenedorSucursal">
+						<div className="hero-body">
 							<DatosSucursal />
 						</div>
 					</React.Fragment>

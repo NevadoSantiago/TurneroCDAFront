@@ -2,11 +2,11 @@ import React from 'react';
 import { NavLink } from "react-router-dom";
 import '../../style.css';
 import { connect } from 'react-redux'
-import { faUser,faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import {SET_CONTROL_ES,SET_RECEPCIONISTAS,CERRAR_SESION} from "../../constantes/actionRedux"
-import {ADMIN, EMPLEADO, CONTROL_ES, RECEPCION} from '../../constantes/tiposUsuarios'
+import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { SET_CONTROL_ES, SET_RECEPCIONISTAS, CERRAR_SESION } from "../../constantes/actionRedux"
+import { ADMIN, EMPLEADO, CONTROL_ES, RECEPCION } from '../../constantes/tiposUsuarios'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {getEmpleadoBySucursalYRol} from '../../servicios/AdminServices'
+import { getEmpleadoBySucursalYRol } from '../../servicios/AdminServices'
 
 class Navbar extends React.Component {
     constructor() {
@@ -22,7 +22,7 @@ class Navbar extends React.Component {
         script.type = 'text/javascript'
         script.async = true
         script.innerHTML =
-        `
+            `
         document.addEventListener('DOMContentLoaded', () => {
 
             const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
@@ -48,7 +48,7 @@ class Navbar extends React.Component {
             }
         });
         `
-        
+
         document.body.appendChild(script);
     }
 
@@ -56,33 +56,33 @@ class Navbar extends React.Component {
         const { cerrarSesion } = this.props
         cerrarSesion()
     }
-    getEmpleadosSucRol = async (idSucursal, rol) =>{
-        const {setControlES, setRecepcionistas,recepcionistas,controlES} = this.props
-    switch(rol){
-        case CONTROL_ES:{
-            if(controlES == null){
-                const empleados = await getEmpleadoBySucursalYRol(idSucursal, rol) 
-                setControlES(empleados)
+    getEmpleadosSucRol = async (idSucursal, rol) => {
+        const { setControlES, setRecepcionistas, recepcionistas, controlES } = this.props
+        switch (rol) {
+            case CONTROL_ES: {
+                if (controlES == null) {
+                    const empleados = await getEmpleadoBySucursalYRol(idSucursal, rol)
+                    setControlES(empleados)
+                }
+                break;
             }
-            break;
-        }
-        case RECEPCION:{
-            if(recepcionistas==null){
-                const empleados = await getEmpleadoBySucursalYRol(idSucursal, rol) 
-                setRecepcionistas(empleados)
-            }
+            case RECEPCION: {
+                if (recepcionistas == null) {
+                    const empleados = await getEmpleadoBySucursalYRol(idSucursal, rol)
+                    setRecepcionistas(empleados)
+                }
 
-            break;
+                break;
+            }
+            default: {
+                console.log("ERROR")
+                break;
+            }
         }
-        default:{
-            console.log("ERROR")
-            break;
-        }
-    }
     }
 
     render() {
-        const { usuario, tipoUsuario,sucursal} = this.props
+        const { usuario, tipoUsuario, sucursal } = this.props
 
         if (tipoUsuario != null) {
             switch (tipoUsuario) {
@@ -107,19 +107,19 @@ class Navbar extends React.Component {
                                     </a>
 
                                     <div class="navbar-dropdown">
-                                        <NavLink 
-                                        to="/listaES" 
-                                        onClick={()=>this.getEmpleadosSucRol(sucursal.sucursalId,CONTROL_ES)} 
-                                        className="navbar-item" activeClassName='navbar-item active'>
-                                        Control E/S</NavLink>
-                                        <NavLink 
-                                        to="/listaRecepcion" 
-                                        onClick={()=>this.getEmpleadosSucRol(sucursal.sucursalId,RECEPCION)} 
-                                        className="navbar-item"
-                                         activeClassName='navbar-item active'>
-                                        Recepcion</NavLink>
+                                        <NavLink
+                                            to="/listaES"
+                                            onClick={() => this.getEmpleadosSucRol(sucursal.sucursalId, CONTROL_ES)}
+                                            className="navbar-item" activeClassName='navbar-item active'>
+                                            Control E/S</NavLink>
+                                        <NavLink
+                                            to="/listaRecepcion"
+                                            onClick={() => this.getEmpleadosSucRol(sucursal.sucursalId, RECEPCION)}
+                                            className="navbar-item"
+                                            activeClassName='navbar-item active'>
+                                            Recepcion</NavLink>
                                     </div>
-                                </div>                               
+                                </div>
 
                                 <div className="navbar-end">
                                     <div className="navbar-item">
@@ -232,16 +232,16 @@ class Navbar extends React.Component {
 }
 const mapDispatchToProps = (dispatch) => {
     return {
-        setControlES: (datos) => dispatch({ type: SET_CONTROL_ES, data:datos }),
-        setRecepcionistas: (datos) => dispatch({ type: SET_RECEPCIONISTAS, data:datos }),
-        cerrarSesion:()=>dispatch({type:CERRAR_SESION})
+        setControlES: (datos) => dispatch({ type: SET_CONTROL_ES, data: datos }),
+        setRecepcionistas: (datos) => dispatch({ type: SET_RECEPCIONISTAS, data: datos }),
+        cerrarSesion: () => dispatch({ type: CERRAR_SESION })
     };
 };
 
 const mapStateToProps = (state) => {
     return {
         usuario: state.user.usuario,
-        sucursal:state.user.sucursal,
+        sucursal: state.user.sucursal,
         tipoUsuario: state.user.tipoUsuario,
         recepcionistas: state.empleado.recepcionistas,
         controlES: state.empleado.controlES,
