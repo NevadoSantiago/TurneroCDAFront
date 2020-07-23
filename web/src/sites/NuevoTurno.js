@@ -13,14 +13,8 @@ class NuevoTurno extends React.Component {
         };
     }
 
-    validateData = (nombre, dni, sintomas) => {
-        if (!nombre) {
-            return "Ingrese un nombre";
-        }
-        else if (!dni) {
-            return "Ingrese un número de documento";
-        }
-        else if (!sintomas) {
+    validateData = (sintomas) => {
+         if (!sintomas) {
             return "Ingrese los síntomas";
         }
     }
@@ -28,12 +22,10 @@ class NuevoTurno extends React.Component {
     nuevoTurno = async e => {
         const { sucursal } = this.props
         e.preventDefault();
-        const nombre = e.target.elements.nombre.value;
         const sintomas = e.target.elements.sintomas.value;
-        const dni = e.target.elements.dni.value
         const idEspecialidad = e.target.elements.especialidad.value;
 
-        const error = this.validateData(nombre, dni, sintomas);
+        const error = this.validateData(sintomas);
         if (error) {
             this.setState({
                 error
@@ -82,18 +74,6 @@ class NuevoTurno extends React.Component {
                     </div>
                     <div className="container" style={{ flex: 1, backgroundColor: 'white', padding: '20px', borderRadius: '15px', marginRight: '15px', marginLeft: '15px', marginBottom: '15px' }}>
                         <form onSubmit={this.nuevoTurno}>
-                            <div className="field">
-                                <label className="label">Nombre y apellido</label>
-                                <div className="control">
-                                    <input className="input is-black" type="text" placeholder="" name="nombre"></input>
-                                </div>
-                            </div>
-                            <div className="field">
-                                <label className="label">Número de documento</label>
-                                <div className="control">
-                                    <input className="input is-black" type="text" placeholder="" name="dni"></input>
-                                </div>
-                            </div>
                             <div className="field">
                                 <label className="label">Síntomas</label>
                                 <div className="control">

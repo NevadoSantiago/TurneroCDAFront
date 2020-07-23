@@ -8,13 +8,18 @@ class ControlES extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-
+			recargar : false
 		};
 	}
 	render() {
 		const { controlES } = this.props
+		const { recargar } = this.state
+		if(recargar){
+			this.setState({
+				recargar:false
+			})
+		}
 		if (controlES != null) {
-			console.log(controlES)
 			if (controlES.length === 0) {
 				return (
 					<div className="hero-body">
@@ -33,7 +38,7 @@ class ControlES extends React.Component {
 							{
 								controlES.map((e, i) => {
 									return (
-										<DatosES empleado={e} />
+										<DatosES empleado={e} refresh={()=>this.setState({recargar:true})} />
 									)
 								}
 								)

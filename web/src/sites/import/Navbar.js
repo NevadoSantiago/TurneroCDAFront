@@ -68,6 +68,7 @@ class Navbar extends React.Component {
             }
             case RECEPCION: {
                 if (recepcionistas == null) {
+                    
                     const empleados = await getEmpleadoBySucursalYRol(idSucursal, rol)
                     setRecepcionistas(empleados)
                 }
