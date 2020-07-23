@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {HeaderRecepcionistas,DatosRecepcionistas} from './tablas/Recepcionistas'
+import { HeaderRecepcionistas, DatosRecepcionistas } from './tablas/Recepcionistas'
 
 class Recepcion extends React.Component {
 	constructor() {
@@ -11,20 +11,34 @@ class Recepcion extends React.Component {
 	}
 
 	render() {
-		const {recepcionistas} = this.props
-		if(recepcionistas != null){
-			return(
-				<table class="table" style={{width:"100%"}}>
-					<HeaderRecepcionistas/>
-					{
-						recepcionistas.map((e,i)=>(							
-						<DatosRecepcionistas empleado={e}/>						
-						))
-					}
-				</table>
+		const { recepcionistas } = this.props
+		if (recepcionistas != null) {
+			if (recepcionistas.length === 0) {
+				return (
+					<div className="hero-body">
+						<p className="title">Recepción</p>
+						<div className="container" style={{ textAlign: 'center' }}>
+							<p className="subtitle">No hay datos</p>
+						</div>
+					</div>
 				)
-		}else{
-			return(
+			} else {
+				return (
+					<div className="hero-body">
+						<p className="title">Recepción</p>
+						<table className="table" style={{ width: "100%" }}>
+							<HeaderRecepcionistas />
+							{
+								recepcionistas.map((e, i) => (
+									<DatosRecepcionistas empleado={e} />
+								))
+							}
+						</table>
+					</div>
+				)
+			}
+		} else {
+			return (
 				<p>Cargando..</p>
 			)
 		}

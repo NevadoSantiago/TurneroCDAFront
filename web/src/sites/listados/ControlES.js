@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import {HeaderES} from './tablas/ControlES'
+import { HeaderES } from './tablas/ControlES'
 import DatosES from './tablas/ControlES'
-import {SET_CONTROL_ES} from '../../constantes/actionRedux'
+import { SET_CONTROL_ES } from '../../constantes/actionRedux'
 
 class ControlES extends React.Component {
 	constructor() {
@@ -12,24 +12,38 @@ class ControlES extends React.Component {
 		};
 	}
 	render() {
-		const {controlES} = this.props
-		if(controlES != null){
+		const { controlES } = this.props
+		if (controlES != null) {
 			console.log(controlES)
-			return(
-				<table class="table" style={{width:"100%"}}>
-					<HeaderES/>
-					{
-						controlES.map((e,i)=>{
-							return(
-									<DatosES empleado={e}/>						
-							)
-						}																		
-					)
-					}
-				</table>
+			if (controlES.length === 0) {
+				return (
+					<div className="hero-body">
+						<p className="title">Control E/S</p>
+						<div className="container" style={{ textAlign: 'center' }}>
+							<p className="subtitle">No hay datos</p>
+						</div>
+					</div>
 				)
-		}else{
-			return(
+			} else {
+				return (
+					<div className="hero-body">
+						<p className="title">Control E/S</p>
+						<table className="table" style={{ width: "100%" }}>
+							<HeaderES />
+							{
+								controlES.map((e, i) => {
+									return (
+										<DatosES empleado={e} />
+									)
+								}
+								)
+							}
+						</table>
+					</div>
+				)
+			}
+		} else {
+			return (
 				<p>Cargando..</p>
 			)
 		}
@@ -38,7 +52,7 @@ class ControlES extends React.Component {
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		setControlES: (datos) => dispatch({ type: SET_CONTROL_ES, data:datos }),
+		setControlES: (datos) => dispatch({ type: SET_CONTROL_ES, data: datos }),
 	};
 };
 
