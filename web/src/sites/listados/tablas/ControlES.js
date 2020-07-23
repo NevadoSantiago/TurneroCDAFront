@@ -1,6 +1,6 @@
 import React from 'react';
-import {eliminarEmpleado} from '../../../servicios/AdminServices'
-import {SET_CONTROL_ES} from '../../../constantes/actionRedux'
+import {eliminarEmpleadoServ} from '../../../servicios/AdminServices'
+import {ELIMINAR_EMPLEADO} from '../../../constantes/actionRedux'
 import {CONTROL_ES} from '../../../constantes/tiposUsuarios'
 import {connect} from 'react-redux'
 import {getEmpleadoBySucursalYRol} from '../../../servicios/AdminServices'
@@ -21,14 +21,14 @@ export const HeaderES = () => {
 }
 
 class DatosES extends React.Component {
-    actualizarEmpleadosES = async (idEmpleado) => {
+/*     eliminarYActualizar = async (idEmpleado) => {
         const {setControlES, sucursal} = this.props
-        eliminarEmpleado(idEmpleado)
+        await eliminarEmpleado(idEmpleado)
         var empleados = await getEmpleadoBySucursalYRol(sucursal.sucursalId, CONTROL_ES)
         setControlES(empleados);
-    }
+    } */
     render(){
-    const {empleado} = this.props
+    const {empleado, eliminarEmpleado} = this.props
            return(
         <tbody>
             <tr>
@@ -38,7 +38,7 @@ class DatosES extends React.Component {
                 <td>{empleado.mail}</td>
                 <td>
                 <button className="button is-danger" 
-                onClick={()=>this.actualizarEmpleadosES(empleado.idEmpleado)}>Eliminar</button>
+                onClick={()=>eliminarEmpleado(empleado.idEmpleado)}>Eliminar</button>
                 <button className="button is-warning">Editar</button>
                 </td>
             </tr>
@@ -48,7 +48,7 @@ class DatosES extends React.Component {
 }
 const mapDispatchToProps = (dispatch) => {
 	return {
-		setControlES: (datos) => dispatch({ type: SET_CONTROL_ES, data:datos }),
+		eliminarEmpleado: (id) => dispatch({ type: ELIMINAR_EMPLEADO, data:id }),
 	};
 };
 

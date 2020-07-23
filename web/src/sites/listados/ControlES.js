@@ -11,8 +11,6 @@ class ControlES extends React.Component {
 
 		};
 	}
-
-
 	render() {
 		const {controlES} = this.props
 		if(controlES != null){
@@ -25,8 +23,7 @@ class ControlES extends React.Component {
 							return(
 									<DatosES empleado={e}/>						
 							)
-						}							
-											
+						}																		
 					)
 					}
 				</table>

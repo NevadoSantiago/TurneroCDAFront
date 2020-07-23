@@ -12,15 +12,15 @@ export const getEmpleadoBySucursalYRol = async (idSucursal, rol) =>{
     return empleados;
 }
 
-export const eliminarEmpleado = async (idEmpleado)=>{
+export const eliminarEmpleadoServ = async (idEmpleado)=>{
     const url = URL_API + "/api/usuario/eliminar/" + idEmpleado
     fetch(url,{
         method:"POST"
     }).then(response=>
         {
             if(response.status == 200){
-                console.log(response.json())
-            }
+                return true
+            }else return false
         })
 }
 export const getEmpleado = async (idEmpleado)=>{
