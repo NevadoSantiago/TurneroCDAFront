@@ -26,7 +26,7 @@ class Recepcion extends React.Component {
 				return (
 					<div className="hero-body">
 						<p className="title">Recepción</p>
-						<table className="table" style={{ width: "100%" }}>
+						<table className="table is-hoverable" style={{ width: "100%", borderRadius: '20px' }}>
 							<HeaderRecepcionistas />
 							{
 								recepcionistas.map((e, i) => (
