@@ -1,13 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import Error from '../servicios/alertas/Error'
+import Correcto from '../servicios/alertas/Correcto'
 import { URL_API_RESERVA, URL_API_ESPECIALIDAD } from '../constantes/urlApi'
 
 class NuevoTurno extends React.Component {
     constructor() {
         super();
         this.state = {
-            error: null
+            error: null,
+            correcto: null
         };
     }
 
@@ -28,7 +30,7 @@ class NuevoTurno extends React.Component {
     }
 
     nuevoTurno = async e => {
-        const { idUsuario, sucursal } = this.props
+        const { sucursal } = this.props
         e.preventDefault();
         const nombre = e.target.elements.nombre.value;
         const sintomas = e.target.elements.sintomas.value;
@@ -42,25 +44,15 @@ class NuevoTurno extends React.Component {
             });
             return false;
         } else {
-            var url = URL_API_RESERVA + '/api/reserva/crear/' + idUsuario
-            console.log(url)
-            console.log(nombre)
-            console.log(dni)
-            console.log(sintomas)
-            console.log(sucursal.sucursalId)
-            console.log(idEspecialidad)
-            console.log(sucursal.configuracion.cordLatitud)
-            console.log(sucursal.configuracion.cordLongitud)
+            var url = URL_API_RESERVA + '/api/reserva/crear/entrada/'
             this.setState({ error: null })
-            /*await fetch(
+            await fetch(
                 url, {
                 method: 'POST',
                 body: JSON.stringify({
                     descSintomas: sintomas,
-                    sucursalId: sucursal.sucursalId,
-                    especialidadId: idEspecialidad,
-                    latitud: sucursal.configuracion.cordLatitud,
-                    longitud: sucursal.configuracion.cordLongitud,
+                    especialidadId: parseInt(idEspecialidad),
+                    sucursalId: sucursal.sucursalId
                 })
             }
             ).then(response => {
@@ -69,16 +61,19 @@ class NuevoTurno extends React.Component {
                         .then(myJson => {
                             debugger
                             console.log(myJson)
+                            this.setState({
+                                correcto: 'Turno creado correctamente!'
+                            })
                         })
                 } else {
-                    this.setState({ error: "Datos incorrectos" })
+                    this.setState({ error: "El servidor respondió con error " + response.status.toString() })
                 }
-            })*/
+            })
         };
     }
 
     render() {
-        const { error } = this.state
+        const { error, correcto } = this.state
         return (
             <React.Fragment>
                 <div className="hero-body">
@@ -126,6 +121,7 @@ class NuevoTurno extends React.Component {
                             </div>
                         </div>
                         {error && <Error message={error} />}
+                        {correcto && <Correcto message={correcto} />}
                     </form>
                 </div>
             </React.Fragment>
