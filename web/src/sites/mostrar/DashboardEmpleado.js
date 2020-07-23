@@ -1,14 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { NavLink } from "react-router-dom";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faUserPlus, faQrcode, faChartPie } from "@fortawesome/free-solid-svg-icons";
 import NuevoTurno from '../NuevoTurno';
+import {getEspecialidadesPorSucursal} from '../../servicios/EmpleadoServices'
+import {SET_ESPECIALIDADES} from '../../constantes/actionRedux'
 
 class DashboardEmpleado extends React.Component {
     constructor(props) {
         super();
+    }
+    getEspecialidades = async (idSucursal) =>{
+        const {setEspecialidades} = this.props
+        const especialidades = await getEspecialidadesPorSucursal(idSucursal)
+        setEspecialidades(especialidades)
     }
 
     render() {
@@ -47,7 +53,7 @@ class DashboardEmpleado extends React.Component {
                             </span>
                             <span>Escanear código QR</span>
                         </button>
-                        <NavLink to="/nuevo" className="button is-rounded is-outlined" exact={true} activeClassName='button is-rounded is-outlined' style={{ margin: 5 }}>
+                        <NavLink to="/nuevo" onClick={()=>this.getEspecialidades(sucursal.sucursalId)} className="button is-rounded is-outlined" exact={true} activeClassName='button is-rounded is-outlined' style={{ margin: 5 }}>
                             <span className="icon">
                                 <FontAwesomeIcon icon={faUserPlus} />
                             </span>
@@ -74,7 +80,7 @@ class DashboardEmpleado extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        iniciarSesion: (datos) => dispatch({ type: "INICIAR_SESION", data: datos }),
+        setEspecialidades: (datos) => dispatch({ type: SET_ESPECIALIDADES, data: datos }),
     };
 };
 

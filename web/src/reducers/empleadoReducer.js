@@ -1,9 +1,10 @@
-import {SET_CONTROL_ES, SET_RECEPCIONISTAS, ELIMINAR_EMPLEADO} from '../constantes/actionRedux'
+import {SET_CONTROL_ES, SET_RECEPCIONISTAS, ELIMINAR_EMPLEADO,SET_ESPECIALIDADES} from '../constantes/actionRedux'
 import {eliminarEmpleadoServ} from '../servicios/AdminServices'
 
 const initialState={
     controlES : null,
     recepcionistas : null,
+    especialidades:null,
 };
 
 const eliminarEmpleadoStore = (idEmpleado,state) =>{
@@ -41,6 +42,12 @@ const EmpleadoReducer = (state = initialState, action) => {
         return{
             ...state,
             recepcionistas : datos
+        }
+    }
+    case SET_ESPECIALIDADES:{
+        return{
+            ...state,
+            especialidades : datos
         }
     }
         default:{
