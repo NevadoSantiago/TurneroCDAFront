@@ -33,7 +33,7 @@ class DashboardEmpleado extends React.Component {
         setCantidadDeGente(cant)
     }
     componentDidMount() {
-        this.interval = setInterval(() => this.setState({ time: Date.now(), highlightEnEspera: true }), 10000);
+        this.interval = setInterval(() => this.setState({ time: Date.now() }), 10000);
     }
     componentWillUnmount() {
         clearInterval(this.interval);
