@@ -6,11 +6,12 @@ import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { SET_CONTROL_ES, SET_RECEPCIONISTAS, CERRAR_SESION } from "../../constantes/actionRedux"
 import { ADMIN_SUCURSAL, EMPLEADO, CONTROL_ES, RECEPCION } from '../../constantes/tiposUsuarios'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {navBarResponse} from '../../constantes/textsScripts'
+import { navBarResponse } from '../../constantes/textsScripts'
 import NavBarAdminSuc from './navBar/admin_suc'
 import NavRecepcion from './navBar/recepcion'
 import NavControlES from './navBar/controlES'
 import NavNoAuth from './navBar/noAuth'
+import NavDefault from './navBar/navDefault'
 
 class Navbar extends React.Component {
     constructor() {
@@ -20,45 +21,35 @@ class Navbar extends React.Component {
         };
     }
 
-    componentDidMount() {
-        const script = document.createElement('script');
-
-        script.type = 'text/javascript'
-        script.async = true
-        script.innerHTML =navBarResponse
-
-        document.body.appendChild(script);
-    }
-
     cerrarSesion = () => {
         const { cerrarSesion } = this.props
         cerrarSesion()
     }
-/*     getEmpleadosSucRol = async (idSucursal, rol) => {
-        const { setControlES, setRecepcionistas, recepcionistas, controlES } = this.props
-        switch (rol) {
-            case CONTROL_ES: {
-                if (controlES == null) {
-                    const empleados = await getEmpleadoBySucursalYRol(idSucursal, rol)
-                    setControlES(empleados)
+    /*     getEmpleadosSucRol = async (idSucursal, rol) => {
+            const { setControlES, setRecepcionistas, recepcionistas, controlES } = this.props
+            switch (rol) {
+                case CONTROL_ES: {
+                    if (controlES == null) {
+                        const empleados = await getEmpleadoBySucursalYRol(idSucursal, rol)
+                        setControlES(empleados)
+                    }
+                    break;
                 }
-                break;
-            }
-            case RECEPCION: {
-                if (recepcionistas == null) {
-                    
-                    const empleados = await getEmpleadoBySucursalYRol(idSucursal, rol)
-                    setRecepcionistas(empleados)
+                case RECEPCION: {
+                    if (recepcionistas == null) {
+                        
+                        const empleados = await getEmpleadoBySucursalYRol(idSucursal, rol)
+                        setRecepcionistas(empleados)
+                    }
+    
+                    break;
                 }
-
-                break;
+                default: {
+                    console.log("ERROR")
+                    break;
+                }
             }
-            default: {
-                console.log("ERROR")
-                break;
-            }
-        }
-    } */
+        } */
 
     render() {
         const { usuario, tipoUsuario, sucursal } = this.props
@@ -67,23 +58,28 @@ class Navbar extends React.Component {
             switch (tipoUsuario) {
                 case ADMIN_SUCURSAL: {
                     return (
-                        <NavBarAdminSuc/>
+                        <NavBarAdminSuc />
                     )
                 }
                 case CONTROL_ES: {
                     return (
-                        <NavControlES/>
+                        <NavControlES />
                     )
                 }
                 case RECEPCION: {
                     return (
-                        <NavRecepcion/>
+                        <NavRecepcion />
+                    )
+                }
+                default: {
+                    return (
+                        <NavDefault />
                     )
                 }
             }
         } else {
             return (
-                <NavNoAuth/>
+                <NavNoAuth />
             )
         }
     }
