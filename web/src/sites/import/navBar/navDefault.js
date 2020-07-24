@@ -21,7 +21,6 @@ class NavDefault extends React.Component {
             newElement.setAttribute('id', elementId);
             newElement.async = true
             newElement.innerHTML = html;
-            console.log('added')
             p.appendChild(newElement);
         }
 
@@ -29,13 +28,12 @@ class NavDefault extends React.Component {
             // Removes an element from the document
             var element = document.getElementById(elementId);
             element.parentNode.removeChild(element);
-            console.log('removed')
         }
 
         if (document.getElementById('navbar') !== null) {
             removeElement('navbar')
         }
-
+        
         addElement('scripts', 'script', 'navbar', navBarResponse)
     }
 
