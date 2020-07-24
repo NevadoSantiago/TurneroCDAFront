@@ -6,7 +6,7 @@ import { CONTROL_ES } from '../../constantes/tiposUsuarios'
 import { SET_CONTROL_ES } from '../../constantes/actionRedux'
 import { getEmpleadoBySucursalYRol } from '../../servicios/AdminServices'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight, faAlignLeft } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 class ControlES extends React.Component {
 	constructor() {
@@ -66,7 +66,7 @@ class ControlES extends React.Component {
 											<a className="icon item">
 												<FontAwesomeIcon icon={faAngleLeft}/>
 											</a>
-											<a className="item">1</a>
+											<a className="item" style={{ fontFamily: 'Nunito' }}>1</a>
 											<a className="icon item">
 												<FontAwesomeIcon icon={faAngleRight}/>
 											</a>

@@ -2,7 +2,7 @@ import React from 'react';
 import { eliminarEmpleadoServ } from '../../../servicios/AdminServices'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { connect } from 'react-redux'
 import { ELIMINAR_EMPLEADO } from '../../../constantes/actionRedux'
 
@@ -41,13 +41,16 @@ class DatosRecepcionistas extends React.Component {
                     <td>{empleado.mail}</td>
                     <td className="right aligned" style={{ padding: 0 }}>
                         <button
-                            className="button is-danger"
+                            className="button is-danger is-outlined"
                             onClick={() => this.eliminarEmpleado(empleado.idEmpleado)}
                             style={{ margin: '5px' }}
                         >
-                            Eliminar
+                            <span className="icon">
+                                <FontAwesomeIcon icon={faTrash} />
+                            </span>
+                            <span>Eliminar</span>
                         </button>
-                        <NavLink to={{ pathname: '/editar', user: empleado }} className="button is-warning" exact={true} activeClassName='button is-warning' style={{ margin: '5px' }}>
+                        <NavLink to={{ pathname: '/editar', user: empleado }} className="button is-primary is-outlined" exact={true} activeClassName='button is-warning' style={{ margin: '5px' }}>
                             <span className="icon">
                                 <FontAwesomeIcon icon={faEdit} />
                             </span>

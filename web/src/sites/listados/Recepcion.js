@@ -5,7 +5,7 @@ import DatosRecepcionistas from './tablas/Recepcionistas'
 import { RECEPCION } from '../../constantes/tiposUsuarios'
 import { getEmpleadoBySucursalYRol } from '../../servicios/AdminServices'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight, faAlignLeft } from "@fortawesome/free-solid-svg-icons";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 class Recepcion extends React.Component {
 	constructor() {
@@ -59,7 +59,7 @@ class Recepcion extends React.Component {
 											<a className="icon item">
 												<FontAwesomeIcon icon={faAngleLeft} />
 											</a>
-											<a className="item">1</a>
+											<a className="item" style={{ fontFamily: 'Nunito' }}>1</a>
 											<a className="icon item">
 												<FontAwesomeIcon icon={faAngleRight} />
 											</a>

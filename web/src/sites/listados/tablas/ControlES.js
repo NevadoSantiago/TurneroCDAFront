@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { NavLink } from "react-router-dom";
 import { getEmpleadoBySucursalYRol } from '../../../servicios/AdminServices'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export const HeaderES = () => {
     return (
@@ -43,13 +43,16 @@ class DatosES extends React.Component {
                     <td>{empleado.mail}</td>
                     <td className="right aligned" style={{ padding: 0 }}>
                         <button 
-                            className="button is-danger"
+                            className="button is-danger is-outlined"
                             onClick={() => this.eliminarEmpleado()}
                             style={{ margin: '5px' }}
                         >
-                            Eliminar
+                            <span className="icon">
+                                <FontAwesomeIcon icon={faTrash} />
+                            </span>
+                            <span>Eliminar</span>
                         </button>
-                        <NavLink to={{ pathname: '/editar', user: empleado }} className="button is-info" exact={true} activeClassName='button is-warning' style={{ margin: '5px' }}>
+                        <NavLink to={{ pathname: '/editar', user: empleado }} className="button is-primary is-outlined" exact={true} activeClassName='button is-warning' style={{ margin: '5px' }}>
                             <span className="icon">
                                 <FontAwesomeIcon icon={faEdit} />
                             </span>
