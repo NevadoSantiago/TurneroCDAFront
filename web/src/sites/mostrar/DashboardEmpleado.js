@@ -10,7 +10,9 @@ class DashboardEmpleado extends React.Component {
     constructor(props) {
         super();
         this.state = {
-            highlightEnEspera: false
+            highlightNuevoEnEspera: false,
+            highlightUnoMenosEnEspera: false,
+            highlight: false
         }
     }
 
@@ -21,16 +23,29 @@ class DashboardEmpleado extends React.Component {
     }
     getCantidadDeGenteEnEspera = async () => {
         const { sucursal, setCantidadDeGente, cantidadGente } = this.props
+        const cantActual = cantidadGente
         const cant = await getCantGenteEnSucursal(sucursal.sucursalId)
-
-        if (cant != cantidadGente) {
-            console.log('cambio')
-            this.setState({
-                highlightEnEspera: true
-            })
-            setInterval(() => this.setState({
-                highlightEnEspera: false
-            }), 2000)
+        if (cant != cantActual) {
+            if (cant > cantActual) {
+                this.setState({
+                    highlightNuevoEnEspera: true,
+                    highlight: true
+                })
+                setInterval(() => this.setState({
+                    highlightNuevoEnEspera: false,
+                    highlight: false
+                }), 3000)
+            }
+            else {
+                this.setState({
+                    highlightUnoMenosEnEspera: true,
+                    highlight: true
+                })
+                setInterval(() => this.setState({
+                    highlightUnoMenosEnEspera: false,
+                    highlight: false
+                }), 3000)
+            }
         }
         setCantidadDeGente(cant)
     }
@@ -43,7 +58,7 @@ class DashboardEmpleado extends React.Component {
 
     render() {
         const { usuario, sucursal, cantidadGente } = this.props
-        const { highlightEnEspera } = this.state
+        const { highlight, highlightNuevoEnEspera, highlightUnoMenosEnEspera } = this.state
         this.getCantidadDeGenteEnEspera()
         return (
             <React.Fragment>
@@ -60,7 +75,8 @@ class DashboardEmpleado extends React.Component {
                         </div>
                         <div className="column" style={{ display: 'flex', margin: '-10px' }}>
                             <div
-                                className={`${highlightEnEspera ? "highlighted" : "highlight-whitesmoke"}`}
+                                className={
+                                    `${highlightNuevoEnEspera ? "highlighted" : highlightUnoMenosEnEspera ? "highlighted-error" : "highlight-whitesmoke"}`}
                                 style={{
                                     //backgroundColor: 'whitesmoke', 
                                     textAlign: 'end',
