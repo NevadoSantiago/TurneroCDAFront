@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { ADMIN_SUCURSAL, EMPLEADO, CONTROL_ES, RECEPCION } from '../constantes/tiposUsuarios'
+import { ADMIN_SUCURSAL, ADMIN_GENERAL, CONTROL_ES, RECEPCION } from '../constantes/tiposUsuarios'
 import DatosSucursal from '../sites/mostrar/DatosSucursal'
 import DashboardEmpleado from './mostrar/DashboardEmpleado'
+import AdministrarSucursales from './AdministrarSucursales'
 
 class Home extends React.Component {
 	constructor() {
@@ -32,6 +33,14 @@ class Home extends React.Component {
 						</div>
 					</React.Fragment>
 				);
+				case ADMIN_GENERAL:
+					return (
+						<React.Fragment>
+							<div className="hero-body">
+								<AdministrarSucursales/>
+							</div>
+						</React.Fragment>
+					);
 			default:
 				break;
 		}

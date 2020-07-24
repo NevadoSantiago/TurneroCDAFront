@@ -12,6 +12,7 @@ import ControlES from './sites/listados/ControlES'
 import './style.css'
 import AuthRoutePrivate from './sites/import/AuthRoute'
 import NavBar from './sites/import/Navbar'
+import AdministrarSucursales from './sites/AdministrarSucursales'
 
 class App extends React.Component {
 	render() {
@@ -27,6 +28,7 @@ class App extends React.Component {
 						<AuthRoutePrivate path="/listaES" exact component={ControlES} autorizado={ADMIN_SUCURSAL} autorizado2={null} autorizado3={null}></AuthRoutePrivate>
 						<AuthRoutePrivate path="/listaRecepcion" exact component={Recepcion} autorizado={ADMIN_SUCURSAL} autorizado2={null} autorizado3={null}  ></AuthRoutePrivate>
 						<AuthRoutePrivate path="/administrarPersona" exact component={AdministrarPersonal} autorizado={ADMIN_SUCURSAL} autorizado2={null} autorizado3={null} ></AuthRoutePrivate>
+						<AuthRoutePrivate path="/adminSucursales" exact component={AdministrarSucursales} autorizado={ADMIN_GENERAL} autorizado2={null} autorizado3={null} ></AuthRoutePrivate>
 						<AuthRoutePrivate path="/" component={Home} autorizado={ADMIN_SUCURSAL} autorizado2={CONTROL_ES} autorizado3={RECEPCION}  ></AuthRoutePrivate>
 					</Switch>
 				</div>
