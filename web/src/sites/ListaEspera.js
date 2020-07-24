@@ -1,11 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { URL_API } from '../constantes/urlApi'
 import Error from '../servicios/alertas/Error'
 import { HeaderTablaListaEspera } from './listados/tablas/ListaEspera'
 import TablaListaEspera from './listados/tablas/ListaEspera'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { getListaDeEspera } from '../servicios/EmpleadoServices'
 
 class ListaEspera extends React.Component {
     constructor() {
@@ -19,32 +17,15 @@ class ListaEspera extends React.Component {
     getListaDeEspera = async () => {
         const { location } = this.props
         const { sucursal } = location
-
-        const url = URL_API + '/api/sucursal/get/listadoEspera/' + sucursal.sucursalId
-        await fetch(
-            url, {
-            method: "GET"
-        }
-        ).then(response => {
-            if (response.status == 200) {
-                const json = response.json()
-                    .then(myJson => {
-                        this.setState({
-                            listaDeEspera: myJson
-                        })
-                    })
-            } else {
-                this.setState({ error: "El servidor no pudo responder a la solicitud" })
-            }
+        const listaDeEspera = await getListaDeEspera(sucursal.sucursalId)
+        this.setState({
+            listaDeEspera: listaDeEspera
         })
-            .catch(err => {
-                this.setState({ error: 'No se pudo conectar con el servidor' })
-            })
     }
 
     componentDidMount() {
         this.getListaDeEspera()
-        this.interval = setInterval(() =>{this.getListaDeEspera()}, 10000);
+        this.interval = setInterval(() => this.getListaDeEspera(), 10000);
     }
 
     componentWillUnmount() {
@@ -54,7 +35,6 @@ class ListaEspera extends React.Component {
     render() {
         const { listaDeEspera, error } = this.state
         const { location } = this.props
-    
         if (location.sucursal != null && listaDeEspera != null) {
             const { sucursal } = location
             if (error) {
@@ -112,9 +92,9 @@ class ListaEspera extends React.Component {
                 </div>
             )
         }
-
     }
 }
+
 const mapDispatchToProps = (dispatch) => {
     return {
 

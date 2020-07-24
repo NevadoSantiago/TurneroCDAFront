@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { SET_CONTROL_ES, SET_RECEPCIONISTAS, CERRAR_SESION } from "../../../constantes/actionRedux"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {navBarResponse} from '../../../constantes/textsScripts'
+import { navBarResponse } from '../../../constantes/textsScripts'
 
 class NavAdminGeneral extends React.Component {
     constructor() {
@@ -19,7 +19,7 @@ class NavAdminGeneral extends React.Component {
 
         script.type = 'text/javascript'
         script.async = true
-        script.innerHTML =navBarResponse
+        script.innerHTML = navBarResponse
 
         document.body.appendChild(script);
     }
@@ -40,14 +40,10 @@ class NavAdminGeneral extends React.Component {
                         <span aria-hidden="true"></span>
                     </a>
                 </div>
-                <div className="navbar-start">
-                    <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Inicio</NavLink>
-                </div>
-                <div className="navbar-start">
-                    <NavLink to="/adminSucursales" className="navbar-item" exact={true} activeClassName='navbar-item active'>Administrar sucursales</NavLink>
-                </div>
 
                 <div id="navbarBasicExample" className="navbar-menu">
+                    <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Inicio</NavLink>
+                    <NavLink to="/adminSucursales" className="navbar-item" exact={true} activeClassName='navbar-item active'>Administrar sucursales</NavLink>
                     <div className="navbar-end">
                         <div className="navbar-item">
                             <div className="buttons">
@@ -81,7 +77,7 @@ class NavAdminGeneral extends React.Component {
                 </div>
             </nav>
         )
-        
+
     }
 }
 const mapDispatchToProps = (dispatch) => {
