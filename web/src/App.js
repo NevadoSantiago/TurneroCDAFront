@@ -10,10 +10,11 @@ import EditarPersona from './sites/EditarPersona'
 import Recepcion from './sites/listados/Recepcion'
 import ControlES from './sites/listados/ControlES'
 import EstadisticasSucursal from './sites/EstadisticasSucursal'
-import './style.css'
 import AuthRoutePrivate from './sites/import/AuthRoute'
 import NavBar from './sites/import/Navbar'
 import AdministrarSucursales from './sites/AdministrarSucursales'
+import ListaEspera from './sites/ListaEspera'
+import './style.css'
 
 class App extends React.Component {
 	render() {
@@ -29,6 +30,11 @@ class App extends React.Component {
 						autorizado2={CONTROL_ES} 
 						autorizado3={RECEPCION}
 						autorizado4={null}  ></AuthRoutePrivate>
+						<AuthRoutePrivate path="/lista" exact component={ListaEspera} 
+						autorizado={ADMIN_SUCURSAL} 
+						autorizado2={CONTROL_ES} 
+						autorizado3={RECEPCION}
+						autorizado4={null}   ></AuthRoutePrivate>
 						<AuthRoutePrivate path="/estadisticas" component={EstadisticasSucursal} 
 						autorizado={ADMIN_SUCURSAL} 
 						autorizado2={CONTROL_ES} 
