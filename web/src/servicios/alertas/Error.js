@@ -11,7 +11,6 @@ export default ({ message }) =>
         color: white;
         border-radius: 10px;
         padding-bottom: 10px;
-        margin-bottom: 10px;
         align-text: center;
         background-color: hsl(348, 86%, 43%);
       }

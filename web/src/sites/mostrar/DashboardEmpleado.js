@@ -115,12 +115,12 @@ class DashboardEmpleado extends React.Component {
                             </span>
                             <span>Nuevo turno</span>
                         </NavLink>
-                        <button class="button is-rounded is-outlined" style={{ margin: 5 }}>
+                        <NavLink to={{ pathname: '/lista', sucursal: sucursal }} className="button is-rounded is-outlined" exact={true} activeClassName='button is-rounded is-outlined' style={{ margin: 5 }}>
                             <span className="icon">
                                 <FontAwesomeIcon icon={faUsers} />
                             </span>
                             <span>Lista de espera</span>
-                        </button>
+                        </NavLink>
                         <NavLink to={{ pathname: '/estadisticas', sucursal: sucursal }} className="button is-rounded is-outlined" exact={true} activeClassName='button is-rounded is-outlined' style={{ margin: 5 }}>
                             <span className="icon">
                                 <FontAwesomeIcon icon={faChartPie} />

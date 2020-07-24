@@ -10,10 +10,11 @@ import EditarPersona from './sites/EditarPersona'
 import Recepcion from './sites/listados/Recepcion'
 import ControlES from './sites/listados/ControlES'
 import EstadisticasSucursal from './sites/EstadisticasSucursal'
-import './style.css'
 import AuthRoutePrivate from './sites/import/AuthRoute'
 import NavBar from './sites/import/Navbar'
 import AdministrarSucursales from './sites/AdministrarSucursales'
+import ListaEspera from './sites/ListaEspera'
+import './style.css'
 
 class App extends React.Component {
 	render() {
@@ -24,9 +25,10 @@ class App extends React.Component {
 					<Switch>
 						<Route exact path="/login" component={Login}></Route>
 						<Route path="/noAutorizado" component={NoAutorizado}></Route>
-						<AuthRoutePrivate path="/nuevo" component={NuevoTurno} autorizado={ADMIN_SUCURSAL} autorizado2={CONTROL_ES} autorizado3={RECEPCION} ></AuthRoutePrivate>
-						<AuthRoutePrivate path="/estadisticas" component={EstadisticasSucursal} autorizado={ADMIN_SUCURSAL} autorizado2={CONTROL_ES} autorizado3={RECEPCION} ></AuthRoutePrivate>
-						<AuthRoutePrivate path="/editar" component={EditarPersona} autorizado={ADMIN_SUCURSAL} autorizado2={CONTROL_ES} autorizado3={RECEPCION}  ></AuthRoutePrivate>
+						<AuthRoutePrivate path="/nuevo" exact component={NuevoTurno} autorizado={ADMIN_SUCURSAL} autorizado2={CONTROL_ES} autorizado3={RECEPCION} ></AuthRoutePrivate>
+						<AuthRoutePrivate path="/estadisticas" exact component={EstadisticasSucursal} autorizado={ADMIN_SUCURSAL} autorizado2={CONTROL_ES} autorizado3={RECEPCION} ></AuthRoutePrivate>
+						<AuthRoutePrivate path="/editar" exact component={EditarPersona} autorizado={ADMIN_SUCURSAL} autorizado2={CONTROL_ES} autorizado3={RECEPCION}  ></AuthRoutePrivate>
+						<AuthRoutePrivate path="/lista" exact component={ListaEspera} autorizado={ADMIN_SUCURSAL} autorizado2={CONTROL_ES} autorizado3={RECEPCION}  ></AuthRoutePrivate>
 						<AuthRoutePrivate path="/listaES" exact component={ControlES} autorizado={ADMIN_SUCURSAL} autorizado2={null} autorizado3={null}></AuthRoutePrivate>
 						<AuthRoutePrivate path="/listaRecepcion" exact component={Recepcion} autorizado={ADMIN_SUCURSAL} autorizado2={null} autorizado3={null}  ></AuthRoutePrivate>
 						<AuthRoutePrivate path="/administrarPersona" exact component={AdministrarPersonal} autorizado={ADMIN_SUCURSAL} autorizado2={null} autorizado3={null} ></AuthRoutePrivate>
