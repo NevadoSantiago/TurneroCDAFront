@@ -24,7 +24,7 @@ class DatosRecepcionistas extends React.Component {
 
     eliminarEmpleado = () =>{
         const {eliminarEmpleado, empleado } = this.props
-        if(window.confirm("Seguro que desea eliminar a " + empleado.nombre + "?")){
+        if(window.confirm("Seguro que desea eliminar a " + empleado.nombre + ' ' + empleado.apellido + "?")){
             eliminarEmpleado(empleado.idEmpleado)
            {this.props.refresh()}
         }
@@ -39,7 +39,7 @@ class DatosRecepcionistas extends React.Component {
                 <td>{empleado.apellido}</td>
                 <td>{empleado.rol}</td>
                 <td>{empleado.mail}</td>
-                <td style={{ display: 'inline-table',  marginBottom: '5px' }}>
+                <td style={{ display: 'inline-table', padding: 0 }}>
                     <button
                         className="button is-danger"
                         onClick={() => this.eliminarEmpleado(empleado.idEmpleado)}

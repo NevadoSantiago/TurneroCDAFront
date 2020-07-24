@@ -1,12 +1,17 @@
 import React from 'react';
 import '../../style.css';
 import { connect } from 'react-redux'
-import { ADMIN_SUCURSAL, CONTROL_ES, RECEPCION,ADMIN_GENERAL } from '../../constantes/tiposUsuarios'
+import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { SET_CONTROL_ES, SET_RECEPCIONISTAS, CERRAR_SESION } from "../../constantes/actionRedux"
+import { ADMIN_SUCURSAL, EMPLEADO, CONTROL_ES, RECEPCION,ADMIN_GENERAL } from '../../constantes/tiposUsuarios'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { navBarResponse } from '../../constantes/textsScripts'
 import NavBarAdminSuc from './navBar/admin_suc'
 import NavRecepcion from './navBar/recepcion'
 import NavControlES from './navBar/controlES'
 import NavNoAuth from './navBar/noAuth'
 import NavAdminGeneral from './navBar/admin_gen'
+import NavDefault from './navBar/navDefault'
 
 class Navbar extends React.Component {
     constructor() {
@@ -15,15 +20,13 @@ class Navbar extends React.Component {
 
         };
     }
-
-
     render() {
         const { tipoUsuario } = this.props
         if (tipoUsuario != null) {
             switch (tipoUsuario) {
                 case ADMIN_SUCURSAL: {
                     return (
-                        <NavBarAdminSuc/>
+                        <NavBarAdminSuc />
                     )
                 }
                 case ADMIN_GENERAL: {
@@ -33,18 +36,23 @@ class Navbar extends React.Component {
                 }
                 case CONTROL_ES: {
                     return (
-                        <NavControlES/>
+                        <NavControlES />
                     )
                 }
                 case RECEPCION: {
                     return (
-                        <NavRecepcion/>
+                        <NavRecepcion />
+                    )
+                }
+                default: {
+                    return (
+                        <NavDefault />
                     )
                 }
             }
         } else {
             return (
-                <NavNoAuth/>
+                <NavNoAuth />
             )
         }
     }

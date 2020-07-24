@@ -1,9 +1,11 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import '../../../style.css';
+import { connect } from 'react-redux'
+import { CERRAR_SESION } from "../../../constantes/actionRedux"
 import { navBarResponse } from '../../../constantes/textsScripts'
 
-class NavNoAuth extends React.Component {
+class NavDefault extends React.Component {
     constructor() {
         super();
         this.state = {
@@ -33,8 +35,13 @@ class NavNoAuth extends React.Component {
         if (document.getElementById('navbar') !== null) {
             removeElement('navbar')
         }
-        
+
         addElement('scripts', 'script', 'navbar', navBarResponse)
+    }
+
+    cerrarSesion = () => {
+        const { cerrarSesion } = this.props
+        cerrarSesion()
     }
 
     render() {
@@ -53,7 +60,7 @@ class NavNoAuth extends React.Component {
                     <div className="navbar-end">
                         <div className="navbar-item">
                             <div className="buttons">
-                                <NavLink to="/login" className="button is-primary" activeClassName='button is-warning'>Iniciar sesión</NavLink>
+                                <NavLink to="/login" onClick={() => this.cerrarSesion()} className="button is-danger" activeClassName='button is-danger'>Cerrar sesión</NavLink>
                             </div>
                         </div>
                     </div>
@@ -62,5 +69,18 @@ class NavNoAuth extends React.Component {
         )
     }
 }
-export default NavNoAuth
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        cerrarSesion: () => dispatch({ type: CERRAR_SESION })
+    };
+};
+
+const mapStateToProps = (state) => {
+    return {
+
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavDefault)
 

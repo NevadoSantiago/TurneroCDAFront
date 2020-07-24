@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { SET_CONTROL_ES, SET_RECEPCIONISTAS, CERRAR_SESION } from "../../../constantes/actionRedux"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {navBarResponse} from '../../../constantes/textsScripts'
+import { navBarResponse } from '../../../constantes/textsScripts'
 
 class NavRecepcion extends React.Component {
     constructor() {
@@ -14,14 +14,31 @@ class NavRecepcion extends React.Component {
 
         };
     }
+
     componentDidMount() {
-        const script = document.createElement('script');
+        function addElement(parentId, elementTag, elementId, html) {
+            // Adds an element to the document
+            var p = document.getElementById(parentId);
+            var newElement = document.createElement(elementTag);
+            newElement.setAttribute('id', elementId);
+            newElement.async = true
+            newElement.innerHTML = html;
+            console.log('added')
+            p.appendChild(newElement);
+        }
 
-        script.type = 'text/javascript'
-        script.async = true
-        script.innerHTML =navBarResponse
+        function removeElement(elementId) {
+            // Removes an element from the document
+            var element = document.getElementById(elementId);
+            element.parentNode.removeChild(element);
+            console.log('removed')
+        }
 
-        document.body.appendChild(script);
+        if (document.getElementById('navbar') !== null) {
+            removeElement('navbar')
+        }
+        
+        addElement('scripts', 'script', 'navbar', navBarResponse)
     }
 
     cerrarSesion = () => {
@@ -41,7 +58,7 @@ class NavRecepcion extends React.Component {
                     </a>
                 </div>
 
-                <div id="navbarBasicExample" class="navbar-menu">
+                <div id="navbarBasicExample" className="navbar-menu">
                     <div className="navbar-start">
                         <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Inicio</NavLink>
                     </div>
@@ -78,9 +95,10 @@ class NavRecepcion extends React.Component {
                 </div>
             </nav>
         )
-        
+
     }
 }
+
 const mapDispatchToProps = (dispatch) => {
     return {
         setControlES: (datos) => dispatch({ type: SET_CONTROL_ES, data: datos }),
