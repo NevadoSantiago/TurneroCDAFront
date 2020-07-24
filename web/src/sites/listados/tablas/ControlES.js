@@ -41,7 +41,7 @@ class DatosES extends React.Component {
                     <td>{empleado.apellido}</td>
                     <td>{empleado.rol}</td>
                     <td>{empleado.mail}</td>
-                    <td style={{ display: 'inline-table', padding: 0 }}>
+                    <td className="right aligned" style={{ padding: 0 }}>
                         <button 
                             className="button is-danger"
                             onClick={() => this.eliminarEmpleado()}
