@@ -22,26 +22,29 @@ class DashboardEmpleado extends React.Component {
     }
     getCantidadDeGenteEnEspera = async () => {
         const { sucursal, setCantidadDeGente, cantidadGente } = this.props
+        const cantActual = cantidadGente
         const cant = await getCantGenteEnSucursal(sucursal.sucursalId)
-        if (cant > cantidadGente) {
-            this.setState({
-                highlightNuevoEnEspera: true,
-                highlight: true
-            })
-            setInterval(() => this.setState({
-                highlightNuevoEnEspera: false,
-                highlight: false
-            }), 3000)
-        }
-        else if (cant < cantidadGente) {
-            this.setState({
-                highlightUnoMenosEnEspera: true,
-                highlight: true
-            })
-            setInterval(() => this.setState({
-                highlightUnoMenosEnEspera: false,
-                highlight: false
-            }), 2000)
+        if (cant != cantActual) {
+            if (cant > cantActual) {
+                this.setState({
+                    highlightNuevoEnEspera: true,
+                    highlight: true
+                })
+                setInterval(() => this.setState({
+                    highlightNuevoEnEspera: false,
+                    highlight: false
+                }), 3000)
+            }
+            else {
+                this.setState({
+                    highlightUnoMenosEnEspera: true,
+                    highlight: true
+                })
+                setInterval(() => this.setState({
+                    highlightUnoMenosEnEspera: false,
+                    highlight: false
+                }), 3000)
+            }
         }
         setCantidadDeGente(cant)
     }
@@ -72,7 +75,7 @@ class DashboardEmpleado extends React.Component {
                         <div className="column" style={{ display: 'flex', margin: '-10px' }}>
                             <div
                                 className={
-                                    `${highlight ? highlightNuevoEnEspera ? "highlighted" : highlightUnoMenosEnEspera ? "highlighted-error" : "highlight-whitesmoke" : "highlight-whitesmoke"}`}
+                                    `${highlightNuevoEnEspera ? "highlighted" : highlightUnoMenosEnEspera ? "highlighted-error" : "highlight-whitesmoke"}`}
                                 style={{
                                     //backgroundColor: 'whitesmoke', 
                                     textAlign: 'end',
