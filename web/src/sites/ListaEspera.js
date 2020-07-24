@@ -1,12 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { URL_API } from '../constantes/urlApi'
 import Error from '../servicios/alertas/Error'
 import { HeaderTablaListaEspera } from './listados/tablas/ListaEspera'
 import TablaListaEspera from './listados/tablas/ListaEspera'
 import { getListaDeEspera } from '../servicios/EmpleadoServices'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 class ListaEspera extends React.Component {
     constructor() {
@@ -96,9 +93,9 @@ class ListaEspera extends React.Component {
                 </div>
             )
         }
-
     }
 }
+
 const mapDispatchToProps = (dispatch) => {
     return {
 
