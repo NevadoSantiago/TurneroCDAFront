@@ -66,6 +66,7 @@ class NuevoTurno extends React.Component {
     render() {
         const { error, correcto } = this.state
         const { especialidades } = this.props
+        console.log(especialidades)
         if (especialidades != null) {
             return (
                 <React.Fragment>
@@ -132,7 +133,7 @@ const mapStateToProps = (state) => {
         usuario: state.user.usuario,
         tipoUsuario: state.user.tipoUsuario,
         sucursal: state.user.sucursal,
-        especialidades: state.empleado.especialidades
+        especialidades: state.empleado.especialidades,
     };
 };
 

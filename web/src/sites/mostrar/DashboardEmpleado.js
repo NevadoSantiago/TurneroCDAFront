@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faUserPlus, faQrcode, faChartPie } from "@fortawesome/free-solid-svg-icons";
-import { getEspecialidadesPorSucursal, getCantGenteEnSucursal } from '../../servicios/EmpleadoServices'
-import { SET_ESPECIALIDADES, SET_CANTIDAD_GENTE } from '../../constantes/actionRedux'
+import {getEspecialidadesPorSucursal,getCantGenteEnSucursal,getRolesDeUsuario} from '../../servicios/EmpleadoServices'
+import {SET_ESPECIALIDADES,SET_CANTIDAD_GENTE} from '../../constantes/actionRedux'
 
 class DashboardEmpleado extends React.Component {
     constructor(props) {
@@ -15,6 +15,7 @@ class DashboardEmpleado extends React.Component {
             highlight: false
         }
     }
+
     getEspecialidades = async (idSucursal) => {
         const { setEspecialidades } = this.props
         const especialidades = await getEspecialidadesPorSucursal(idSucursal)

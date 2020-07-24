@@ -3,6 +3,8 @@ import { eliminarEmpleadoServ } from '../../../servicios/AdminServices'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import {connect} from 'react-redux'
+import {ELIMINAR_EMPLEADO} from '../../../constantes/actionRedux'
 
 export const HeaderRecepcionistas = () => {
     return (
@@ -18,18 +20,29 @@ export const HeaderRecepcionistas = () => {
     )
 
 }
-export const DatosRecepcionistas = ({ empleado }) => {
-    return (
+class DatosRecepcionistas extends React.Component {
+
+    eliminarEmpleado = () =>{
+        const {eliminarEmpleado, empleado } = this.props
+        if(window.confirm("Seguro que desea eliminar a " + empleado.nombre + "?")){
+            eliminarEmpleado(empleado.idEmpleado)
+           {this.props.refresh()}
+        }
+    }
+
+    render(){
+        const {empleado} = this.props
+            return (
         <tbody>
             <tr>
                 <td>{empleado.nombre}</td>
                 <td>{empleado.apellido}</td>
                 <td>{empleado.rol}</td>
                 <td>{empleado.mail}</td>
-                <td style={{ display: 'inline-table', margin: '-5px' }}>
+                <td style={{ display: 'inline-table',  marginBottom: '5px' }}>
                     <button
                         className="button is-danger"
-                        onClick={() => eliminarEmpleadoServ(empleado.idEmpleado)}
+                        onClick={() => this.eliminarEmpleado(empleado.idEmpleado)}
                         style={{ margin: '5px' }}
                     >
                         Eliminar
@@ -45,4 +58,21 @@ export const DatosRecepcionistas = ({ empleado }) => {
         </tbody>
     )
 
+    }
+
 }
+const mapDispatchToProps = (dispatch) => {
+    return {
+        eliminarEmpleado: (id) => dispatch({ type: ELIMINAR_EMPLEADO, data: id }),
+    };
+};
+
+const mapStateToProps = (state) => {
+    return {
+        sucursal: state.user.sucursal,
+    };
+};
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(DatosRecepcionistas)

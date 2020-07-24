@@ -41,7 +41,7 @@ class DatosES extends React.Component {
                     <td>{empleado.apellido}</td>
                     <td>{empleado.rol}</td>
                     <td>{empleado.mail}</td>
-                    <td style={{ display: 'inline-table', margin: '-5px' }}>
+                    <td style={{ display: 'inline-table', marginBottom: '5px' }}>
                         <button 
                             className="button is-danger"
                             onClick={() => this.eliminarEmpleado()}
@@ -49,7 +49,7 @@ class DatosES extends React.Component {
                         >
                             Eliminar
                         </button>
-                        <NavLink to={{ pathname: '/editar', user: empleado }} className="button is-warning" exact={true} activeClassName='button is-warning' style={{ margin: '5px' }}>
+                        <NavLink to={{ pathname: '/editar', user: empleado }} className="button is-info" exact={true} activeClassName='button is-warning' style={{ margin: '5px' }}>
                             <span className="icon">
                                 <FontAwesomeIcon icon={faEdit} />
                             </span>

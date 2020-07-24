@@ -7,6 +7,7 @@ import { SET_CONTROL_ES, SET_RECEPCIONISTAS, CERRAR_SESION } from "../../constan
 import { ADMIN, EMPLEADO, CONTROL_ES, RECEPCION } from '../../constantes/tiposUsuarios'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { getEmpleadoBySucursalYRol } from '../../servicios/AdminServices'
+import {navBarResponse} from '../../constantes/textsScripts'
 
 class Navbar extends React.Component {
     constructor() {
@@ -21,33 +22,7 @@ class Navbar extends React.Component {
 
         script.type = 'text/javascript'
         script.async = true
-        script.innerHTML =
-            `
-        document.addEventListener('DOMContentLoaded', () => {
-
-            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-            
-            if ($navbarBurgers.length > 0) {
-            
-                $navbarBurgers.forEach( el => {
-                    el.addEventListener('click', () => {
-            
-                        const target = el.dataset.target;
-                        const $target = document.getElementById(target);
-            
-                        el.classList.toggle('is-active');
-                        $target.classList.toggle('is-active');
-
-                        const $navbarDropdowns = Array.prototype.slice.call(document.querySelectorAll('.dropdown'), 0);
-
-                        $navbarDropdowns.forEach( drop => {
-                            drop.classList.toggle('is-right');
-                        });
-                    });
-                });
-            }
-        });
-        `
+        script.innerHTML =navBarResponse
 
         document.body.appendChild(script);
     }
@@ -56,7 +31,7 @@ class Navbar extends React.Component {
         const { cerrarSesion } = this.props
         cerrarSesion()
     }
-    getEmpleadosSucRol = async (idSucursal, rol) => {
+/*     getEmpleadosSucRol = async (idSucursal, rol) => {
         const { setControlES, setRecepcionistas, recepcionistas, controlES } = this.props
         switch (rol) {
             case CONTROL_ES: {
@@ -80,7 +55,7 @@ class Navbar extends React.Component {
                 break;
             }
         }
-    }
+    } */
 
     render() {
         const { usuario, tipoUsuario, sucursal } = this.props
@@ -110,12 +85,12 @@ class Navbar extends React.Component {
                                     <div class="navbar-dropdown">
                                         <NavLink
                                             to="/listaES"
-                                            onClick={() => this.getEmpleadosSucRol(sucursal.sucursalId, CONTROL_ES)}
+                                           // onClick={() => this.getEmpleadosSucRol(sucursal.sucursalId, CONTROL_ES)}
                                             className="navbar-item" activeClassName='navbar-item active'>
                                             Control E/S</NavLink>
                                         <NavLink
                                             to="/listaRecepcion"
-                                            onClick={() => this.getEmpleadosSucRol(sucursal.sucursalId, RECEPCION)}
+                                            //onClick={() => this.getEmpleadosSucRol(sucursal.sucursalId, RECEPCION)}
                                             className="navbar-item"
                                             activeClassName='navbar-item active'>
                                             Recepcion</NavLink>
