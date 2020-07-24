@@ -7,12 +7,14 @@ class AdministrarSucursales extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-
+            sucursales :null
 		};
     }
     obtenerSucursales =async ()=>{
         const sucursales = await getAllSucursales()
-        console.log(sucursales)
+        this.setState({
+            sucursales
+        })
 
     }
     componentDidMount () {
@@ -20,7 +22,8 @@ class AdministrarSucursales extends React.Component {
     }
 
 	render() {
-		const { tipoUsuario } = this.props
+        const { tipoUsuario } = this.props
+        const { sucursales } = this.state
 		return (
 			<div className="hero-body">
 				<p className="title">{tipoUsuario}</p>
