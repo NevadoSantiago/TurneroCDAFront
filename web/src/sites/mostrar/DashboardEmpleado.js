@@ -3,16 +3,15 @@ import { connect } from 'react-redux'
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUsers, faUserPlus, faQrcode, faChartPie } from "@fortawesome/free-solid-svg-icons";
-import {getEspecialidadesPorSucursal,getCantGenteEnSucursal,getRolesDeUsuario} from '../../servicios/EmpleadoServices'
-import {SET_ESPECIALIDADES,SET_CANTIDAD_GENTE} from '../../constantes/actionRedux'
+import { getEspecialidadesPorSucursal, getCantGenteEnSucursal, getRolesDeUsuario } from '../../servicios/EmpleadoServices'
+import { SET_ESPECIALIDADES, SET_CANTIDAD_GENTE } from '../../constantes/actionRedux'
 
 class DashboardEmpleado extends React.Component {
     constructor(props) {
         super();
         this.state = {
             highlightNuevoEnEspera: false,
-            highlightUnoMenosEnEspera: false,
-            highlight: false
+            highlightUnoMenosEnEspera: false
         }
     }
 
@@ -21,6 +20,7 @@ class DashboardEmpleado extends React.Component {
         const especialidades = await getEspecialidadesPorSucursal(idSucursal)
         setEspecialidades(especialidades)
     }
+
     getCantidadDeGenteEnEspera = async () => {
         const { sucursal, setCantidadDeGente, cantidadGente } = this.props
         const cantActual = cantidadGente
@@ -49,16 +49,18 @@ class DashboardEmpleado extends React.Component {
         }
         setCantidadDeGente(cant)
     }
+
     componentDidMount() {
         this.interval = setInterval(() => this.setState({ time: Date.now() }), 10000);
     }
+
     componentWillUnmount() {
         clearInterval(this.interval);
     }
 
     render() {
         const { usuario, sucursal, cantidadGente } = this.props
-        const { highlight, highlightNuevoEnEspera, highlightUnoMenosEnEspera } = this.state
+        const { highlightNuevoEnEspera, highlightUnoMenosEnEspera } = this.state
         this.getCantidadDeGenteEnEspera()
         return (
             <React.Fragment>
