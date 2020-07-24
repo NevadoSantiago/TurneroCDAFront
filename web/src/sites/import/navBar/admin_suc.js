@@ -35,7 +35,7 @@ class NavAdminSucursal extends React.Component {
         if (document.getElementById('navbar') !== null) {
             removeElement('navbar')
         }
-        
+
         addElement('scripts', 'script', 'navbar', navBarResponse)
     }
 
@@ -55,11 +55,13 @@ class NavAdminSucursal extends React.Component {
                         <span aria-hidden="true"></span>
                     </a>
                 </div>
+                
                 <div className="navbar-start">
-                    <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Inicio</NavLink>
+
                 </div>
 
                 <div id="navbarBasicExample" className="navbar-menu">
+                    <NavLink to="/" className="navbar-item" exact={true} activeClassName='navbar-item active'>Inicio</NavLink>
                     <div className="navbar-item has-dropdown is-hoverable">
                         <a className="navbar-link">
                             Administrador de Personal
