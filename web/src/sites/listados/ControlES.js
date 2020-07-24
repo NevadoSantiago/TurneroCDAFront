@@ -2,24 +2,36 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { HeaderES } from './tablas/ControlES'
 import DatosES from './tablas/ControlES'
+import {CONTROL_ES} from '../../constantes/tiposUsuarios'
 import { SET_CONTROL_ES } from '../../constantes/actionRedux'
+import {getEmpleadoBySucursalYRol} from '../../servicios/AdminServices'
 
 class ControlES extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			recargar : false
+			recargar : false,
+			controlES : null,
 		};
 	}
+	getEmpleados = async (idSucursal, rol)=>{
+		this.setState({
+			recargar:true
+		})
+		var controlES =await getEmpleadoBySucursalYRol(idSucursal, rol)
+		this.setState({
+			controlES,
+			recargar:false
+		})
+	}
+	componentDidMount (){
+		const {sucursal} = this.props
+		this.getEmpleados(sucursal.sucursalId, CONTROL_ES)
+	}
 	render() {
-		const { controlES } = this.props
-		const { recargar } = this.state
-		if(recargar){
-			this.setState({
-				recargar:false
-			})
-		}
-		if (controlES != null) {
+		const {sucursal} = this.props
+		const { recargar,controlES } = this.state
+		if (controlES != null && !recargar ) {
 			if (controlES.length === 0) {
 				return (
 					<div className="hero-body">
@@ -38,7 +50,9 @@ class ControlES extends React.Component {
 							{
 								controlES.map((e, i) => {
 									return (
-										<DatosES empleado={e} refresh={()=>this.setState({recargar:true})} />
+										<DatosES empleado={e} refresh={()=>
+											this.getEmpleados(sucursal.sucursalId, CONTROL_ES)
+											} />
 									)
 								}
 								)
@@ -64,6 +78,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
 	return {
 		controlES: state.empleado.controlES,
+		sucursal: state.user.sucursal
 	};
 };
 

@@ -45,7 +45,7 @@ export const editarDatos = async (e, location) => {
             url, {
             method: 'PATCH',
             body: JSON.stringify({
-                idEmpleado: location.user.idEmpleado,
+                idEmpleado: user.idEmpleado,
                 nombre: nombre,
                 apellido: apellido,
                 mail: mail,

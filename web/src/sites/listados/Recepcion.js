@@ -1,17 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { HeaderRecepcionistas, DatosRecepcionistas } from './tablas/Recepcionistas'
+import { HeaderRecepcionistas } from './tablas/Recepcionistas'
+import DatosRecepcionistas from './tablas/Recepcionistas'
+import {RECEPCION} from '../../constantes/tiposUsuarios'
+import {getEmpleadoBySucursalYRol} from '../../servicios/AdminServices'
 
 class Recepcion extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-
+			recargar : false,
+			recepcionistas : null,
 		};
+	}
+	getEmpleados = async (idSucursal, rol)=>{
+		var recepcionistas =await getEmpleadoBySucursalYRol(idSucursal, rol)
+		this.setState({
+			recepcionistas
+		})
+	}
+	componentDidMount (){
+		const {sucursal} = this.props
+		this.getEmpleados(sucursal.sucursalId, RECEPCION)
 	}
 
 	render() {
-		const { recepcionistas } = this.props
+		const { recepcionistas } = this.state
+		const {sucursal} = this.props
+
 		if (recepcionistas != null) {
 			if (recepcionistas.length === 0) {
 				return (
@@ -30,7 +46,8 @@ class Recepcion extends React.Component {
 							<HeaderRecepcionistas />
 							{
 								recepcionistas.map((e, i) => (
-									<DatosRecepcionistas empleado={e} />
+									<DatosRecepcionistas empleado={e} refresh={()=>
+										this.getEmpleados(sucursal.sucursalId, RECEPCION)} />
 								))
 							}
 						</table>
@@ -53,6 +70,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
 	return {
 		recepcionistas: state.empleado.recepcionistas,
+		sucursal: state.user.sucursal
 	};
 };
 

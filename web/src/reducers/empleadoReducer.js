@@ -10,11 +10,14 @@ const initialState={
 
 const eliminarEmpleadoStore = (idEmpleado,state) =>{
     var {controlES} = state
+    if(controlES != null){
     for(var i =0 ; i< controlES.length; i++){
         if(controlES[i].idEmpleado==idEmpleado){
             delete controlES[i]
         }
     }
+    }
+
 }
 
 const EmpleadoReducer = (state = initialState, action) => {

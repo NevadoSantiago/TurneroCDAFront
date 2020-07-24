@@ -49,7 +49,6 @@ class EditarPersona extends React.Component {
         const { location } = this.props
 
         if (location.user != null && roles !=null) {
-            console.log(correcto)
             const {user} = location
             return (
                 <React.Fragment>
