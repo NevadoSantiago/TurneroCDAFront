@@ -33,6 +33,7 @@ class ControlES extends React.Component {
 	render() {
 		const { sucursal } = this.props
 		const { recargar, controlES } = this.state
+		debugger
 		if (controlES != null && !recargar) {
 			if (controlES.length === 0) {
 				return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import '../style.css';
 import { connect } from 'react-redux'
+import {getAllSucursales} from '../servicios/AdminServices'
 
 class AdministrarSucursales extends React.Component {
 	constructor() {
@@ -8,14 +9,22 @@ class AdministrarSucursales extends React.Component {
 		this.state = {
 
 		};
-	}
+    }
+    obtenerSucursales =async ()=>{
+        const sucursales = await getAllSucursales()
+        console.log(sucursales)
+
+    }
+    componentDidMount () {
+        this.obtenerSucursales()
+    }
 
 	render() {
 		const { tipoUsuario } = this.props
 		return (
 			<div className="hero-body">
 				<p className="title">{tipoUsuario}</p>
-				<p >Si no lees admin_gen, no tendrias que estar aca</p>
+				<p >Si no lees admin_gen, no tendrias que estar acaa</p>
 			</div>
 		);
 	}
