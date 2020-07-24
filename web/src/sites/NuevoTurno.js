@@ -66,6 +66,7 @@ class NuevoTurno extends React.Component {
     render() {
         const { error, correcto } = this.state
         const { especialidades } = this.props
+        console.log(especialidades)
         if (especialidades != null) {
             return (
                 <React.Fragment>

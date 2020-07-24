@@ -4,14 +4,7 @@ import Error from '../servicios/alertas/Error'
 import Correcto from '../servicios/alertas/Correcto'
 import { URL_API_RESERVA } from '../constantes/urlApi'
 import {getRolesDeUsuario} from '../servicios/EmpleadoServices'
-
-
-var datos = {
-    nombre:null,
-    apellido:null,
-    mail:null
-
-}
+import {editarDatos} from '../servicios/AdminServices'
 
 class EditarPersona extends React.Component {
     constructor() {
@@ -36,12 +29,27 @@ class EditarPersona extends React.Component {
     componentDidMount () {
         this.getRoles()
     }
+    editarDatos =async e =>{
+        const {location} = this.props
+        const seEdito =await editarDatos(e,location)
+        if(seEdito){
+            this.setState({
+                correcto:"Se edito el usuario correctamente"
+            })
+            setTimeout(()=>{this.props.history.goBack()}, 1500)
+        }else{
+            this.setState({
+                error:"Hubo un error al editar"
+            })
+        }
+    }
 
     render() {
         const { error, correcto,roles } = this.state
         const { location } = this.props
 
         if (location.user != null && roles !=null) {
+            console.log(correcto)
             const {user} = location
             return (
                 <React.Fragment>
@@ -53,19 +61,19 @@ class EditarPersona extends React.Component {
                             <div className="field">
                                 <label className="label">Nombre</label>
                                 <div className="control">
-                                    <input className="input is-black" type="text" value={datos.nombre} name="nombre"></input>
+                                    <input className="input is-black" type="text" placeholder={user.nombre} name="nombre"></input>
                                 </div>
                             </div>
                             <div className="field">
                                 <label className="label">Apellido</label>
                                 <div className="control">
-                                    <input className="input is-black" type="text" value={datos.apellido} name="apellido"></input>
+                                    <input className="input is-black" type="text" placeholder={user.apellido} name="apellido"></input>
                                 </div>
                             </div>
                             <div className="field">
                                 <label className="label">Correo electrónico</label>
                                 <div className="control">
-                                    <input className="input is-black" type="text" value={datos.mail} name="mail"></input>
+                                    <input className="input is-black" type="text" placeholder={user.mail} name="mail"></input>
                                 </div>
                             </div>
                             <div className="field">

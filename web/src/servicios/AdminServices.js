@@ -23,38 +23,24 @@ export const eliminarEmpleadoServ = async (idEmpleado)=>{
             }else return false
         })
 }
-export const getEmpleado = async (idEmpleado)=>{
-
+const validateData = (datoNuevo,datoAnterior) => {
+if(datoNuevo == ""){
+    return datoAnterior
+}else{
+    return datoNuevo;
 }
-const validateData = (nombre, apellido, mail) => {
-    if (!nombre) {
-        return "Ingrese un nombre";
-    }
-    else if (!apellido) {
-        return "Ingrese un apellido";
-    }
-    else if (!mail) {
-        return "Ingrese un correo electrónico";
-    }
 }
 
-export const editarDatos = async e => {
-    const { location } = this.props
+export const editarDatos = async (e, location) => {
+    const {elements} = e.target
+    const {user}=location;
     e.preventDefault();
-    const nombre = e.target.elements.nombre.value;
-    const apellido = e.target.elements.apellido.value;
-    const mail = e.target.elements.mail.value;
-    const rol = e.target.elements.rol.value;
-
-    const error = validateData(nombre, apellido, mail,rol);
-    if (error) {
-        this.setState({
-            error
-        });
-        return false;
-    } else {
+    const nombre = validateData(elements.nombre.value, user.nombre)
+    const apellido = validateData(elements.apellido.value, user.apellido)
+    const mail = validateData(elements.mail.value, user.mail)
+    const rol = validateData(elements.rol.value, user.rol)
+    var respuesta
         var url = URL_API_RESERVA + '/api/usuario/editar'
-        this.setState({ error: null })
         await fetch(
             url, {
             method: 'PATCH',
@@ -67,16 +53,11 @@ export const editarDatos = async e => {
             })
         }
         ).then(response => {
-            if (response.status == 200) {
-                const json = response.json()
-                    .then(myJson => {
-                        this.setState({
-                            correcto: 'Datos editados correctamente!'
-                        })
-                    })
-            } else {
-                this.setState({ error: "El servidor respondió con error " + response.status.toString() })
-            }
+           if(response.status == 200){
+               respuesta = true
+           }else{
+             respuesta= false
+           }
         })
+        return respuesta
     };
-}

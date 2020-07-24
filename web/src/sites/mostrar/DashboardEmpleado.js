@@ -9,28 +9,41 @@ import {SET_ESPECIALIDADES,SET_CANTIDAD_GENTE} from '../../constantes/actionRedu
 class DashboardEmpleado extends React.Component {
     constructor(props) {
         super();
-        
+        this.state = {
+            highlightEnEspera: false
+        }
     }
-    getEspecialidadesYRoles = async (idSucursal) =>{
-        const {setEspecialidades} = this.props
+
+    getEspecialidades = async (idSucursal) => {
+        const { setEspecialidades } = this.props
         const especialidades = await getEspecialidadesPorSucursal(idSucursal)
         setEspecialidades(especialidades)
     }
-    getCantidadDeGenteEnEspera = async () =>{
-        const { sucursal,setCantidadDeGente } = this.props
+    getCantidadDeGenteEnEspera = async () => {
+        const { sucursal, setCantidadDeGente, cantidadGente } = this.props
         const cant = await getCantGenteEnSucursal(sucursal.sucursalId)
 
+        if (cant != cantidadGente) {
+            console.log('cambio')
+            this.setState({
+                highlightEnEspera: true
+            })
+            setInterval(() => this.setState({
+                highlightEnEspera: false
+            }), 2000)
+        }
         setCantidadDeGente(cant)
     }
-    componentDidMount (){    
+    componentDidMount() {
         this.interval = setInterval(() => this.setState({ time: Date.now() }), 10000);
     }
-      componentWillUnmount() {
+    componentWillUnmount() {
         clearInterval(this.interval);
-      }
+    }
 
     render() {
-        const { usuario, sucursal, cantidadGente} = this.props
+        const { usuario, sucursal, cantidadGente } = this.props
+        const { highlightEnEspera } = this.state
         this.getCantidadDeGenteEnEspera()
         return (
             <React.Fragment>
@@ -46,7 +59,20 @@ class DashboardEmpleado extends React.Component {
                             </div>
                         </div>
                         <div className="column" style={{ display: 'flex', margin: '-10px' }}>
-                            <div style={{ backgroundColor: 'whitesmoke', textAlign: 'end', borderTopLeftRadius: '500px', borderBottomLeftRadius: '500px', width: '50%', padding: '10px' }}>
+                            <div
+                                className={`${highlightEnEspera ? "highlighted" : "highlight-whitesmoke"}`}
+                                style={{
+                                    //backgroundColor: 'whitesmoke', 
+                                    textAlign: 'end',
+                                    borderTopLeftRadius: '500px',
+                                    borderBottomLeftRadius: '500px',
+                                    width: '50%',
+                                    padding: '10px',
+                                    MozTransition: 'all 0.5s ease-out',
+                                    OTransition: 'all 0.5s ease-out',
+                                    WebkitTransition: 'all 0.5s ease-out',
+                                    transition: 'all 0.5s ease-out'
+                                }}>
                                 <p className="subtitle">{'En espera'}</p>
                                 <p className="title">{cantidadGente}</p>
                             </div>
@@ -65,7 +91,7 @@ class DashboardEmpleado extends React.Component {
                             </span>
                             <span>Escanear código QR</span>
                         </button>
-                        <NavLink to="/nuevo" onClick={()=>this.getEspecialidadesYRoles(sucursal.sucursalId)} className="button is-rounded is-outlined" exact={true} activeClassName='button is-rounded is-outlined' style={{ margin: 5 }}>
+                        <NavLink to="/nuevo" onClick={() => this.getEspecialidades(sucursal.sucursalId)} className="button is-rounded is-outlined" exact={true} activeClassName='button is-rounded is-outlined' style={{ margin: 5 }}>
                             <span className="icon">
                                 <FontAwesomeIcon icon={faUserPlus} />
                             </span>
@@ -102,7 +128,7 @@ const mapStateToProps = (state) => {
         usuario: state.user.usuario,
         tipoUsuario: state.user.tipoUsuario,
         sucursal: state.user.sucursal,
-        cantidadGente:state.empleado.cantidadGente
+        cantidadGente: state.empleado.cantidadGente
     };
 };
 

@@ -4,9 +4,8 @@ import {eliminarEmpleadoServ} from '../servicios/AdminServices'
 const initialState={
     controlES : null,
     recepcionistas : null,
-    especialidades:null,
-    cantidadGente:null,
-    roles:null,
+    especialidades: null,
+    cantidadGente: null,
 };
 
 const eliminarEmpleadoStore = (idEmpleado,state) =>{
@@ -53,8 +52,7 @@ const EmpleadoReducer = (state = initialState, action) => {
     case SET_ESPECIALIDADES:{
         return{
             ...state,
-            especialidades : datos.especialidades,
-            roles: datos.roles
+            especialidades : datos
         }
     }
         default:{
