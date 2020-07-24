@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { ADMIN, EMPLEADO } from '../constantes/tiposUsuarios'
+import { ADMIN_SUCURSAL, EMPLEADO, CONTROL_ES, RECEPCION } from '../constantes/tiposUsuarios'
 import DatosSucursal from '../sites/mostrar/DatosSucursal'
 import DashboardEmpleado from './mostrar/DashboardEmpleado'
 
@@ -16,11 +16,15 @@ class Home extends React.Component {
 		const { tipoUsuario } = this.props
 
 		switch (tipoUsuario) {
-			case EMPLEADO:
+			case CONTROL_ES:
 				return (
 					<DashboardEmpleado />
 				);
-			case ADMIN:
+			case RECEPCION:
+				return (
+					<DashboardEmpleado />
+				);
+			case ADMIN_SUCURSAL:
 				return (
 					<React.Fragment>
 						<div className="hero-body">

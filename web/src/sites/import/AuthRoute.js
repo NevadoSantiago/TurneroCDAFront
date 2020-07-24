@@ -7,7 +7,7 @@ class AuthRoutePrivate extends React.Component {
       super(props);
     }
     render() {
-      const { tipoUsuario, path, component:Component, autorizado,autorizado2, ...props } = this.props
+      const { tipoUsuario, path, component:Component, autorizado,autorizado2,autorizado3, ...props } = this.props
       return (
         <Route 
           {...props} 
@@ -15,7 +15,7 @@ class AuthRoutePrivate extends React.Component {
         if(tipoUsuario==null){
             return(<Redirect to='/login'/>)
         }else{
-            if(tipoUsuario == autorizado || tipoUsuario == autorizado2){
+            if(tipoUsuario == autorizado || tipoUsuario == autorizado2 ||tipoUsuario == autorizado3 ){
                 return(<Component {...props} />)
             }else{
                 return(<Redirect to='/noAutorizado'/>)
