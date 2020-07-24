@@ -10,10 +10,10 @@ export const HeaderRecepcionistas = () => {
     return (
         <thead>
             <tr>
-                <th style={{ padding: '12px' }}>Nombre</th>
-                <th style={{ padding: '12px' }}>Apellido</th>
-                <th style={{ padding: '12px' }}>Rol</th>
-                <th style={{ padding: '12px' }}>Mail</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Rol</th>
+                <th>Mail</th>
                 <th></th>
             </tr>
         </thead>

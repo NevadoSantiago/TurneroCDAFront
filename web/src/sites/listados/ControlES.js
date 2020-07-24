@@ -45,7 +45,7 @@ class ControlES extends React.Component {
 				return (
 					<div className="hero-body">
 						<p className="title">Control E/S</p>
-						<table className="table is-hoverable" style={{ width: "100%", borderRadius: '20px' }}>
+						<table className="ui red table">
 							<HeaderES />
 							{
 								controlES.map((e, i) => {

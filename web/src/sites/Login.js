@@ -68,8 +68,8 @@ class Login extends React.Component {
     }
     return (
       <div className="hero-body">
+        <p className="title">Iniciar sesión</p>
         <form onSubmit={this.login}>
-          <h1 className="title">Iniciar sesión</h1>
           <div className="field">
             <div className="control">
               <input className="input" type="text" placeholder="Usuario" name="usuario"></input>
