@@ -14,7 +14,7 @@ export const getEmpleadoBySucursalYRol = async (idSucursal, rol) =>{
 
 export const eliminarEmpleadoServ = async (idEmpleado)=>{
     const url = URL_API + "/api/usuario/eliminar/" + idEmpleado
-    fetch(url,{
+    await fetch(url,{
         method:"POST"
     }).then(response=>
         {
@@ -22,6 +22,18 @@ export const eliminarEmpleadoServ = async (idEmpleado)=>{
                 return true
             }else return false
         })
+}
+export const getAllSucursales = async ()=>{
+    var empleados
+    const url = URL_API + "/api/sucursal";
+    await fetch(url)
+    .then(response=>{return response.json()})
+    .then(response=>{
+        empleados = response
+    }
+    )
+    return empleados;
+
 }
 const validateData = (datoNuevo,datoAnterior) => {
 if(datoNuevo == ""){

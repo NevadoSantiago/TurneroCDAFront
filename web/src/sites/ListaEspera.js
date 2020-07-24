@@ -39,8 +39,6 @@ class ListaEspera extends React.Component {
         const { listaDeEspera, error } = this.state
         const { location } = this.props
 
-        console.log(listaDeEspera)
-
         if (location.sucursal != null && listaDeEspera != null) {
             const { sucursal } = location
             if (error) {
