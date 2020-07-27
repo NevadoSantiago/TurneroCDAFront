@@ -76,12 +76,6 @@ class NuevoTurno extends React.Component {
                     <div className="container" style={{ flex: 1, backgroundColor: 'white', padding: '20px', borderRadius: '15px', marginRight: '15px', marginLeft: '15px', marginBottom: '15px' }}>
                         <form onSubmit={this.nuevoTurno}>
                             <div className="field">
-                                <label className="label">Síntomas</label>
-                                <div className="control">
-                                    <input className="input is-black" type="text" placeholder="" name="sintomas"></input>
-                                </div>
-                            </div>
-                            <div className="field">
                                 <label className="label">Especialidad</label>
                                 <div className="field-body">
                                     <div className="field">
@@ -99,6 +93,13 @@ class NuevoTurno extends React.Component {
                                     </div>
                                 </div>
                             </div>
+                            <div className="field">
+                                <label className="label">Síntomas</label>
+                                <div className="control">
+                                    <input className="input is-black" type="text" placeholder="" name="sintomas"></input>
+                                </div>
+                            </div>
+                            
                             <div className="field is-grouped is-grouped-centered">
                                 <div className="control">
                                     <button className="button is-primary" type="submit">Confirmar</button>
