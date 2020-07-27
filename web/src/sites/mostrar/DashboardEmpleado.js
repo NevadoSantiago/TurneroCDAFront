@@ -201,18 +201,6 @@ class DashboardEmpleado extends React.Component {
               </span>
               <span>Lista de espera</span>
             </NavLink>
-            <NavLink
-              to={{ pathname: "/estadisticas", sucursal: sucursal }}
-              className="button is-rounded is-outlined"
-              exact={true}
-              activeClassName="button is-rounded is-outlined"
-              style={{ margin: 5 }}
-            >
-              <span className="icon">
-                <FontAwesomeIcon icon={faChartPie} />
-              </span>
-              <span>Ver estadísticas</span>
-            </NavLink>
           </div>
         </div>
       </React.Fragment>
