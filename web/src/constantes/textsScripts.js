@@ -1,5 +1,4 @@
-export const navBarResponse =
-`
+export const navBarResponse = `
 $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
 
 if ($navbarBurgers.length > 0) {
@@ -18,4 +17,4 @@ if ($navbarBurgers.length > 0) {
         });
     });
 }
-`
+`;
