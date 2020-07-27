@@ -3,14 +3,41 @@ import { connect } from "react-redux";
 import { Pie, Bar } from "react-chartjs-2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
+import { getListaDeEspera } from "../servicios/EmpleadoServices";
 
 class EstadisticasSucursal extends React.Component {
   constructor() {
     super();
     this.state = {
       dataEspecialidades: null,
+      listaDeEspera: null,
     };
   }
+
+  getListaDeEspera = async () => {
+    const { location } = this.props;
+    const { sucursal } = location;
+    const listaDeEspera = await getListaDeEspera(sucursal.sucursalId);
+    this.setState({
+      listaDeEspera,
+    });
+  };
+
+  checkIfReservaHasEspecialidad = async (especialidad) => {
+    const { location } = this.props;
+    const { sucursal } = location;
+    const listaDeEspera = await getListaDeEspera(sucursal.sucursalId);
+
+    var count = 0;
+
+    await listaDeEspera.map((persona) => {
+      if (persona.especialidad.indexOf(especialidad) != -1) {
+        count++;
+      }
+    });
+
+    return count;
+  };
 
   getDataEspecialidades = async () => {
     const { especialidades } = this.props;
@@ -27,11 +54,16 @@ class EstadisticasSucursal extends React.Component {
     };
 
     if (especialidades != null) {
-      await especialidades.map((especialidad, i) => {
-        result.datasets[0].data.push(5 * (i + 1));
-        console.log("hsl(0, 75%, " + ((i + 2) * 10).toString() + "%)");
+      var length = Object.keys(especialidades).length;
+
+      await especialidades.map(async (especialidad, i) => {
+        const value = await this.checkIfReservaHasEspecialidad(
+          especialidad.nombre
+        );
+        console.log(especialidad.nombre + " - " + value);
+        result.datasets[0].data.push(value);
         result.datasets[0].backgroundColor.push(
-          "hsl(0, 75%, " + ((i + 2) * 10).toString() + "%)"
+          "hsl(0, 75%, " + ((length - i + 2) * 10).toString() + "%)"
         );
         result.labels.push(especialidad.nombre);
       });
@@ -44,9 +76,18 @@ class EstadisticasSucursal extends React.Component {
     }
   };
 
+  componentDidMount() {
+    this.getListaDeEspera();
+    this.interval = setInterval(() => this.getListaDeEspera(), 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   render() {
     const { location, especialidades } = this.props;
-    const { dataEspecialidades } = this.state;
+    const { dataEspecialidades, listaDeEspera } = this.state;
 
     this.getDataEspecialidades();
     console.log(dataEspecialidades);
@@ -54,7 +95,8 @@ class EstadisticasSucursal extends React.Component {
     if (
       location.sucursal != null &&
       especialidades != null &&
-      dataEspecialidades != null
+      dataEspecialidades != null &&
+      listaDeEspera != null
     ) {
       const { sucursal } = location;
       return (
@@ -96,7 +138,7 @@ class EstadisticasSucursal extends React.Component {
             <div className="columns">
               <div className="column is-6" style={{ textAlign: "center" }}>
                 <p className="subtitle">
-                  <b>{"Gráfico 1"}</b>
+                  <b>{"Turnos según especialidad"}</b>
                 </p>
                 <Pie
                   data={dataEspecialidades}
