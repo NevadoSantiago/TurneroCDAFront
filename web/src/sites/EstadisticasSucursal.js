@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { Pie } from 'react-chartjs-2';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 
 class EstadisticasSucursal extends React.Component {
     constructor() {
@@ -24,6 +26,12 @@ class EstadisticasSucursal extends React.Component {
                         </p>
                     </div>
                     <div className="container" style={{ flex: 1, backgroundColor: 'white', padding: '20px', borderRadius: '15px', marginRight: '15px', marginLeft: '15px', marginBottom: '15px' }}>
+                        <button className="button is-rounded is-danger is-outlined" style={{ float: 'right', marginTop: '-5px', marginRight: '-5px' }}>
+                            <span class="icon is-small">
+                                <FontAwesomeIcon icon={faFilePdf} />
+                            </span>
+                            <span>Generar reporte PDF</span>
+                        </button>
                         <p className="subtitle">
                             {'Sucursal: '}
                             <b>{sucursal.nombre}</b>
@@ -32,7 +40,10 @@ class EstadisticasSucursal extends React.Component {
                             {sucursal.direccion}
                         </p>
                         <div className='columns'>
-                            <div className="column is-6">
+                            <div className="column is-6" style={{ textAlign: 'center' }}>
+                                <p>
+                                    {'Gráfico 1'}
+                                </p>
                                 <Pie
                                     data={{
                                         datasets: [{
@@ -55,7 +66,10 @@ class EstadisticasSucursal extends React.Component {
                                     options={{ responsive: true, maintainAspectRatio: true }}
                                 />
                             </div>
-                            <div className="column is-6">
+                            <div className="column is-6" style={{ textAlign: 'center' }}>
+                                <p>
+                                    {'Gráfico 2'}
+                                </p>
                                 <Pie
                                     data={{
                                         datasets: [{
