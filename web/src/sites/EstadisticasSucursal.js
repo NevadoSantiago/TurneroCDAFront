@@ -63,7 +63,11 @@ class EstadisticasSucursal extends React.Component {
         console.log(especialidad.nombre + " - " + value);
         result.datasets[0].data.push(value);
         result.datasets[0].backgroundColor.push(
-          "hsl(0, 75%, " + ((length - i + 2) * 10).toString() + "%)"
+          "hsl(" +
+            (length * i * 10).toString() +
+            ", 50%, " +
+            ((length - i + 6) * 8).toString() +
+            "%)"
         );
         result.labels.push(especialidad.nombre);
       });
