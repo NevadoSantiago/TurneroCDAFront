@@ -50,7 +50,7 @@ class DatosSucursales extends React.Component {
                     <td>{sucursal.nombre}</td>
                     <td>{sucursal.direccion}</td>
                     <td>{sucursal.configuracion.fechaApertura}</td>
-                    <td style={{ textAlign: 'center' }}>    
+                    <td className="center aligned">    
                         <span className="icon">
                             <FontAwesomeIcon icon={iconoHabilitado} />
                         </span>
