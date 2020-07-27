@@ -1,19 +1,61 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Pie } from "react-chartjs-2";
+import { Pie, Bar } from "react-chartjs-2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 
 class EstadisticasSucursal extends React.Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      dataEspecialidades: null,
+    };
   }
 
-  render() {
-    const { location } = this.props;
+  getDataEspecialidades = async () => {
+    const { especialidades } = this.props;
+    const { dataEspecialidades } = this.state;
 
-    if (location.sucursal != null) {
+    var result = {
+      datasets: [
+        {
+          data: [],
+          backgroundColor: [],
+        },
+      ],
+      labels: [],
+    };
+
+    if (especialidades != null) {
+      await especialidades.map((especialidad, i) => {
+        result.datasets[0].data.push(5 * (i + 1));
+        console.log("hsl(0, 75%, " + ((i + 2) * 10).toString() + "%)");
+        result.datasets[0].backgroundColor.push(
+          "hsl(0, 75%, " + ((i + 2) * 10).toString() + "%)"
+        );
+        result.labels.push(especialidad.nombre);
+      });
+
+      if (dataEspecialidades === null) {
+        this.setState({
+          dataEspecialidades: result,
+        });
+      }
+    }
+  };
+
+  render() {
+    const { location, especialidades } = this.props;
+    const { dataEspecialidades } = this.state;
+
+    this.getDataEspecialidades();
+    console.log(dataEspecialidades);
+
+    if (
+      location.sucursal != null &&
+      especialidades != null &&
+      dataEspecialidades != null
+    ) {
       const { sucursal } = location;
       return (
         <React.Fragment>
@@ -53,7 +95,20 @@ class EstadisticasSucursal extends React.Component {
             </p>
             <div className="columns">
               <div className="column is-6" style={{ textAlign: "center" }}>
-                <p>{"Gráfico 1"}</p>
+                <p className="subtitle">
+                  <b>{"Gráfico 1"}</b>
+                </p>
+                <Pie
+                  data={dataEspecialidades}
+                  width={10}
+                  height={5}
+                  options={{ responsive: true, maintainAspectRatio: true }}
+                />
+              </div>
+              <div className="column is-6" style={{ textAlign: "center" }}>
+                <p className="subtitle">
+                  <b>{"Gráfico 2"}</b>
+                </p>
                 <Pie
                   data={{
                     datasets: [
@@ -70,22 +125,52 @@ class EstadisticasSucursal extends React.Component {
                   options={{ responsive: true, maintainAspectRatio: true }}
                 />
               </div>
-              <div className="column is-6" style={{ textAlign: "center" }}>
-                <p>{"Gráfico 2"}</p>
-                <Pie
+            </div>
+            <div className="columns is-centered">
+              <div className="column is-9" style={{ textAlign: "center" }}>
+                <p className="subtitle">
+                  <b>{"Gráfico 3"}</b>
+                </p>
+                <Bar
                   data={{
+                    labels: [
+                      "Red",
+                      "Blue",
+                      "Yellow",
+                      "Green",
+                      "Purple",
+                      "Orange",
+                    ],
                     datasets: [
                       {
-                        data: [10, 20, 30],
-                        backgroundColor: ["lightblue", "lavender", "pink"],
+                        label: "# of Votes",
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                          "rgba(255, 99, 132, 0.2)",
+                          "rgba(54, 162, 235, 0.2)",
+                          "rgba(255, 206, 86, 0.2)",
+                          "rgba(75, 192, 192, 0.2)",
+                          "rgba(153, 102, 255, 0.2)",
+                          "rgba(255, 159, 64, 0.2)",
+                        ],
+                        borderColor: [
+                          "rgba(255, 99, 132, 1)",
+                          "rgba(54, 162, 235, 1)",
+                          "rgba(255, 206, 86, 1)",
+                          "rgba(75, 192, 192, 1)",
+                          "rgba(153, 102, 255, 1)",
+                          "rgba(255, 159, 64, 1)",
+                        ],
+                        borderWidth: 1,
                       },
                     ],
-                    // These labels appear in the legend and in the tooltips when hovering different arcs
-                    labels: ["Light blue", "Lavender", "Pink"],
                   }}
                   width={10}
                   height={5}
-                  options={{ responsive: true, maintainAspectRatio: true }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: true,
+                  }}
                 />
               </div>
             </div>
@@ -108,7 +193,9 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    especialidades: state.empleado.especialidades,
+  };
 };
 
 export default connect(
