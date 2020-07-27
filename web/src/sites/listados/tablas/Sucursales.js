@@ -2,7 +2,7 @@ import React from 'react';
 import { eliminarEmpleadoServ } from '../../../servicios/AdminServices'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
-import { faEdit, faTrash,faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash, faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { connect } from 'react-redux'
 import { ELIMINAR_EMPLEADO } from '../../../constantes/actionRedux'
 
@@ -21,7 +21,7 @@ export const HeaderSucursales = () => {
 
 }
 class DatosSucursales extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
     }
@@ -37,10 +37,10 @@ class DatosSucursales extends React.Component {
     render() {
         const { sucursal } = this.props
         var iconoHabilitado
-        if(sucursal.habilitada){
+        if (sucursal.habilitada) {
             console.log("HABILITADA")
             iconoHabilitado = faCheck
-        }else{
+        } else {
             console.log("DESHABILITADA")
             iconoHabilitado = faTimes
         }
@@ -50,9 +50,11 @@ class DatosSucursales extends React.Component {
                     <td>{sucursal.nombre}</td>
                     <td>{sucursal.direccion}</td>
                     <td>{sucursal.configuracion.fechaApertura}</td>
-                    <td>    <span className="icon" style={{marginLeft:"30%", marginTop:"15%"}}>
-                                <FontAwesomeIcon icon={iconoHabilitado} />
-                            </span></td>
+                    <td style={{ textAlign: 'center' }}>    
+                        <span className="icon">
+                            <FontAwesomeIcon icon={iconoHabilitado} />
+                        </span>
+                    </td>
                     <td className="right aligned" style={{ padding: 0 }}>
                         <button
                             className="button is-danger is-outlined"
