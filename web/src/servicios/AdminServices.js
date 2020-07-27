@@ -26,7 +26,8 @@ export const eliminarEmpleadoServ = async (idEmpleado)=>{
 export const getAllSucursales = async ()=>{
     var empleados
     const url = URL_API + "/api/sucursal";
-    await fetch(url)
+    debugger
+    await fetch(url) 
     .then(response=>{return response.json()})
     .then(response=>{
         empleados = response

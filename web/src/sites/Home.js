@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { ADMIN_SUCURSAL, ADMIN_GENERAL, CONTROL_ES, RECEPCION } from '../constantes/tiposUsuarios'
 import DashboardAdministradorSucursal from '../sites/mostrar/DatosSucursal'
 import DashboardEmpleado from './mostrar/DashboardEmpleado'
-import AdministrarSucursales from './AdministrarSucursales'
+import DashboardAdminGeneral from './mostrar/DashBoardAdminGen'
 
 class Home extends React.Component {
 	constructor() {
@@ -32,12 +32,8 @@ class Home extends React.Component {
 				);
 			case ADMIN_GENERAL:
 				return (
-					<React.Fragment>
-						<div className="hero-body">
-							<AdministrarSucursales />
-						</div>
-					</React.Fragment>
-				);
+					<DashboardAdminGeneral />
+				)
 			default:
 				break;
 		}

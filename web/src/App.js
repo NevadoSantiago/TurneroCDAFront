@@ -9,6 +9,7 @@ import NuevoTurno from './sites/NuevoTurno'
 import EditarPersona from './sites/EditarPersona'
 import Recepcion from './sites/listados/Recepcion'
 import ControlES from './sites/listados/ControlES'
+import Sucursales from './sites/listados/Sucursales'
 import EstadisticasSucursal from './sites/EstadisticasSucursal'
 import AuthRoutePrivate from './sites/import/AuthRoute'
 import NavBar from './sites/import/Navbar'
@@ -60,7 +61,7 @@ class App extends React.Component {
 						 autorizado2={null} 
 						 autorizado3={null}
 						 autorizado4={null}  ></AuthRoutePrivate> */}
-						<AuthRoutePrivate path="/adminSucursales" exact component={AdministrarSucursales} 
+						<AuthRoutePrivate path="/adminSucursales" exact component={Sucursales} 
 						autorizado={ADMIN_GENERAL} 
 						autorizado2={null} 
 						autorizado3={null}
