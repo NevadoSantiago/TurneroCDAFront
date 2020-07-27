@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Pie, Bar } from "react-chartjs-2";
+import { Pie, Bar, defaults } from "react-chartjs-2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { getListaDeEspera } from "../servicios/EmpleadoServices";
@@ -93,8 +93,10 @@ class EstadisticasSucursal extends React.Component {
     const { location, especialidades } = this.props;
     const { dataEspecialidades, listaDeEspera } = this.state;
 
+    defaults.global.defaultFontFamily = "Nunito";
+    defaults.global.defaultFontStyle = "bold";
+
     this.getDataEspecialidades();
-    console.log(dataEspecialidades);
 
     if (
       location.sucursal != null &&
@@ -148,7 +150,13 @@ class EstadisticasSucursal extends React.Component {
                   data={dataEspecialidades}
                   width={10}
                   height={5}
-                  options={{ responsive: true, maintainAspectRatio: true }}
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    legend: {
+                      position: "left",
+                    },
+                  }}
                 />
               </div>
               <div className="column is-6" style={{ textAlign: "center" }}>
