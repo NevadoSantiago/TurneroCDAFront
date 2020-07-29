@@ -2,7 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import Error from "../servicios/alertas/Error";
 import { NavLink } from "react-router-dom";
-import { getListaDeEspera } from "../servicios/EmpleadoServices";
+import {
+  getListaDeEspera,
+  getListaDeEsperaAgrupada,
+} from "../servicios/EmpleadoServices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -24,9 +27,20 @@ class ListaEspera extends React.Component {
     });
   };
 
+  getListaDeEsperaAgrupada = async () => {
+    const { location } = this.props;
+    const { sucursal } = location;
+    const listaDeEsperaAgrupada = await getListaDeEsperaAgrupada(
+      sucursal.sucursalId
+    );
+    this.setState({
+      listaDeEspera: listaDeEsperaAgrupada,
+    });
+  };
+
   componentDidMount() {
-    this.getListaDeEspera();
-    this.interval = setInterval(() => this.getListaDeEspera(), 10000);
+    this.getListaDeEsperaAgrupada();
+    this.interval = setInterval(() => this.getListaDeEsperaAgrupada(), 10000);
   }
 
   componentWillUnmount() {
@@ -41,6 +55,7 @@ class ListaEspera extends React.Component {
       listaDeEspera != null &&
       especialidades != null
     ) {
+      console.log(listaDeEspera);
       const { sucursal } = location;
       if (error) {
         return (
@@ -83,7 +98,7 @@ class ListaEspera extends React.Component {
               var count = 0;
               listaDeEspera.map((p, i) => {
                 if (p.especialidad === especialidad.nombre) {
-                  count++;
+                  count = p.cantidadEspera;
                 }
               });
               return (

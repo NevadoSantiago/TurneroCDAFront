@@ -36,6 +36,18 @@ export const getListaDeEspera = async (sucursalId) => {
     });
   return listaDeEspera;
 };
+export const getListaDeEsperaAgrupada = async (sucursalId) => {
+  const url = URL_API + "/api/sucursal/listadoAgrupado/espera/" + sucursalId;
+  var listaDeEsperaAgrupada = null;
+  await fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      listaDeEsperaAgrupada = response;
+    });
+  return listaDeEsperaAgrupada;
+};
 export const getRolesDeUsuario = async () => {
   var roles;
   const url = URL_API + "/api/usuario/get/roles";
