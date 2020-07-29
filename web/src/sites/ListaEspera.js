@@ -100,6 +100,8 @@ class ListaEspera extends React.Component {
                 if (p.especialidad === especialidad.nombre) {
                   count = p.cantidadEspera;
                 }
+
+                return count;
               });
               return (
                 <NavLink

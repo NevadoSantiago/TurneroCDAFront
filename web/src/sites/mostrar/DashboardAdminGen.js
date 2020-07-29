@@ -2,15 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { SET_ESPECIALIDADES } from "../../constantes/actionRedux";
 
-class DashboardEmpleado extends React.Component {
+class DashboardAdminGen extends React.Component {
   constructor(props) {
     super();
     this.state = {};
   }
 
   render() {
-    const {} = this.props;
-    const {} = this.state;
     return <p>Dashboard Admin General</p>;
   }
 }
@@ -28,4 +26,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardEmpleado);
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardAdminGen);

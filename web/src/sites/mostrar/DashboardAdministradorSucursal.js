@@ -4,14 +4,12 @@ import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUsers,
-  faUserPlus,
   faQrcode,
   faChartPie,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   getEspecialidadesPorSucursal,
   getCantGenteEnSucursal,
-  getRolesDeUsuario,
 } from "../../servicios/EmpleadoServices";
 import {
   SET_ESPECIALIDADES,
@@ -37,7 +35,7 @@ class DashboardAdministradorSucursal extends React.Component {
     const { sucursal, setCantidadDeGente, cantidadGente } = this.props;
     const cantActual = cantidadGente;
     const cant = await getCantGenteEnSucursal(sucursal.sucursalId);
-    if (cant != cantActual) {
+    if (cant !== cantActual) {
       if (cant > cantActual) {
         this.setState({
           highlightNuevoEnEspera: true,

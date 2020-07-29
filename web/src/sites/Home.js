@@ -8,7 +8,7 @@ import {
 } from "../constantes/tiposUsuarios";
 import DashboardAdministradorSucursal from "../sites/mostrar/DashboardAdministradorSucursal";
 import DashboardEmpleado from "./mostrar/DashboardEmpleado";
-import DashboardAdminGeneral from "./mostrar/DashBoardAdminGen";
+import DashboardAdminGeneral from "./mostrar/DashboardAdminGen";
 
 class Home extends React.Component {
   constructor() {

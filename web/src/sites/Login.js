@@ -46,8 +46,8 @@ class Login extends React.Component {
           contrasena: password,
         }),
       }).then((response) => {
-        if (response.status == 200) {
-          const json = response.json().then((myJson) => {
+        if (response.status === 200) {
+          response.json().then((myJson) => {
             iniciarSesion(myJson);
           });
         } else {

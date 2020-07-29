@@ -1,21 +1,12 @@
 import React from "react";
 import "../../style.css";
 import { connect } from "react-redux";
-import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
-import {
-  SET_CONTROL_ES,
-  SET_RECEPCIONISTAS,
-  CERRAR_SESION,
-} from "../../constantes/actionRedux";
 import {
   ADMIN_SUCURSAL,
-  EMPLEADO,
   CONTROL_ES,
   RECEPCION,
   ADMIN_GENERAL,
 } from "../../constantes/tiposUsuarios";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { navBarResponse } from "../../constantes/textsScripts";
 import NavBarAdminSuc from "./navBar/admin_suc";
 import NavRecepcion from "./navBar/recepcion";
 import NavControlES from "./navBar/controlES";

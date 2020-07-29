@@ -5,7 +5,9 @@ import { connect } from "react-redux";
 class AuthRoutePrivate extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
   }
+
   render() {
     const {
       tipoUsuario,
@@ -25,10 +27,10 @@ class AuthRoutePrivate extends React.Component {
             return <Redirect to="/login" />;
           } else {
             if (
-              tipoUsuario == autorizado ||
-              tipoUsuario == autorizado2 ||
-              tipoUsuario == autorizado3 ||
-              tipoUsuario == autorizado4
+              tipoUsuario === autorizado ||
+              tipoUsuario === autorizado2 ||
+              tipoUsuario === autorizado3 ||
+              tipoUsuario === autorizado4
             ) {
               return <Component {...props} />;
             } else {

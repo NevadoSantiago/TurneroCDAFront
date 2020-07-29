@@ -47,12 +47,11 @@ class NavAdminSucursal extends React.Component {
   };
 
   render() {
-    const { usuario, tipoUsuario, sucursal } = this.props;
+    const { usuario, tipoUsuario } = this.props;
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
-          <a
-            role="button"
+          <button
             className="navbar-burger burger"
             aria-label="menu"
             aria-expanded="false"
@@ -61,7 +60,7 @@ class NavAdminSucursal extends React.Component {
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
-          </a>
+          </button>
         </div>
 
         <div className="navbar-start"></div>
@@ -76,7 +75,7 @@ class NavAdminSucursal extends React.Component {
             Inicio
           </NavLink>
           <div className="navbar-item has-dropdown is-hoverable">
-            <a className="navbar-link">Administrador de Personal</a>
+            <button className="navbar-link">Administrador de Personal</button>
 
             <div className="navbar-dropdown">
               <NavLink

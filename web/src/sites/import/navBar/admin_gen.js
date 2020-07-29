@@ -16,6 +16,7 @@ class NavAdminGeneral extends React.Component {
     super();
     this.state = {};
   }
+
   componentDidMount() {
     const script = document.createElement("script");
 
@@ -32,21 +33,21 @@ class NavAdminGeneral extends React.Component {
   };
 
   render() {
-    const { usuario, tipoUsuario, sucursal } = this.props;
+    const { usuario, tipoUsuario } = this.props;
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
-          <a
-            role="button"
+          <button
             className="navbar-burger burger"
             aria-label="menu"
             aria-expanded="false"
             data-target="navbarBasicExample"
+            onClick={() => console.log()}
           >
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
-          </a>
+          </button>
         </div>
 
         <div id="navbarBasicExample" className="navbar-menu">

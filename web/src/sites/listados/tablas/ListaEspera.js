@@ -57,6 +57,7 @@ class ListaEsperaPorEspecialidad extends React.Component {
                   </tr>
                 );
               }
+              return p;
             })}
           </tbody>
         </table>
@@ -64,7 +65,12 @@ class ListaEsperaPorEspecialidad extends React.Component {
     } else {
       return (
         <div style={{ textAlign: "center" }}>
-          <p className="subtitle">No hay personas 😢</p>
+          <p className="subtitle">
+            No hay personas
+            <span role="img" aria-label="sad">
+              😢
+            </span>
+          </p>
         </div>
       );
     }

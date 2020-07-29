@@ -4,7 +4,6 @@ import { Pie, Bar, defaults } from "react-chartjs-2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
 import { getListaDeEspera } from "../servicios/EmpleadoServices";
-import { NavLink } from "react-router-dom";
 
 class EstadisticasSucursal extends React.Component {
   constructor() {
@@ -35,9 +34,10 @@ class EstadisticasSucursal extends React.Component {
     var count = 0;
 
     await listaDeEspera.map((persona) => {
-      if (persona.especialidad.indexOf(especialidad) != -1) {
+      if (persona.especialidad.indexOf(especialidad) !== -1) {
         count++;
       }
+      return count;
     });
 
     return count;
@@ -189,7 +189,7 @@ class EstadisticasSucursal extends React.Component {
                   marginRight: "-5px",
                 }}
               >
-                <span class="icon is-small">
+                <span className="icon is-small">
                   <FontAwesomeIcon icon={faFilePdf} />
                 </span>
                 <span>Generar reporte PDF</span>
@@ -272,7 +272,7 @@ class EstadisticasSucursal extends React.Component {
                     marginRight: "-5px",
                   }}
                 >
-                  <span class="icon is-small">
+                  <span className="icon is-small">
                     <FontAwesomeIcon icon={faFilePdf} />
                   </span>
                   <span>Generar reporte PDF</span>

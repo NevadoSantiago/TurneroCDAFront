@@ -18,7 +18,7 @@ export const eliminarEmpleadoServ = async (idEmpleado) => {
   await fetch(url, {
     method: "POST",
   }).then((response) => {
-    if (response.status == 200) {
+    if (response.status === 200) {
       return true;
     } else return false;
   });
@@ -37,7 +37,7 @@ export const getAllSucursales = async () => {
   return empleados;
 };
 const validateData = (datoNuevo, datoAnterior) => {
-  if (datoNuevo == "") {
+  if (datoNuevo === "") {
     return datoAnterior;
   } else {
     return datoNuevo;
@@ -64,7 +64,7 @@ export const editarDatos = async (e, location) => {
       rol: parseInt(rol),
     }),
   }).then((response) => {
-    if (response.status == 200) {
+    if (response.status === 200) {
       respuesta = true;
     } else {
       respuesta = false;

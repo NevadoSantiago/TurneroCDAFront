@@ -108,7 +108,7 @@ class EditarPersona extends React.Component {
                       <div className="select is-fullwidth is-black">
                         <select name="rol">
                           {roles.map((r, i) => {
-                            if (location.user.rol == r.detalle) {
+                            if (location.user.rol === r.detalle) {
                               return (
                                 <option selected value={r.tipoId}>
                                   {r.detalle}

@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Error from "../servicios/alertas/Error";
 import Correcto from "../servicios/alertas/Correcto";
-import { URL_API_RESERVA, URL_API_ESPECIALIDAD } from "../constantes/urlApi";
+import { URL_API_RESERVA } from "../constantes/urlApi";
 
 class NuevoTurno extends React.Component {
   constructor() {
@@ -42,8 +42,8 @@ class NuevoTurno extends React.Component {
           sucursalId: sucursal.sucursalId,
         }),
       }).then((response) => {
-        if (response.status == 200) {
-          const json = response.json().then((myJson) => {
+        if (response.status === 200) {
+          response.json().then((myJson) => {
             this.setState({
               correcto: "Turno creado correctamente!",
             });

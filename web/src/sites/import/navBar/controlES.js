@@ -47,12 +47,11 @@ class NavControlES extends React.Component {
   };
 
   render() {
-    const { usuario, tipoUsuario, sucursal } = this.props;
+    const { usuario, tipoUsuario } = this.props;
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
-          <a
-            role="button"
+          <button
             className="navbar-burger burger"
             aria-label="menu"
             aria-expanded="false"
@@ -61,10 +60,10 @@ class NavControlES extends React.Component {
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
-          </a>
+          </button>
         </div>
 
-        <div id="navbarBasicExample" class="navbar-menu">
+        <div id="navbarBasicExample" className="navbar-menu">
           <div className="navbar-start">
             <NavLink
               to="/"

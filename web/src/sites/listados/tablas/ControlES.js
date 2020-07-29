@@ -1,10 +1,7 @@
 import React from "react";
-import { eliminarEmpleadoServ } from "../../../servicios/AdminServices";
 import { ELIMINAR_EMPLEADO } from "../../../constantes/actionRedux";
-import { CONTROL_ES } from "../../../constantes/tiposUsuarios";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { getEmpleadoBySucursalYRol } from "../../../servicios/AdminServices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -35,9 +32,7 @@ class DatosES extends React.Component {
       )
     ) {
       eliminarEmpleado(empleado.idEmpleado);
-      {
-        this.props.refresh();
-      }
+      this.props.refresh();
     }
   };
   render() {

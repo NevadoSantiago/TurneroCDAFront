@@ -1,5 +1,4 @@
 import React from "react";
-import { eliminarEmpleadoServ } from "../../../servicios/AdminServices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -32,9 +31,7 @@ class DatosRecepcionistas extends React.Component {
       )
     ) {
       eliminarEmpleado(empleado.idEmpleado);
-      {
-        this.props.refresh();
-      }
+      this.props.refresh();
     }
   };
 

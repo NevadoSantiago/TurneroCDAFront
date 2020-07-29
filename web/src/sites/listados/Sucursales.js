@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { HeaderSucursales } from "./tablas/Sucursales";
 import DatosSucursales from "./tablas/Sucursales";
-import { RECEPCION } from "../../constantes/tiposUsuarios";
 import { getAllSucursales } from "../../servicios/AdminServices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
@@ -54,15 +53,18 @@ class Sucursales extends React.Component {
                   <tr>
                     <th colspan="5" style={{ textAlign: "center" }}>
                       <div className="ui pagination menu">
-                        <a className="icon item">
+                        <button className="icon item">
                           <FontAwesomeIcon icon={faAngleLeft} />
-                        </a>
-                        <a className="item" style={{ fontFamily: "Nunito" }}>
+                        </button>
+                        <button
+                          className="item"
+                          style={{ fontFamily: "Nunito" }}
+                        >
                           1
-                        </a>
-                        <a className="icon item">
+                        </button>
+                        <button className="icon item">
                           <FontAwesomeIcon icon={faAngleRight} />
-                        </a>
+                        </button>
                       </div>
                     </th>
                   </tr>

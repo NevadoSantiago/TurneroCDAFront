@@ -35,7 +35,7 @@ class DashboardEmpleado extends React.Component {
     const { sucursal, setCantidadDeGente, cantidadGente } = this.props;
     const cantActual = cantidadGente;
     const cant = await getCantGenteEnSucursal(sucursal.sucursalId);
-    if (cant != cantActual) {
+    if (cant !== cantActual) {
       if (cant > cantActual) {
         this.setState({
           highlightNuevoEnEspera: true,
@@ -167,7 +167,7 @@ class DashboardEmpleado extends React.Component {
         >
           <div style={{ margin: -5 }}>
             <button
-              class="button is-rounded is-black is-outlined"
+              className="button is-rounded is-black is-outlined"
               style={{ margin: 5 }}
             >
               <span className="icon">

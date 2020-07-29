@@ -19,7 +19,6 @@ import EstadisticasSucursal from "./sites/EstadisticasSucursal";
 import AuthRoutePrivate from "./sites/import/AuthRoute";
 import NavBar from "./sites/import/Navbar";
 import ListaEsperaPorEspecialidad from "./sites/listados/tablas/ListaEspera";
-import AdministrarSucursales from "./sites/AdministrarSucursales";
 import ListaEspera from "./sites/ListaEspera";
 import "./style.css";
 
