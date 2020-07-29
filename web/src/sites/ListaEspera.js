@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import Error from "../servicios/alertas/Error";
-import { HeaderTablaListaEspera } from "./listados/tablas/ListaEspera";
-import TablaListaEspera from "./listados/tablas/ListaEspera";
+import { NavLink } from "react-router-dom";
 import { getListaDeEspera } from "../servicios/EmpleadoServices";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 class ListaEspera extends React.Component {
   constructor() {
@@ -34,8 +35,12 @@ class ListaEspera extends React.Component {
 
   render() {
     const { listaDeEspera, error } = this.state;
-    const { location } = this.props;
-    if (location.sucursal != null && listaDeEspera != null) {
+    const { location, especialidades } = this.props;
+    if (
+      location.sucursal != null &&
+      listaDeEspera != null &&
+      especialidades != null
+    ) {
       const { sucursal } = location;
       if (error) {
         return (
@@ -74,29 +79,54 @@ class ListaEspera extends React.Component {
                 <b>{"(" + sucursal.sucursalId + ")"}</b>
               </p>
             </div>
-            <div
-              className="container"
-              style={{
-                flex: 1,
-                backgroundColor: "white",
-                padding: "20px",
-                borderRadius: "15px",
-                marginRight: "15px",
-                marginLeft: "15px",
-              }}
-            >
-              <table className="ui sortable green table">
-                <HeaderTablaListaEspera />
-                {listaDeEspera.map((p, i) => {
-                  return (
-                    <TablaListaEspera
-                      persona={p}
-                      refresh={() => this.getListaDeEspera()}
-                    />
-                  );
-                })}
-              </table>
-            </div>
+            {especialidades.map((especialidad) => {
+              var count = 0;
+              listaDeEspera.map((p, i) => {
+                if (p.especialidad === especialidad.nombre) {
+                  count++;
+                }
+              });
+              return (
+                <NavLink
+                  to={{
+                    pathname: "/lista/especialidad",
+                    sucursal: sucursal,
+                    especialidad: especialidad,
+                    count: count,
+                  }}
+                  className="button is-rounded is-outlined"
+                  exact={true}
+                  activeClassName="button is-rounded is-outlined"
+                  style={{
+                    flex: 1,
+                    backgroundColor: "white",
+                    padding: "20px",
+                    borderRadius: "15px",
+                    marginRight: "15px",
+                    marginLeft: "15px",
+                    marginBottom: "15px",
+                    display: "inline-table",
+                    textAlign: "left",
+                    minWidth: "-webkit-fill-available",
+                  }}
+                >
+                  <p className="title" style={{ margin: 0 }}>
+                    {especialidad.nombre}
+                  </p>
+                  <p
+                    className="title"
+                    style={{
+                      margin: 0,
+                      display: "table-cell",
+                      textAlign: "right",
+                    }}
+                  >
+                    {count}&nbsp;&nbsp;&nbsp;&nbsp;
+                    <FontAwesomeIcon icon={faChevronRight} />
+                  </p>
+                </NavLink>
+              );
+            })}
           </React.Fragment>
         );
       }
@@ -117,7 +147,9 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    especialidades: state.empleado.especialidades,
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListaEspera);

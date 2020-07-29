@@ -18,6 +18,7 @@ import Sucursales from "./sites/listados/Sucursales";
 import EstadisticasSucursal from "./sites/EstadisticasSucursal";
 import AuthRoutePrivate from "./sites/import/AuthRoute";
 import NavBar from "./sites/import/Navbar";
+import ListaEsperaPorEspecialidad from "./sites/listados/tablas/ListaEspera";
 import AdministrarSucursales from "./sites/AdministrarSucursales";
 import ListaEspera from "./sites/ListaEspera";
 import "./style.css";
@@ -43,6 +44,15 @@ class App extends React.Component {
               path="/lista"
               exact
               component={ListaEspera}
+              autorizado={ADMIN_SUCURSAL}
+              autorizado2={CONTROL_ES}
+              autorizado3={RECEPCION}
+              autorizado4={null}
+            ></AuthRoutePrivate>
+            <AuthRoutePrivate
+              path="/lista/especialidad"
+              exact
+              component={ListaEsperaPorEspecialidad}
               autorizado={ADMIN_SUCURSAL}
               autorizado2={CONTROL_ES}
               autorizado3={RECEPCION}

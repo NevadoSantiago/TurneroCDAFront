@@ -179,6 +179,7 @@ class DashboardAdministradorSucursal extends React.Component {
             </button>
             <NavLink
               to={{ pathname: "/lista", sucursal: sucursal }}
+              onClick={() => this.getEspecialidades(sucursal.sucursalId)}
               className="button is-rounded is-outlined"
               exact={true}
               activeClassName="button is-rounded is-outlined"
