@@ -6,7 +6,7 @@ import {
   CONTROL_ES,
   RECEPCION,
 } from "../constantes/tiposUsuarios";
-import DashboardAdministradorSucursal from "../sites/mostrar/DatosSucursal";
+import DashboardAdministradorSucursal from "../sites/mostrar/DashboardAdministradorSucursal";
 import DashboardEmpleado from "./mostrar/DashboardEmpleado";
 import DashboardAdminGeneral from "./mostrar/DashBoardAdminGen";
 

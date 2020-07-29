@@ -169,7 +169,7 @@ class DashboardAdministradorSucursal extends React.Component {
         >
           <div style={{ margin: -5 }}>
             <button
-              class="button is-rounded is-black is-outlined"
+              className="button is-rounded is-black is-outlined"
               style={{ margin: 5 }}
             >
               <span className="icon">
@@ -177,19 +177,6 @@ class DashboardAdministradorSucursal extends React.Component {
               </span>
               <span>Escanear código QR</span>
             </button>
-            <NavLink
-              to="/nuevo"
-              onClick={() => this.getEspecialidades(sucursal.sucursalId)}
-              className="button is-rounded is-outlined"
-              exact={true}
-              activeClassName="button is-rounded is-outlined"
-              style={{ margin: 5 }}
-            >
-              <span className="icon">
-                <FontAwesomeIcon icon={faUserPlus} />
-              </span>
-              <span>Nuevo turno</span>
-            </NavLink>
             <NavLink
               to={{ pathname: "/lista", sucursal: sucursal }}
               className="button is-rounded is-outlined"
