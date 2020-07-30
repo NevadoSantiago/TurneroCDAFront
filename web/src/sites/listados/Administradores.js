@@ -1,60 +1,55 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { HeaderSucursales } from './tablas/Sucursales'
-import DatosSucursales from './tablas/Sucursales'
-import { RECEPCION } from '../../constantes/tiposUsuarios'
-import { getAllSucursales } from '../../servicios/AdminServices'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import DatosAdministradores from './tablas/Administradores'
+import {HeaderAdministradores} from './tablas/Administradores'
+import {getAdminstradoresDeSucursal} from '../../servicios/EmpleadoServices'
 
-class Sucursales extends React.Component {
+class Administradores extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-            sucursales:null
+			admins:null
 		};
-    }
-    obtenerSucursales =async ()=>{
-        var sucursales = await getAllSucursales()
+	}
+	
+    getAdmins = async () => {
+        const { sucursal } = this.props
+        const admins = await getAdminstradoresDeSucursal(sucursal.sucursalId)
         this.setState({
-            sucursales
+            admins
         })
-
     }
-    componentDidMount () {
-        this.obtenerSucursales()
+    componentDidMount() {
+        this.getAdmins()
     }
-
 
 	render() {
 
-        const {sucursales} = this.state
-
-		if (sucursales != null) {
-			if (sucursales.length === 0) {
+		const {admins} = this.state
+ 
+		if (admins != null) {
+			if (admins.length === 0) {
 				return (
 					<div className="hero-body">
-						<p className="title">Sucursales</p>
 						<div className="container" style={{ textAlign: 'center' }}>
-							<p className="subtitle">No hay datos</p>
+							<p className="subtitle">No hay administradores</p>
 						</div>
 					</div>
 				)
 			} else {
 				return (
-                <div>
-                     <div>
-                     <p className="title">Los botones todavia no funcionan</p>
-                    </div>
+
 					<div className="hero-body">
-						<p className="title">Sucursales</p>
+                        <label className="label">Administradores</label>
 						<table className="ui red table">
-							<HeaderSucursales />
+							<HeaderAdministradores />
 							{
-								sucursales.map((suc, i) => (
-									<DatosSucursales sucursal={suc} refresh={() =>
-                                        this.obtenerSucursales()
-                                    }  />
+								admins.map((a, i) => (
+									<DatosAdministradores admin={a} refresh={() =>
+										this.getAdmins()
+									} />
 								))
 							}
 							<tfoot className="full-width">
@@ -74,7 +69,6 @@ class Sucursales extends React.Component {
 							</tfoot>
 						</table>
 					</div>
-                </div>
 				)
 			}
 		} else {
@@ -98,4 +92,4 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Sucursales)
+export default connect(mapStateToProps, mapDispatchToProps)(Administradores)

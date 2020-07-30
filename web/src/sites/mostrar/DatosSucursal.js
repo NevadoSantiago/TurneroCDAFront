@@ -61,6 +61,11 @@ class DashboardAdministradorSucursal extends React.Component {
 	render() {
 		const { usuario, sucursal, cantidadGente } = this.props
 		const { highlightNuevoEnEspera, highlightUnoMenosEnEspera } = this.state
+		if(sucursal == null){
+			return(
+				<p>No sos administrador de una sucursal</p>
+			)
+		}
 		this.getCantidadDeGenteEnEspera()
 		return (
 			<React.Fragment>

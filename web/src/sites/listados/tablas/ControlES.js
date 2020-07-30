@@ -25,10 +25,10 @@ export const HeaderES = () => {
 
 
 class DatosES extends React.Component {
-    eliminarEmpleado = () =>{
+    eliminarEmpleado =async () =>{
         const {eliminarEmpleado, empleado } = this.props
         if(window.confirm("Seguro que desea eliminar a " + empleado.nombre + ' ' + empleado.apellido + "?")){
-            eliminarEmpleado(empleado.idEmpleado)
+            await eliminarEmpleado(empleado.idEmpleado)
            {this.props.refresh()}
         }
     }

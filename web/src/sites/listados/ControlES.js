@@ -12,18 +12,13 @@ class ControlES extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			recargar: false,
 			controlES: null,
 		};
 	}
 	getEmpleados = async (idSucursal, rol) => {
-		this.setState({
-			recargar: true
-		})
 		var controlES = await getEmpleadoBySucursalYRol(idSucursal, rol)
 		this.setState({
 			controlES,
-			recargar: false
 		})
 	}
 	componentDidMount() {
@@ -32,9 +27,9 @@ class ControlES extends React.Component {
 	}
 	render() {
 		const { sucursal } = this.props
-		const { recargar, controlES } = this.state
+		const { controlES } = this.state
 		debugger
-		if (controlES != null && !recargar) {
+		if (controlES != null) {
 			if (controlES.length === 0) {
 				return (
 					<div className="hero-body">
@@ -54,7 +49,7 @@ class ControlES extends React.Component {
 								controlES.map((e, i) => {
 									return (
 										<DatosES empleado={e} refresh={() =>
-											this.getEmpleados(sucursal.sucursalId, CONTROL_ES)
+											this.getEmpleados(sucursal.sucursalId, CONTROL_ES), this.setState({controlES:null})
 										} />
 									)
 								}

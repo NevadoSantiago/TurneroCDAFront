@@ -1,5 +1,5 @@
-import {SET_CONTROL_ES, SET_RECEPCIONISTAS, ELIMINAR_EMPLEADO,SET_ESPECIALIDADES,SET_CANTIDAD_GENTE} from '../constantes/actionRedux'
-import {eliminarEmpleadoServ} from '../servicios/AdminServices'
+import {SET_CONTROL_ES, SET_RECEPCIONISTAS, ELIMINAR_EMPLEADO,SET_ESPECIALIDADES,SET_CANTIDAD_GENTE,ELIMINAR_ADMINISTRADOR} from '../constantes/actionRedux'
+import {eliminarEmpleadoServ,eliminarAdminDeSucursal} from '../servicios/AdminServices'
 
 const initialState={
     controlES : null,
@@ -20,7 +20,7 @@ const eliminarEmpleadoStore = (idEmpleado,state) =>{
 
 }
 
-const EmpleadoReducer = (state = initialState, action) => {
+const EmpleadoReducer = async (state = initialState, action) => {
     var datos = action.data
     switch(action.type){   
     case SET_CONTROL_ES :{
@@ -32,7 +32,7 @@ const EmpleadoReducer = (state = initialState, action) => {
     }
     case ELIMINAR_EMPLEADO:{
         const idEmpleado = action.data;     
-        if(eliminarEmpleadoServ(idEmpleado)){
+        if( await eliminarEmpleadoServ(idEmpleado)){
            eliminarEmpleadoStore(idEmpleado,state) 
         }    
         return{
@@ -52,6 +52,13 @@ const EmpleadoReducer = (state = initialState, action) => {
             cantidadGente : datos
         }
     }
+    case ELIMINAR_ADMINISTRADOR:{
+        eliminarAdminDeSucursal(datos)
+        return{
+            ...state,
+        }
+    }
+    
     case SET_ESPECIALIDADES:{
         return{
             ...state,

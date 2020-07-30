@@ -26,7 +26,6 @@ export const eliminarEmpleadoServ = async (idEmpleado)=>{
 export const getAllSucursales = async ()=>{
     var empleados
     const url = URL_API + "/api/sucursal";
-    debugger
     await fetch(url) 
     .then(response=>{return response.json()})
     .then(response=>{
@@ -35,6 +34,13 @@ export const getAllSucursales = async ()=>{
     )
     return empleados;
 
+}
+export const eliminarAdminDeSucursal = async (idAdmin)=>{
+    const url = URL_API + "/api/sucursal/delete/" + idAdmin
+    await fetch(url,{
+        method:"POST"
+    }
+    )
 }
 const validateData = (datoNuevo,datoAnterior) => {
 if(datoNuevo == ""){

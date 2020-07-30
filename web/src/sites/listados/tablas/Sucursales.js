@@ -26,10 +26,10 @@ class DatosSucursales extends React.Component {
 
     }
 
-    eliminarEmpleado = () => {
-        const { eliminarEmpleado, empleado } = this.props
-        if (window.confirm("Seguro que desea eliminar a " + empleado.nombre + ' ' + empleado.apellido + "?")) {
-            eliminarEmpleado(empleado.idEmpleado)
+    eliminarSucursal = (sucursal) => {
+        const {eliminarSucursal} = this.props
+        if (window.confirm("Seguro que desea eliminar a la sucursal " + sucursal.nombre + "?")) {
+          //  eliminarEmpleado(sucursal.sucursalId)
             { this.props.refresh() }
         }
     }
@@ -38,10 +38,8 @@ class DatosSucursales extends React.Component {
         const { sucursal } = this.props
         var iconoHabilitado
         if(sucursal.habilitada){
-            console.log("HABILITADA")
             iconoHabilitado = faCheck
         }else{
-            console.log("DESHABILITADA")
             iconoHabilitado = faTimes
         }
         return (
@@ -56,15 +54,14 @@ class DatosSucursales extends React.Component {
                     <td className="right aligned" style={{ padding: 0 }}>
                         <button
                             className="button is-danger is-outlined"
-                            onClick={() => this.eliminarEmpleado(sucursal.sucursalId)}
-                            style={{ margin: '5px' }}
+                            onClick={() => this.eliminarSucursal(sucursal)}
                         >
                             <span className="icon">
                                 <FontAwesomeIcon icon={faTrash} />
                             </span>
                             <span>Eliminar</span>
                         </button>
-                        <NavLink to={{ pathname: '/editar', user: sucursal }} className="button is-primary is-outlined" exact={true} activeClassName='button is-warning' style={{ margin: '5px' }}>
+                        <NavLink to={{ pathname: '/editarSucursal', suc: sucursal }} className="button is-primary is-outlined" exact={true} activeClassName='button is-warning' style={{ margin: '5px' }}>
                             <span className="icon">
                                 <FontAwesomeIcon icon={faEdit} />
                             </span>

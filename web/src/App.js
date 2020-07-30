@@ -13,8 +13,8 @@ import Sucursales from './sites/listados/Sucursales'
 import EstadisticasSucursal from './sites/EstadisticasSucursal'
 import AuthRoutePrivate from './sites/import/AuthRoute'
 import NavBar from './sites/import/Navbar'
-import AdministrarSucursales from './sites/AdministrarSucursales'
 import ListaEspera from './sites/ListaEspera'
+import EditarSucursal from './sites/EditarSucursal'
 import './style.css'
 
 class App extends React.Component {
@@ -56,11 +56,11 @@ class App extends React.Component {
 						autorizado2={null} 
 						autorizado3={null}
 						autorizado4={null}   ></AuthRoutePrivate>
-{/* 						<AuthRoutePrivate path="/administrarPersona" exact component={AdministrarPersonal}
+						<AuthRoutePrivate path="/editarSucursal" exact component={EditarSucursal}
 						 autorizado={ADMIN_SUCURSAL} 
-						 autorizado2={null} 
+						 autorizado2={ADMIN_GENERAL} 
 						 autorizado3={null}
-						 autorizado4={null}  ></AuthRoutePrivate> */}
+						 autorizado4={null}  ></AuthRoutePrivate>
 						<AuthRoutePrivate path="/adminSucursales" exact component={Sucursales} 
 						autorizado={ADMIN_GENERAL} 
 						autorizado2={null} 
