@@ -43,6 +43,10 @@ class NavAdminGeneral extends React.Component {
             aria-expanded="false"
             data-target="navbarBasicExample"
             onClick={() => console.log()}
+            style={{
+              backgroundColor: "white",
+              border: 0,
+            }}
           >
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>

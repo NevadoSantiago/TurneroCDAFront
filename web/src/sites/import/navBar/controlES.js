@@ -56,6 +56,10 @@ class NavControlES extends React.Component {
             aria-label="menu"
             aria-expanded="false"
             data-target="navbarBasicExample"
+            style={{
+              backgroundColor: "white",
+              border: 0,
+            }}
           >
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>

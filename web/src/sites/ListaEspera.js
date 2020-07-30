@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import Error from "../servicios/alertas/Error";
-import { NavLink } from "react-router-dom";
+//import { NavLink } from "react-router-dom";
 import {
   getListaDeEspera,
   getListaDeEsperaAgrupada,
 } from "../servicios/EmpleadoServices";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+//import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 class ListaEspera extends React.Component {
   constructor() {
@@ -94,6 +94,28 @@ class ListaEspera extends React.Component {
                 <b>{"(" + sucursal.sucursalId + ")"}</b>
               </p>
             </div>
+            <div className="container">
+              <span
+                className="subtitle"
+                style={{
+                  marginLeft: "20px",
+                }}
+              >
+                {"Especialidad"}
+                &nbsp;
+              </span>
+              <span
+                className="subtitle"
+                style={{
+                  margin: "-30px 15px 10px 0px",
+                  textAlign: "right",
+                  display: "inherit",
+                }}
+              >
+                {"En espera"}
+                &nbsp;
+              </span>
+            </div>
             {especialidades.map((especialidad) => {
               var count = 0;
               listaDeEspera.map((p, i) => {
@@ -104,14 +126,14 @@ class ListaEspera extends React.Component {
                 return count;
               });
               return (
-                <NavLink
+                /*<NavLink
                   to={{
-                    pathname: "/lista/especialidad",
+                    /*pathname: "/lista/especialidad",
                     sucursal: sucursal,
                     especialidad: especialidad,
                     count: count,
                   }}
-                  className="button is-rounded is-outlined"
+                  className="container"
                   exact={true}
                   activeClassName="button is-rounded is-outlined"
                   style={{
@@ -141,7 +163,36 @@ class ListaEspera extends React.Component {
                     {count}&nbsp;&nbsp;&nbsp;&nbsp;
                     <FontAwesomeIcon icon={faChevronRight} />
                   </p>
-                </NavLink>
+                </NavLink>*/
+                <div
+                  className="container"
+                  style={{
+                    flex: 1,
+                    backgroundColor: "white",
+                    padding: "20px",
+                    borderRadius: "15px",
+                    marginRight: "15px",
+                    marginLeft: "15px",
+                    marginBottom: "15px",
+                    display: "inline-table",
+                    textAlign: "left",
+                    minWidth: "-webkit-fill-available",
+                  }}
+                >
+                  <p className="title" style={{ margin: 0 }}>
+                    {especialidad.nombre}
+                  </p>
+                  <p
+                    className="title"
+                    style={{
+                      margin: 0,
+                      display: "table-cell",
+                      textAlign: "right",
+                    }}
+                  >
+                    {count}&nbsp;
+                  </p>
+                </div>
               );
             })}
           </React.Fragment>

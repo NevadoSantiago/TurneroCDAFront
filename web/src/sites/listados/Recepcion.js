@@ -58,13 +58,32 @@ class Recepcion extends React.Component {
                 <tr>
                   <th colspan="5" style={{ textAlign: "center" }}>
                     <div className="ui pagination menu">
-                      <button className="icon item">
+                      <button
+                        className="icon item"
+                        style={{
+                          backgroundColor: "white",
+                          border: 0,
+                        }}
+                      >
                         <FontAwesomeIcon icon={faAngleLeft} />
                       </button>
-                      <button className="item" style={{ fontFamily: "Nunito" }}>
+                      <button
+                        className="item"
+                        style={{
+                          fontFamily: "Nunito",
+                          backgroundColor: "white",
+                          border: 0,
+                        }}
+                      >
                         1
                       </button>
-                      <button className="icon item">
+                      <button
+                        className="icon item"
+                        style={{
+                          backgroundColor: "white",
+                          border: 0,
+                        }}
+                      >
                         <FontAwesomeIcon icon={faAngleRight} />
                       </button>
                     </div>

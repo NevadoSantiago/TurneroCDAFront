@@ -75,7 +75,15 @@ class NavAdminSucursal extends React.Component {
             Inicio
           </NavLink>
           <div className="navbar-item has-dropdown is-hoverable">
-            <button className="navbar-link">Administrador de Personal</button>
+            <button
+              className="navbar-link"
+              style={{
+                backgroundColor: "white",
+                border: 0,
+              }}
+            >
+              Administrador de Personal
+            </button>
 
             <div className="navbar-dropdown">
               <NavLink

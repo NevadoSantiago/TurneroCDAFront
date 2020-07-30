@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 class AuthRoutePrivate extends React.Component {
@@ -42,6 +42,7 @@ class AuthRoutePrivate extends React.Component {
     );
   }
 }
+
 const mapStateToProps = (state) => {
   return {
     tipoUsuario: state.user.tipoUsuario,
