@@ -4,8 +4,8 @@ import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUsers,
-  faUserPlus,
   faQrcode,
+  faChartPie,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   getEspecialidadesPorSucursal,
@@ -16,12 +16,13 @@ import {
   SET_CANTIDAD_GENTE,
 } from "../../constantes/actionRedux";
 
-class DashboardEmpleado extends React.Component {
-  constructor(props) {
+class DashboardAdministradorSucursal extends React.Component {
+  constructor() {
     super();
     this.state = {
       highlightNuevoEnEspera: false,
       highlightUnoMenosEnEspera: false,
+      cantidadGente : -1
     };
   }
 
@@ -32,12 +33,13 @@ class DashboardEmpleado extends React.Component {
   };
 
   getCantidadDeGenteEnEspera = async () => {
-    const { sucursal, setCantidadDeGente, cantidadGente } = this.props;
-    const cantActual = cantidadGente;
+    const { sucursal} = this.props;
+    const {cantidadGente} = this.state
     const cant = await getCantGenteEnSucursal(sucursal.sucursalId);
-    if (cant !== cantActual) {
-      if (cant > cantActual) {
+    if (cant !== cantidadGente) {
+      if (cant > cantidadGente) {
         this.setState({
+          cantidadGente:cant,
           highlightNuevoEnEspera: true,
           highlight: true,
         });
@@ -51,6 +53,7 @@ class DashboardEmpleado extends React.Component {
         );
       } else {
         this.setState({
+          cantidadGente:cant,
           highlightUnoMenosEnEspera: true,
           highlight: true,
         });
@@ -64,12 +67,13 @@ class DashboardEmpleado extends React.Component {
         );
       }
     }
-    setCantidadDeGente(cant);
+    
   };
 
   componentDidMount() {
+    this.getCantidadDeGenteEnEspera()
     this.interval = setInterval(
-      () => this.setState({ time: Date.now() }),
+      () => this.getCantidadDeGenteEnEspera(),
       10000
     );
   }
@@ -79,9 +83,8 @@ class DashboardEmpleado extends React.Component {
   }
 
   render() {
-    const { usuario, sucursal, cantidadGente } = this.props;
-    const { highlightNuevoEnEspera, highlightUnoMenosEnEspera } = this.state;
-    this.getCantidadDeGenteEnEspera();
+    const { usuario, sucursal } = this.props;
+    const { highlightNuevoEnEspera, highlightUnoMenosEnEspera,cantidadGente } = this.state;
     return (
       <React.Fragment>
         <div className="hero-body">
@@ -176,19 +179,6 @@ class DashboardEmpleado extends React.Component {
               <span>Escanear código QR</span>
             </button>
             <NavLink
-              to="/nuevo"
-              onClick={() => this.getEspecialidades(sucursal.sucursalId)}
-              className="button is-rounded is-outlined"
-              exact={true}
-              activeClassName="button is-rounded is-outlined"
-              style={{ margin: 5 }}
-            >
-              <span className="icon">
-                <FontAwesomeIcon icon={faUserPlus} />
-              </span>
-              <span>Nuevo turno</span>
-            </NavLink>
-            <NavLink
               to={{ pathname: "/lista", sucursal: sucursal }}
               onClick={() => this.getEspecialidades(sucursal.sucursalId)}
               className="button is-rounded is-outlined"
@@ -200,6 +190,19 @@ class DashboardEmpleado extends React.Component {
                 <FontAwesomeIcon icon={faUsers} />
               </span>
               <span>Lista de espera</span>
+            </NavLink>
+            <NavLink
+              to={{ pathname: "/estadisticas", sucursal: sucursal }}
+              onClick={() => this.getEspecialidades(sucursal.sucursalId)}
+              className="button is-rounded is-outlined"
+              exact={true}
+              activeClassName="button is-rounded is-outlined"
+              style={{ margin: 5 }}
+            >
+              <span className="icon">
+                <FontAwesomeIcon icon={faChartPie} />
+              </span>
+              <span>Ver estadísticas</span>
             </NavLink>
           </div>
         </div>
@@ -226,4 +229,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashboardEmpleado);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DashboardAdministradorSucursal);

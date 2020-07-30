@@ -1,11 +1,11 @@
 @charset "utf-8";
 
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
-@import url('https://fonts.googleapis.com/css?family=Google+Sans:100,300,400,500,700,900,100i,300i,400i,500i,700i,900i');
-@import url('https://fonts.googleapis.com/css?family=Amatic+SC|Comfortaa:500|Sacramento&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Nunito:400,700");
+@import url("https://fonts.googleapis.com/css?family=Google+Sans:100,300,400,500,700,900,100i,300i,400i,500i,700i,900i");
+@import url("https://fonts.googleapis.com/css?family=Amatic+SC|Comfortaa:500|Sacramento&display=swap");
 
-$cdablue: #0474BA;
-$cdaorange: #FF9616;
+$cdablue: #0474ba;
+$cdaorange: #ff9616;
 $white: hsl(0, 0%, 100%);
 $black: hsl(0, 0%, 4%);
 $danger: hsl(348, 100%, 23%);
@@ -24,13 +24,13 @@ $input-border-color: transparent;
 $input-shadow: none;
 
 .highlighted {
-    background-color: lightgreen;
+  background-color: lightgreen;
 }
 .highlighted-error {
-    background-color: #ff5E5E;
+  background-color: #ff5e5e;
 }
 .highlight-whitesmoke {
-    background-color: whitesmoke;
+  background-color: whitesmoke;
 }
 
 @import "../node_modules/bulma/sass/utilities/_all.sass";

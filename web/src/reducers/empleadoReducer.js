@@ -1,26 +1,33 @@
-import {SET_CONTROL_ES, SET_RECEPCIONISTAS, ELIMINAR_EMPLEADO,SET_ESPECIALIDADES,SET_CANTIDAD_GENTE,ELIMINAR_ADMINISTRADOR} from '../constantes/actionRedux'
-import {eliminarEmpleadoServ,eliminarAdminDeSucursal} from '../servicios/AdminServices'
 
-const initialState={
-    controlES : null,
-    recepcionistas : null,
-    especialidades: null,
-    cantidadGente: null,
+import {
+  SET_CONTROL_ES,
+  SET_RECEPCIONISTAS,
+  ELIMINAR_EMPLEADO,
+  SET_ESPECIALIDADES,
+  SET_CANTIDAD_GENTE,
+  ELIMINAR_ADMINISTRADOR
+} from "../constantes/actionRedux";
+import { eliminarEmpleadoServ,eliminarAdminDeSucursal } from "../servicios/AdminServices";
+
+const initialState = {
+  controlES: null,
+  recepcionistas: null,
+  especialidades: null,
+  cantidadGente: null,
 };
 
-const eliminarEmpleadoStore = (idEmpleado,state) =>{
-    var {controlES} = state
-    if(controlES != null){
-    for(var i =0 ; i< controlES.length; i++){
-        if(controlES[i].idEmpleado==idEmpleado){
-            delete controlES[i]
-        }
+const eliminarEmpleadoStore = (idEmpleado, state) => {
+  var { controlES } = state;
+  if (controlES != null) {
+    for (var i = 0; i < controlES.length; i++) {
+      if (controlES[i].idEmpleado === idEmpleado) {
+        delete controlES[i];
+      }
     }
-    }
+  }
+};
 
-}
-
-const EmpleadoReducer = async (state = initialState, action) => {
+const EmpleadoReducer = (state = initialState, action) => {
     var datos = action.data
     switch(action.type){   
     case SET_CONTROL_ES :{
@@ -32,25 +39,26 @@ const EmpleadoReducer = async (state = initialState, action) => {
     }
     case ELIMINAR_EMPLEADO:{
         const idEmpleado = action.data;     
-        if( await eliminarEmpleadoServ(idEmpleado)){
+        if( eliminarEmpleadoServ(idEmpleado)){
            eliminarEmpleadoStore(idEmpleado,state) 
         }    
         return{
             ...state,
         }
     }
-    
-    case SET_RECEPCIONISTAS:{
-        return{
-            ...state,
-            recepcionistas : datos
-        }
+
+    case SET_RECEPCIONISTAS: {
+      return {
+        ...state,
+        recepcionistas: datos,
+      };
     }
-    case SET_CANTIDAD_GENTE:{
-        return{
-            ...state,
-            cantidadGente : datos
-        }
+    case SET_CANTIDAD_GENTE: {
+      debugger
+      return {
+        ...state,
+        cantidadGente: datos,
+      };
     }
     case ELIMINAR_ADMINISTRADOR:{
         eliminarAdminDeSucursal(datos)
@@ -65,12 +73,11 @@ const EmpleadoReducer = async (state = initialState, action) => {
             especialidades : datos
         }
     }
-        default:{
-            return{
-                ...state
-            }
-        }
-
+    default: {
+      return {
+        ...state,
+      };
     }
-}
-export default EmpleadoReducer
+  }
+};
+export default EmpleadoReducer;

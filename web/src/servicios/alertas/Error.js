@@ -1,10 +1,10 @@
-import React from 'react';
-import '../../style.css';
+import React from "react";
+import "../../style.css";
 
-export default ({ message }) =>
+export default ({ message }) => (
   <aside>
     {message}
-    <style jsx>{`
+    <style jsx="true">{`
       aside {
         padding: 1em;
         font-size: 14px;
@@ -15,4 +15,5 @@ export default ({ message }) =>
         background-color: hsl(348, 86%, 43%);
       }
     `}</style>
-  </aside>;
+  </aside>
+);

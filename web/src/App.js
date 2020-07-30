@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 /* import AdministrarPersonal from './sites/AdministrarPersonal' */
 import { ADMIN_SUCURSAL,ADMIN_GENERAL,CONTROL_ES,RECEPCION } from "./constantes/tiposUsuarios"

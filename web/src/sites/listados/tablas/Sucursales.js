@@ -1,30 +1,49 @@
-import React from 'react';
-import { eliminarEmpleadoServ } from '../../../servicios/AdminServices'
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
-import { faEdit, faTrash,faTimes, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { connect } from 'react-redux'
-import { ELIMINAR_EMPLEADO } from '../../../constantes/actionRedux'
+import {
+  faEdit,
+  faTrash,
+  faTimes,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
+import { connect } from "react-redux";
+import { ELIMINAR_EMPLEADO } from "../../../constantes/actionRedux";
 
 export const HeaderSucursales = () => {
-    return (
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Direccion</th>
-                <th>Apertura</th>
-                <th>Habilitada</th>
-                <th></th>
-            </tr>
-        </thead>
-    )
-
-}
+  return (
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Direccion</th>
+        <th>Apertura</th>
+        <th>Habilitada</th>
+        <th></th>
+      </tr>
+    </thead>
+  );
+};
 class DatosSucursales extends React.Component {
-    constructor(props){
-        super(props);
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
+  eliminarEmpleado = () => {
+    const { eliminarEmpleado, empleado } = this.props;
+    if (
+      window.confirm(
+        "Seguro que desea eliminar a " +
+          empleado.nombre +
+          " " +
+          empleado.apellido +
+          "?"
+      )
+    ) {
+      eliminarEmpleado(empleado.idEmpleado);
+      this.props.refresh();
     }
+  };
 
     eliminarSucursal = (sucursal) => {
         const {eliminarSucursal} = this.props
@@ -72,17 +91,16 @@ class DatosSucursales extends React.Component {
             </tbody>
         )
     }
-}
+  }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        eliminarEmpleado: (id) => dispatch({ type: ELIMINAR_EMPLEADO, data: id }),
-    };
+  return {
+    eliminarEmpleado: (id) => dispatch({ type: ELIMINAR_EMPLEADO, data: id }),
+  };
 };
 
 const mapStateToProps = (state) => {
-    return {
-    };
+  return {};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DatosSucursales)
+export default connect(mapStateToProps, mapDispatchToProps)(DatosSucursales);

@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux'
-import { HeaderES } from './tablas/ControlES'
-import DatosES from './tablas/ControlES'
-import { CONTROL_ES } from '../../constantes/tiposUsuarios'
-import { SET_CONTROL_ES } from '../../constantes/actionRedux'
-import { getEmpleadoBySucursalYRol } from '../../servicios/AdminServices'
+import React from "react";
+import { connect } from "react-redux";
+import { HeaderES } from "./tablas/ControlES";
+import DatosES from "./tablas/ControlES";
+import { CONTROL_ES } from "../../constantes/tiposUsuarios";
+import { SET_CONTROL_ES } from "../../constantes/actionRedux";
+import { getEmpleadoBySucursalYRol } from "../../servicios/AdminServices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -28,7 +28,6 @@ class ControlES extends React.Component {
 	render() {
 		const { sucursal } = this.props
 		const { controlES } = this.state
-		debugger
 		if (controlES != null) {
 			if (controlES.length === 0) {
 				return (
@@ -49,7 +48,7 @@ class ControlES extends React.Component {
 								controlES.map((e, i) => {
 									return (
 										<DatosES empleado={e} refresh={() =>
-											this.getEmpleados(sucursal.sucursalId, CONTROL_ES), this.setState({controlES:null})
+											this.getEmpleados(sucursal.sucursalId, CONTROL_ES)
 										} />
 									)
 								}
@@ -83,18 +82,16 @@ class ControlES extends React.Component {
 	}
 }
 const mapDispatchToProps = (dispatch) => {
-	return {
-		setControlES: (datos) => dispatch({ type: SET_CONTROL_ES, data: datos }),
-	};
+  return {
+    setControlES: (datos) => dispatch({ type: SET_CONTROL_ES, data: datos }),
+  };
 };
 
 const mapStateToProps = (state) => {
-	return {
-		controlES: state.empleado.controlES,
-		sucursal: state.user.sucursal
-	};
+  return {
+    controlES: state.empleado.controlES,
+    sucursal: state.user.sucursal,
+  };
 };
 
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(ControlES)
+export default connect(mapStateToProps, mapDispatchToProps)(ControlES);

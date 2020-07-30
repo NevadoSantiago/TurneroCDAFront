@@ -1,34 +1,30 @@
-import React from 'react';
-import { connect } from 'react-redux'
-import { HeaderSucursales } from './tablas/Sucursales'
-import DatosSucursales from './tablas/Sucursales'
-import { RECEPCION } from '../../constantes/tiposUsuarios'
-import { getAllSucursales } from '../../servicios/AdminServices'
+import React from "react";
+import { connect } from "react-redux";
+import { HeaderSucursales } from "./tablas/Sucursales";
+import DatosSucursales from "./tablas/Sucursales";
+import { getAllSucursales } from "../../servicios/AdminServices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 class Sucursales extends React.Component {
-	constructor() {
-		super();
-		this.state = {
-            sucursales:null
-		};
-    }
-    obtenerSucursales =async ()=>{
-        var sucursales = await getAllSucursales()
-        this.setState({
-            sucursales
-        })
+  constructor() {
+    super();
+    this.state = {
+      sucursales: null,
+    };
+  }
+  obtenerSucursales = async () => {
+    var sucursales = await getAllSucursales();
+    this.setState({
+      sucursales,
+    });
+  };
+  componentDidMount() {
+    this.obtenerSucursales();
+  }
 
-    }
-    componentDidMount () {
-        this.obtenerSucursales()
-    }
-
-
-	render() {
-
-        const {sucursales} = this.state
+  render() {
+    const { sucursales } = this.state;
 
 		if (sucursales != null) {
 			if (sucursales.length === 0) {
@@ -85,17 +81,15 @@ class Sucursales extends React.Component {
 	}
 }
 const mapDispatchToProps = (dispatch) => {
-	return {
-		iniciarSesion: (datos) => dispatch({ type: "INICIAR_SESION", data: datos }),
-	};
+  return {
+    iniciarSesion: (datos) => dispatch({ type: "INICIAR_SESION", data: datos }),
+  };
 };
 
 const mapStateToProps = (state) => {
-	return {
-		recepcionistas: state.empleado.recepcionistas,
-	};
+  return {
+    recepcionistas: state.empleado.recepcionistas,
+  };
 };
 
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Sucursales)
+export default connect(mapStateToProps, mapDispatchToProps)(Sucursales);

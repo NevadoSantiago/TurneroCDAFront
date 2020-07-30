@@ -1,7 +1,7 @@
-import React from 'react';
-import '../../style.css';
+import React from "react";
+import "../../style.css";
 
-export default ({ message }) =>
+export default ({ message }) => (
   <aside>
     {message}
     <style jsx>{`
@@ -16,4 +16,5 @@ export default ({ message }) =>
         background-color: #18bc9c;
       }
     `}</style>
-  </aside>;
+  </aside>
+);
