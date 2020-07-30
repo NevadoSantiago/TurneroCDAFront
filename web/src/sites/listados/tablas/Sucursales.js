@@ -45,53 +45,70 @@ class DatosSucursales extends React.Component {
     }
   };
 
-    eliminarSucursal = (sucursal) => {
-        const {eliminarSucursal} = this.props
-        if (window.confirm("Seguro que desea eliminar a la sucursal " + sucursal.nombre + "?")) {
-          //  eliminarEmpleado(sucursal.sucursalId)
-            { this.props.refresh() }
-        }
+  eliminarSucursal = (sucursal) => {
+    const { eliminarSucursal } = this.props;
+    if (
+      window.confirm(
+        "Seguro que desea eliminar a la sucursal " + sucursal.nombre + "?"
+      )
+    ) {
+      //  eliminarEmpleado(sucursal.sucursalId)
+      {
+        this.props.refresh();
+      }
     }
+  };
 
-    render() {
-        const { sucursal } = this.props
-        var iconoHabilitado
-        if(sucursal.habilitada){
-            iconoHabilitado = faCheck
-        }else{
-            iconoHabilitado = faTimes
-        }
-        return (
-            <tbody>
-                <tr>
-                    <td>{sucursal.nombre}</td>
-                    <td>{sucursal.direccion}</td>
-                    <td>{sucursal.configuracion.fechaApertura}</td>
-                    <td>    <span className="icon" style={{marginLeft:"30%", marginTop:"15%"}}>
-                                <FontAwesomeIcon icon={iconoHabilitado} />
-                            </span></td>
-                    <td className="right aligned" style={{ padding: 0 }}>
-                        <button
-                            className="button is-danger is-outlined"
-                            onClick={() => this.eliminarSucursal(sucursal)}
-                        >
-                            <span className="icon">
-                                <FontAwesomeIcon icon={faTrash} />
-                            </span>
-                            <span>Eliminar</span>
-                        </button>
-                        <NavLink to={{ pathname: '/editarSucursal', suc: sucursal }} className="button is-primary is-outlined" exact={true} activeClassName='button is-warning' style={{ margin: '5px' }}>
-                            <span className="icon">
-                                <FontAwesomeIcon icon={faEdit} />
-                            </span>
-                            <span>Editar</span>
-                        </NavLink>
-                    </td>
-                </tr>
-            </tbody>
-        )
+  render() {
+    const { sucursal } = this.props;
+    var iconoHabilitado;
+    if (sucursal.habilitada) {
+      iconoHabilitado = faCheck;
+    } else {
+      iconoHabilitado = faTimes;
     }
+    return (
+      <tbody>
+        <tr>
+          <td style={{ padding: "1rem" }}>{sucursal.nombre}</td>
+          <td style={{ padding: "1rem" }}>{sucursal.direccion}</td>
+          <td style={{ padding: "1rem" }}>
+            {sucursal.configuracion.fechaApertura}
+          </td>
+          <td style={{ textAlign: "center", padding: "15px" }}>
+            {" "}
+            <span className="icon" style={{}}>
+              <FontAwesomeIcon icon={iconoHabilitado} />
+            </span>
+          </td>
+          <td className="right aligned" style={{ padding: "7px 10px 0px 0px" }}>
+            <button
+              className="button is-danger is-outlined"
+              onClick={() => this.eliminarSucursal(sucursal)}
+            >
+              <span className="icon">
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
+              <span>Eliminar</span>
+            </button>
+            <NavLink
+              to={{ pathname: "/editarSucursal", suc: sucursal }}
+              className="button is-primary is-outlined"
+              exact={true}
+              activeClassName="button is-warning"
+              style={{ marginLeft: "10px" }}
+            >
+              <span className="icon">
+                <FontAwesomeIcon icon={faEdit} />
+              </span>
+              <span>Editar</span>
+            </NavLink>
+          </td>
+        </tr>
+      </tbody>
+    );
   }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
