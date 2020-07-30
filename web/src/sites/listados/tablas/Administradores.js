@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
-import { ELIMINAR_ADMINISTRADOR } from "../../../constantes/actionRedux";
+//import { ELIMINAR_ADMINISTRADOR } from "../../../constantes/actionRedux";
 import { eliminarAdminDeSucursal } from "../../../servicios/AdminServices";
 
 export const HeaderAdministradores = () => {
@@ -20,10 +20,11 @@ export const HeaderAdministradores = () => {
 class DatosAdministradores extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   eliminarAdministrador = async (admin) => {
-    const { eliminarAdmin } = this.props;
+    //const { eliminarAdmin } = this.props;
     if (
       window.confirm(
         "Seguro que desea eliminar el administrador " +
@@ -34,9 +35,7 @@ class DatosAdministradores extends React.Component {
       )
     ) {
       await eliminarAdminDeSucursal(admin.idEmpleado);
-      {
-        this.props.refresh();
-      }
+      this.props.refresh();
     }
   };
 

@@ -46,16 +46,15 @@ class DatosSucursales extends React.Component {
   };
 
   eliminarSucursal = (sucursal) => {
-    const { eliminarSucursal } = this.props;
+    //const { eliminarSucursal } = this.props;
     if (
       window.confirm(
         "Seguro que desea eliminar a la sucursal " + sucursal.nombre + "?"
       )
     ) {
       //  eliminarEmpleado(sucursal.sucursalId)
-      {
-        this.props.refresh();
-      }
+
+      this.props.refresh();
     }
   };
 
