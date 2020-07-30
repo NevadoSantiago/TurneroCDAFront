@@ -50,6 +50,7 @@ class ListaEspera extends React.Component {
   render() {
     const { listaDeEspera, error } = this.state;
     const { location, especialidades } = this.props;
+    debugger
     if (
       location.sucursal != null &&
       listaDeEspera != null &&

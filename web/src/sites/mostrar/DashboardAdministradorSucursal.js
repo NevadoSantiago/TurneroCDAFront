@@ -22,6 +22,7 @@ class DashboardAdministradorSucursal extends React.Component {
     this.state = {
       highlightNuevoEnEspera: false,
       highlightUnoMenosEnEspera: false,
+      cantidadGente : -1
     };
   }
 
@@ -32,12 +33,13 @@ class DashboardAdministradorSucursal extends React.Component {
   };
 
   getCantidadDeGenteEnEspera = async () => {
-    const { sucursal, setCantidadDeGente, cantidadGente } = this.props;
-    const cantActual = cantidadGente;
+    const { sucursal} = this.props;
+    const {cantidadGente} = this.state
     const cant = await getCantGenteEnSucursal(sucursal.sucursalId);
-    if (cant !== cantActual) {
-      if (cant > cantActual) {
+    if (cant !== cantidadGente) {
+      if (cant > cantidadGente) {
         this.setState({
+          cantidadGente:cant,
           highlightNuevoEnEspera: true,
           highlight: true,
         });
@@ -51,6 +53,7 @@ class DashboardAdministradorSucursal extends React.Component {
         );
       } else {
         this.setState({
+          cantidadGente:cant,
           highlightUnoMenosEnEspera: true,
           highlight: true,
         });
@@ -64,12 +67,13 @@ class DashboardAdministradorSucursal extends React.Component {
         );
       }
     }
-    setCantidadDeGente(cant);
+    
   };
 
   componentDidMount() {
+    this.getCantidadDeGenteEnEspera()
     this.interval = setInterval(
-      () => this.setState({ time: Date.now() }),
+      () => this.getCantidadDeGenteEnEspera(),
       10000
     );
   }
@@ -79,9 +83,8 @@ class DashboardAdministradorSucursal extends React.Component {
   }
 
   render() {
-    const { usuario, sucursal, cantidadGente } = this.props;
-    const { highlightNuevoEnEspera, highlightUnoMenosEnEspera } = this.state;
-    this.getCantidadDeGenteEnEspera();
+    const { usuario, sucursal } = this.props;
+    const { highlightNuevoEnEspera, highlightUnoMenosEnEspera,cantidadGente } = this.state;
     return (
       <React.Fragment>
         <div className="hero-body">

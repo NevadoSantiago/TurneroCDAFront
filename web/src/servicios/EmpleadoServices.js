@@ -1,17 +1,30 @@
 import { URL_API } from "../constantes/urlApi";
 
 export const getEspecialidadesPorSucursal = async (idSucursal) => {
-  var especialidades;
-  const url = URL_API + "/api/especialidad/get/" + idSucursal;
-  await fetch(url)
-    .then((response) => {
-      return response.json();
-    })
-    .then((response) => {
-      especialidades = response;
-    });
-  return especialidades;
-};
+
+    var especialidades
+    const url = URL_API + "/api/especialidad/get/" + idSucursal;
+    await fetch(url)
+        .then(response => { return response.json() })
+        .then(response => {
+            especialidades = response
+        }
+        )
+    return especialidades;
+
+}
+export const getAdminstradoresDeSucursal = async (idSucursal) =>{
+    var admins
+    const url = URL_API + "/api/sucursal/admin/" + idSucursal;
+    await fetch(url)
+        .then(response => { return response.json() })
+        .then(response => {
+            admins = response
+        }
+        )
+    return admins;
+}
+
 export const getCantGenteEnSucursal = async (idSucursal) => {
   var cantidad;
   const url = URL_API + "/api/sucursal/get/espera/" + idSucursal;

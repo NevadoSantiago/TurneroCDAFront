@@ -18,9 +18,11 @@ import Sucursales from "./sites/listados/Sucursales";
 import EstadisticasSucursal from "./sites/EstadisticasSucursal";
 import AuthRoutePrivate from "./sites/import/AuthRoute";
 import NavBar from "./sites/import/Navbar";
-import ListaEsperaPorEspecialidad from "./sites/listados/tablas/ListaEspera";
 import ListaEspera from "./sites/ListaEspera";
+import EditarSucursal from "./sites/EditarSucursal";
 import "./style.css";
+
+//PRUEBA PRETTTIEERRRRR SANTIadsdsddsdasd
 
 class App extends React.Component {
   render() {
@@ -43,15 +45,6 @@ class App extends React.Component {
               path="/lista"
               exact
               component={ListaEspera}
-              autorizado={ADMIN_SUCURSAL}
-              autorizado2={CONTROL_ES}
-              autorizado3={RECEPCION}
-              autorizado4={null}
-            ></AuthRoutePrivate>
-            <AuthRoutePrivate
-              path="/lista/especialidad"
-              exact
-              component={ListaEsperaPorEspecialidad}
               autorizado={ADMIN_SUCURSAL}
               autorizado2={CONTROL_ES}
               autorizado3={RECEPCION}
@@ -91,11 +84,15 @@ class App extends React.Component {
               autorizado3={null}
               autorizado4={null}
             ></AuthRoutePrivate>
-            {/* 						<AuthRoutePrivate path="/administrarPersona" exact component={AdministrarPersonal}
-						 autorizado={ADMIN_SUCURSAL} 
-						 autorizado2={null} 
-						 autorizado3={null}
-						 autorizado4={null}  ></AuthRoutePrivate> */}
+            <AuthRoutePrivate
+              path="/editarSucursal"
+              exact
+              component={EditarSucursal}
+              autorizado={ADMIN_SUCURSAL}
+              autorizado2={ADMIN_GENERAL}
+              autorizado3={null}
+              autorizado4={null}
+            ></AuthRoutePrivate>
             <AuthRoutePrivate
               path="/adminSucursales"
               exact
