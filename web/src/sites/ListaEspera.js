@@ -118,6 +118,7 @@ class ListaEspera extends React.Component {
             </div>
             {especialidades.map((especialidad, index) => {
               var count = 0;
+              var length = Object.keys(especialidades).length;
               listaDeEspera.map((p, i) => {
                 if (p.especialidad === especialidad.nombre) {
                   count = p.cantidadEspera;
@@ -178,6 +179,15 @@ class ListaEspera extends React.Component {
                     display: "inline-table",
                     textAlign: "left",
                     minWidth: "-webkit-fill-available",
+                    borderTop: "solid",
+                    borderWidth: "thick",
+                    //borderColor: "darkmagenta",
+                    borderColor:
+                      "hsl(" +
+                      (length * index * 10).toString() +
+                      ", 50%, " +
+                      ((length - index + 6) * 8).toString() +
+                      "%)",
                   }}
                 >
                   <p className="title" style={{ margin: 0 }}>
