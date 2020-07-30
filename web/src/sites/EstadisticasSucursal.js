@@ -45,7 +45,7 @@ class EstadisticasSucursal extends React.Component {
 
   getDataEspecialidades = async () => {
     const { especialidades } = this.props;
-    const { dataEspecialidades } = this.state;
+    const { dataEspecialidades, loadingStats } = this.state;
 
     var result = {
       datasets: [
@@ -57,7 +57,8 @@ class EstadisticasSucursal extends React.Component {
       labels: [],
     };
 
-    if (especialidades != null) {
+    if (especialidades !== null && loadingStats === true) {
+      console.log("--- TURNOS SEGÚN ESPECIALIDAD ---");
       var length = Object.keys(especialidades).length;
 
       await especialidades.map(async (especialidad, i) => {
@@ -85,17 +86,11 @@ class EstadisticasSucursal extends React.Component {
   };
 
   componentDidMount() {
-    this.getListaDeEspera();
-    this.interval = setInterval(() => this.getListaDeEspera(), 10000);
     setInterval(() => {
       this.setState({
         loadingStats: false,
       });
     }, 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.interval);
   }
 
   generatePDF(e) {
@@ -111,22 +106,7 @@ class EstadisticasSucursal extends React.Component {
       p.appendChild(newElement);
     }
 
-    /*var js = `
-    html2canvas(document.querySelector("#capture")), {
-      scale: 2,
-      onrendered: function(canvas){
-        var imgData = canvas.toDataURL('image/png');
-
-        var pdf = new jsPDF();
-        pdf.addImage(imgData, 'PNG', 0, 0);
-        pdf.save("download.pdf");
-        console.log('Llegué')
-        //pdf.output('dataurlnewwindow');
-      }
-    }
-    `;*/
     var js = `
-    console.log('Afuera')
     html2canvas(document.getElementById("capture"), {
       dpi: 1600, // Set to 1600 DPI
       scale: 0.78, // Adjusts your resolution
@@ -146,7 +126,7 @@ class EstadisticasSucursal extends React.Component {
 
   render() {
     const { location, especialidades } = this.props;
-    const { dataEspecialidades, listaDeEspera, loadingStats } = this.state;
+    const { dataEspecialidades, loadingStats } = this.state;
 
     defaults.global.defaultFontFamily = "Nunito";
     defaults.global.defaultFontStyle = "bold";
@@ -156,8 +136,7 @@ class EstadisticasSucursal extends React.Component {
     if (
       location.sucursal != null &&
       especialidades != null &&
-      dataEspecialidades != null &&
-      listaDeEspera != null
+      dataEspecialidades != null
     ) {
       const { sucursal } = location;
       if (loadingStats) {

@@ -116,7 +116,7 @@ class ListaEspera extends React.Component {
                 &nbsp;
               </span>
             </div>
-            {especialidades.map((especialidad) => {
+            {especialidades.map((especialidad, index) => {
               var count = 0;
               listaDeEspera.map((p, i) => {
                 if (p.especialidad === especialidad.nombre) {
@@ -166,6 +166,7 @@ class ListaEspera extends React.Component {
                 </NavLink>*/
                 <div
                   className="container"
+                  key={index}
                   style={{
                     flex: 1,
                     backgroundColor: "white",
