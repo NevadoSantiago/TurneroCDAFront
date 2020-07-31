@@ -74,6 +74,7 @@ class Login extends React.Component {
                 type="text"
                 placeholder="Usuario"
                 name="usuario"
+                autoComplete="login username"
               ></input>
             </div>
           </div>
@@ -84,6 +85,7 @@ class Login extends React.Component {
                 type="password"
                 placeholder="Contraseña"
                 name="password"
+                autoComplete="login password"
               ></input>
             </div>
           </div>
