@@ -15,7 +15,7 @@ export const HeaderSucursales = () => {
     <thead>
       <tr>
         <th>Nombre</th>
-        <th>Direccion</th>
+        <th>Dirección</th>
         <th>Apertura</th>
         <th>Habilitada</th>
         <th></th>

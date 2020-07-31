@@ -39,9 +39,6 @@ class Sucursales extends React.Component {
       } else {
         return (
           <div>
-            <div>
-              <p className="title">Los botones todavia no funcionan</p>
-            </div>
             <div className="hero-body">
               <p className="title">Sucursales</p>
               <table className="ui red table">
