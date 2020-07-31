@@ -38,7 +38,10 @@ class ListaEspera extends React.Component {
 
     especialidades.map((esp, i) => {
       if (esp.especialidadId === especialidad.especialidadId) {
-        if (cantidadDeGenteAnterior[i] !== undefined) {
+        if (
+          cantidadDeGenteAnterior[i] !== undefined &&
+          cantidadDeGenteActual[i] !== undefined
+        ) {
           if (cantidadDeGenteAnterior[i].qty !== cantidadDeGenteActual[i].qty) {
             // CAMBIÓ UN VALOR
             if (
