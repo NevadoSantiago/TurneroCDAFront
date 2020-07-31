@@ -162,26 +162,36 @@ class ListaEspera extends React.Component {
               </p>
             </div>
             <div className="container">
-              <span
-                className="subtitle"
+              <div
+                className="columns is-mobile"
                 style={{
-                  marginLeft: "20px",
+                  margin: "0px 25px 5px 25px",
                 }}
               >
-                {"Especialidad"}
-                &nbsp;
-              </span>
-              <span
-                className="subtitle"
-                style={{
-                  margin: "-30px 15px 10px 0px",
-                  textAlign: "right",
-                  display: "inherit",
-                }}
-              >
-                {"En espera"}
-                &nbsp;
-              </span>
+                <div
+                  className="column"
+                  style={{
+                    padding: 0,
+                  }}
+                >
+                  <span className="subtitle">
+                    {"Especialidad"}
+                    &nbsp;
+                  </span>
+                </div>
+                <div
+                  className="column"
+                  style={{
+                    textAlign: "end",
+                    padding: 0,
+                  }}
+                >
+                  <span className="subtitle">
+                    {"En espera"}
+                    &nbsp;
+                  </span>
+                </div>
+              </div>
             </div>
             {}
             {especialidades.map((especialidad, index) => {
