@@ -44,7 +44,7 @@ class EditarSucursal extends React.Component {
       return (
         <React.Fragment>
           <div className="hero-body">
-            <p className="title">{"Editar Sucursal"}</p>
+            <p className="title">{"Editar sucursal"}</p>
           </div>
           <div
             className="container"

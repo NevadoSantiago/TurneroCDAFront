@@ -1,10 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
+import { NavLink } from "react-router-dom";
 import { HeaderSucursales } from "./tablas/Sucursales";
 import DatosSucursales from "./tablas/Sucursales";
 import { getAllSucursales } from "../../servicios/AdminServices";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAngleLeft,
+  faAngleRight,
+  faPlus,
+} from "@fortawesome/free-solid-svg-icons";
 
 class Sucursales extends React.Component {
   constructor() {
@@ -27,10 +32,25 @@ class Sucursales extends React.Component {
     const { sucursales } = this.state;
 
     if (sucursales != null) {
+      // TESTEAR QUE NO HAYA SUCURSALES
+      /*setInterval( () => {
+        this.setState({
+          sucursales: []
+        })
+      }, 1000)*/
       if (sucursales.length === 0) {
         return (
           <div className="hero-body">
-            <p className="title">Sucursales</p>
+            <div className="columns is-mobile">
+              <div className="column">
+                <p className="title">Sucursales</p>
+              </div>
+              <div className="column" style={{ textAlign: "end" }}>
+                <button className="button is-black is-rounded is-outlined">
+                  <FontAwesomeIcon icon={faPlus} /> &nbsp; Nueva sucursal
+                </button>
+              </div>
+            </div>
             <div className="container" style={{ textAlign: "center" }}>
               <p className="subtitle">No hay datos</p>
             </div>
@@ -40,18 +60,36 @@ class Sucursales extends React.Component {
         return (
           <div>
             <div className="hero-body">
-              <p className="title">Sucursales</p>
+              <div className="columns is-mobile">
+                <div className="column">
+                  <p className="title">Sucursales</p>
+                </div>
+                <div className="column" style={{ textAlign: "end" }}>
+                  <NavLink
+                    to="/sucursal/nuevo"
+                    className="button is-black is-rounded is-outlined"
+                    exact={true}
+                    activeClassName="button is-black is-rounded is-outlined"
+                  >
+                    <span className="icon">
+                      <FontAwesomeIcon icon={faPlus} />
+                    </span>
+                    <span>Nueva sucursal</span>
+                  </NavLink>
+                </div>
+              </div>
               <table className="ui red table">
                 <HeaderSucursales />
                 {sucursales.map((suc, i) => (
                   <DatosSucursales
+                    key={suc.sucursalId}
                     sucursal={suc}
                     refresh={() => this.obtenerSucursales()}
                   />
                 ))}
                 <tfoot className="full-width">
                   <tr>
-                    <th colspan="5" style={{ textAlign: "center" }}>
+                    <th colSpan="5" style={{ textAlign: "center" }}>
                       <div className="ui pagination menu">
                         <button
                           className="icon item"

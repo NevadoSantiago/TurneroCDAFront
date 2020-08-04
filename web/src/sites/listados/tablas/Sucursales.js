@@ -67,7 +67,7 @@ class DatosSucursales extends React.Component {
       iconoHabilitado = faTimes;
     }
     return (
-      <tbody>
+      <tbody key={sucursal.sucursalId}>
         <tr>
           <td style={{ padding: "1rem" }}>{sucursal.nombre}</td>
           <td style={{ padding: "1rem" }}>{sucursal.direccion}</td>
