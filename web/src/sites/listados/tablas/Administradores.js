@@ -1,71 +1,81 @@
-import React from 'react';
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { connect } from 'react-redux'
-import { ELIMINAR_ADMINISTRADOR } from '../../../constantes/actionRedux'
-import {eliminarAdminDeSucursal} from '../../../servicios/AdminServices'
+import { connect } from "react-redux";
+import { ELIMINAR_ADMINISTRADOR } from "../../../constantes/actionRedux";
+import { eliminarAdminDeSucursal } from "../../../servicios/AdminServices";
 
 export const HeaderAdministradores = () => {
-    return (
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Mail</th>
-                <th></th>
-            </tr>
-        </thead>
-    )
-
-}
+  return (
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Mail</th>
+        <th></th>
+      </tr>
+    </thead>
+  );
+};
 class DatosAdministradores extends React.Component {
-    constructor(props){
-        super(props);
+  constructor(props) {
+    super(props);
+  }
 
+  eliminarAdministrador = async (admin) => {
+    const { token } = this.props;
+    if (
+      window.confirm(
+        "Seguro que desea eliminar el administrador " +
+          admin.nombre +
+          " " +
+          admin.apellido +
+          "?"
+      )
+    ) {
+      await eliminarAdminDeSucursal(admin.idEmpleado, token);
+      {
+        this.props.refresh();
+      }
     }
-    
+  };
 
-    eliminarAdministrador = async (admin) => {      
-        const {eliminarAdmin} = this.props   
-        if (window.confirm("Seguro que desea eliminar el administrador " + admin.nombre + " " + admin.apellido + "?")) { 
-            await eliminarAdminDeSucursal(admin.idEmpleado)
-            {this.props.refresh()}
-        }
-    }
-
-    render() {
-        const { admin } = this.props
-        return (
-            <tbody>
-                <tr>
-                    <td>{admin.nombre}</td>
-                    <td>{admin.apellido}</td>
-                    <td>{admin.mail}</td>
-                    <td className="right aligned" style={{ padding: 0 }}>
-                        <button
-                            className="button is-danger is-outlined"
-                            onClick={() => this.eliminarAdministrador(admin)}
-                        >
-                            <span className="icon">
-                                <FontAwesomeIcon icon={faTrash} />
-                            </span>
-                            <span>Eliminar</span>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        )
-    }
+  render() {
+    const { admin } = this.props;
+    return (
+      <tbody>
+        <tr>
+          <td>{admin.nombre}</td>
+          <td>{admin.apellido}</td>
+          <td>{admin.mail}</td>
+          <td className="right aligned" style={{ padding: 0 }}>
+            <button
+              className="button is-danger is-outlined"
+              onClick={() => this.eliminarAdministrador(admin)}
+            >
+              <span className="icon">
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
+              <span>Eliminar</span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    );
+  }
 }
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-    };
+  return {};
 };
 
 const mapStateToProps = (state) => {
-    return {
-    };
+  return {
+    token: state.user.token,
+  };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DatosAdministradores)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DatosAdministradores);

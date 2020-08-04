@@ -18,7 +18,8 @@ class EditarPersona extends React.Component {
     return <option value={opcion.tipoId}>{opcion.detalle}</option>;
   };
   getRoles = async () => {
-    const roles = await getRolesDeUsuario();
+    const { token } = this.props;
+    const roles = await getRolesDeUsuario(token);
     this.setState({
       roles,
     });
@@ -27,8 +28,8 @@ class EditarPersona extends React.Component {
     this.getRoles();
   }
   editarDatos = async (e) => {
-    const { location } = this.props;
-    const seEdito = await editarDatos(e, location);
+    const { location, token } = this.props;
+    const seEdito = await editarDatos(e, location, token);
     if (seEdito) {
       this.setState({
         correcto: "Se edito el usuario correctamente",
@@ -157,6 +158,7 @@ const mapStateToProps = (state) => {
     usuario: state.user.usuario,
     tipoUsuario: state.user.tipoUsuario,
     sucursal: state.user.sucursal,
+    token: state.user.token,
     roles: state.empleado.roles,
   };
 };

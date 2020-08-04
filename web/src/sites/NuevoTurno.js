@@ -20,7 +20,7 @@ class NuevoTurno extends React.Component {
   };
 
   nuevoTurno = async (e) => {
-    const { sucursal } = this.props;
+    const { sucursal, token } = this.props;
     e.preventDefault();
     const sintomas = e.target.elements.sintomas.value;
     const idEspecialidad = e.target.elements.especialidad.value;
@@ -32,7 +32,7 @@ class NuevoTurno extends React.Component {
       });
       return false;
     } else {
-      var url = URL_API_RESERVA + "/api/reserva/crear/entrada/";
+      var url = URL_API_RESERVA + "/api/reserva/crearReserva/entrada";
       this.setState({ error: null });
       await fetch(url, {
         method: "POST",
@@ -41,6 +41,9 @@ class NuevoTurno extends React.Component {
           especialidadId: parseInt(idEspecialidad),
           sucursalId: sucursal.sucursalId,
         }),
+        headers: {
+          Authorization: "Bearer " + token,
+        },
       }).then((response) => {
         if (response.status === 200) {
           response.json().then((myJson) => {
@@ -145,6 +148,7 @@ const mapStateToProps = (state) => {
     usuario: state.user.usuario,
     tipoUsuario: state.user.tipoUsuario,
     sucursal: state.user.sucursal,
+    token: state.user.token,
     especialidades: state.empleado.especialidades,
   };
 };

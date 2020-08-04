@@ -16,9 +16,9 @@ class EstadisticasSucursal extends React.Component {
   }
 
   getListaDeEspera = async () => {
-    const { location } = this.props;
+    const { location, token } = this.props;
     const { sucursal } = location;
-    const listaDeEspera = await getListaDeEspera(sucursal.sucursalId);
+    const listaDeEspera = await getListaDeEspera(sucursal.sucursalId, token);
     this.setState({
       listaDeEspera,
     });
@@ -27,10 +27,10 @@ class EstadisticasSucursal extends React.Component {
   };
 
   checkIfReservaHasEspecialidad = async (especialidad) => {
-    const { location } = this.props;
+    const { location, token } = this.props;
     const { sucursal } = location;
 
-    const listaDeEspera = await getListaDeEspera(sucursal.sucursalId);
+    const listaDeEspera = await getListaDeEspera(sucursal.sucursalId, token);
     var count = 0;
 
     await listaDeEspera.map((persona) => {
@@ -373,6 +373,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return {
     especialidades: state.empleado.especialidades,
+    token: state.user.token,
   };
 };
 

@@ -19,19 +19,20 @@ class ListaEspera extends React.Component {
   }
 
   getListaDeEspera = async () => {
-    const { location } = this.props;
+    const { location, token } = this.props;
     const { sucursal } = location;
-    const listaDeEspera = await getListaDeEspera(sucursal.sucursalId);
+    const listaDeEspera = await getListaDeEspera(sucursal.sucursalId, token);
     this.setState({
       listaDeEspera: listaDeEspera,
     });
   };
 
   getListaDeEsperaAgrupada = async () => {
-    const { location } = this.props;
+    const { location, token } = this.props;
     const { sucursal } = location;
     const listaDeEsperaAgrupada = await getListaDeEsperaAgrupada(
-      sucursal.sucursalId
+      sucursal.sucursalId,
+      token
     );
     this.setState({
       listaDeEspera: listaDeEsperaAgrupada,
@@ -50,7 +51,7 @@ class ListaEspera extends React.Component {
   render() {
     const { listaDeEspera, error } = this.state;
     const { location, especialidades } = this.props;
-    debugger
+    debugger;
     if (
       location.sucursal != null &&
       listaDeEspera != null &&
@@ -219,6 +220,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return {
     especialidades: state.empleado.especialidades,
+    token: state.user.token,
   };
 };
 

@@ -16,7 +16,12 @@ class Recepcion extends React.Component {
     };
   }
   getEmpleados = async (idSucursal, rol) => {
-    var recepcionistas = await getEmpleadoBySucursalYRol(idSucursal, rol);
+    const { token } = this.props;
+    var recepcionistas = await getEmpleadoBySucursalYRol(
+      idSucursal,
+      rol,
+      token
+    );
     this.setState({
       recepcionistas,
     });
@@ -109,6 +114,7 @@ const mapStateToProps = (state) => {
   return {
     recepcionistas: state.empleado.recepcionistas,
     sucursal: state.user.sucursal,
+    token: state.user.token,
   };
 };
 

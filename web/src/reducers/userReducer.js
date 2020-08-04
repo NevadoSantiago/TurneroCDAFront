@@ -6,6 +6,7 @@ const initialState = {
   idUsuario: null,
   sucursal: null,
   estaLogueado: false,
+  token: null,
 };
 
 const UserReducer = (state = initialState, action) => {
@@ -19,6 +20,7 @@ const UserReducer = (state = initialState, action) => {
         idUsuario: datos.idUsuario,
         sucursal: datos.sucursal,
         estaLogueado: true,
+        token: datos.token,
       };
     }
     case CERRAR_SESION: {
@@ -29,6 +31,7 @@ const UserReducer = (state = initialState, action) => {
         idUsuario: null,
         sucursal: null,
         estaLogueado: false,
+        token: null,
       };
     }
     default: {

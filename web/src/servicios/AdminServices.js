@@ -1,56 +1,70 @@
 import { URL_API, URL_API_RESERVA } from "../constantes/urlApi";
 
-export const getEmpleadoBySucursalYRol = async (idSucursal, rol) =>{
-    var empleados
-    const url = URL_API + "/api/sucursal/get/empleado/" + rol +"/" + idSucursal;
-    await fetch(url)
-    .then(response=>{return response.json()})
-    .then(response=>{
-        empleados = response
-    }
-    )
-    return empleados;
-}
+export const getEmpleadoBySucursalYRol = async (idSucursal, rol, token) => {
+  var empleados;
+  const url = URL_API + "/api/sucursal/get/empleado/" + rol + "/" + idSucursal;
+  await fetch(url, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      empleados = response;
+    });
+  return empleados;
+};
 
-export const eliminarEmpleadoServ = async (idEmpleado)=>{
-    const url = URL_API + "/api/usuario/eliminar/" + idEmpleado
-    await fetch(url,{
-        method:"POST"
-    }).then(response=>
-        {
-            if(response.status == 200){
-                return true
-            }else return false
-        })
-}
-export const getAllSucursales = async ()=>{
-    var empleados
-    const url = URL_API + "/api/sucursal";
-    await fetch(url) 
-    .then(response=>{return response.json()})
-    .then(response=>{
-        empleados = response
-    }
-    )
-    return empleados;
-
-}
-export const eliminarAdminDeSucursal = async (idAdmin)=>{
-    const url = URL_API + "/api/sucursal/delete/" + idAdmin
-    await fetch(url,{
-        method:"POST"
-    }
-    )
-}
-const validateData = (datoNuevo,datoAnterior) => {
-if(datoNuevo == ""){
-    return datoAnterior
-}else{
+export const eliminarEmpleadoServ = async (idEmpleado, token) => {
+  const url = URL_API + "/api/usuario/eliminar/" + idEmpleado;
+  debugger;
+  await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  }).then((response) => {
+    if (response.status == 200) {
+      return true;
+    } else return false;
+  });
+};
+export const getAllSucursales = async (token) => {
+  var empleados;
+  const url = URL_API + "/api/sucursal";
+  await fetch(url, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      empleados = response;
+    });
+  return empleados;
+};
+export const eliminarAdminDeSucursal = async (idAdmin, token) => {
+  const url = URL_API + "/api/sucursal/delete/" + idAdmin;
+  await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+};
+const validateData = (datoNuevo, datoAnterior, token) => {
+  if (datoNuevo == "") {
+    return datoAnterior;
+  } else {
     return datoNuevo;
   }
 };
 
-export const editarDatos = async (e, location) => {
+export const editarDatos = async (e, location, token) => {
   const { elements } = e.target;
   const { user } = location;
   e.preventDefault();
@@ -61,7 +75,14 @@ export const editarDatos = async (e, location) => {
   var respuesta;
   var url = URL_API_RESERVA + "/api/usuario/editar";
   await fetch(url, {
-    method: "PATCH",
+    method: "PUT",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Access-Control-Allow-Methods": "POST",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Origin": "http://localhost:3000",
+    },
+
     body: JSON.stringify({
       idEmpleado: user.idEmpleado,
       nombre: nombre,

@@ -22,8 +22,6 @@ import ListaEspera from "./sites/ListaEspera";
 import EditarSucursal from "./sites/EditarSucursal";
 import "./style.css";
 
-//PRUEBA PRETTTIEERRRRR SANTIadsdsddsdasd
-
 class App extends React.Component {
   render() {
     return (

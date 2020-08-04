@@ -22,24 +22,27 @@ class DashboardAdministradorSucursal extends React.Component {
     this.state = {
       highlightNuevoEnEspera: false,
       highlightUnoMenosEnEspera: false,
-      cantidadGente : -1
+      cantidadGente: -1,
     };
   }
 
   getEspecialidades = async (idSucursal) => {
-    const { setEspecialidades } = this.props;
-    const especialidades = await getEspecialidadesPorSucursal(idSucursal);
+    const { setEspecialidades, token } = this.props;
+    const especialidades = await getEspecialidadesPorSucursal(
+      idSucursal,
+      token
+    );
     setEspecialidades(especialidades);
   };
 
   getCantidadDeGenteEnEspera = async () => {
-    const { sucursal} = this.props;
-    const {cantidadGente} = this.state
-    const cant = await getCantGenteEnSucursal(sucursal.sucursalId);
+    const { sucursal, token } = this.props;
+    const { cantidadGente } = this.state;
+    const cant = await getCantGenteEnSucursal(sucursal.sucursalId, token);
     if (cant !== cantidadGente) {
       if (cant > cantidadGente) {
         this.setState({
-          cantidadGente:cant,
+          cantidadGente: cant,
           highlightNuevoEnEspera: true,
           highlight: true,
         });
@@ -53,7 +56,7 @@ class DashboardAdministradorSucursal extends React.Component {
         );
       } else {
         this.setState({
-          cantidadGente:cant,
+          cantidadGente: cant,
           highlightUnoMenosEnEspera: true,
           highlight: true,
         });
@@ -67,15 +70,11 @@ class DashboardAdministradorSucursal extends React.Component {
         );
       }
     }
-    
   };
 
   componentDidMount() {
-    this.getCantidadDeGenteEnEspera()
-    this.interval = setInterval(
-      () => this.getCantidadDeGenteEnEspera(),
-      10000
-    );
+    this.getCantidadDeGenteEnEspera();
+    this.interval = setInterval(() => this.getCantidadDeGenteEnEspera(), 10000);
   }
 
   componentWillUnmount() {
@@ -84,130 +83,140 @@ class DashboardAdministradorSucursal extends React.Component {
 
   render() {
     const { usuario, sucursal } = this.props;
-    const { highlightNuevoEnEspera, highlightUnoMenosEnEspera,cantidadGente } = this.state;
-    return (
-      <React.Fragment>
-        <div className="hero-body">
-          <p className="title">{"Hola " + usuario}</p>
-        </div>
-        <div
-          className="container"
-          style={{
-            flex: 1,
-            backgroundColor: "white",
-            padding: "20px",
-            borderRadius: "15px",
-            marginRight: "15px",
-            marginLeft: "15px",
-            marginBottom: "15px",
-          }}
-        >
-          <div className="columns">
-            <div className="column" style={{ alignSelf: "center" }}>
-              <div>
-                <p className="title">{sucursal.nombre}</p>
-                <p className="subtitle">{sucursal.direccion}</p>
-              </div>
-            </div>
-            <div
-              className="column"
-              style={{ display: "flex", margin: "-10px" }}
-            >
-              <div
-                className={`${
-                  highlightNuevoEnEspera
-                    ? "highlighted"
-                    : highlightUnoMenosEnEspera
-                    ? "highlighted-error"
-                    : "highlight-whitesmoke"
-                }`}
-                style={{
-                  //backgroundColor: 'whitesmoke',
-                  textAlign: "end",
-                  borderTopLeftRadius: "500px",
-                  borderBottomLeftRadius: "500px",
-                  width: "50%",
-                  padding: "10px",
-                  MozTransition: "all 0.5s ease-out",
-                  OTransition: "all 0.5s ease-out",
-                  WebkitTransition: "all 0.5s ease-out",
-                  transition: "all 0.5s ease-out",
-                }}
-              >
-                <p className="subtitle">{"En espera"}</p>
-                <p className="title">{cantidadGente}</p>
+    const {
+      highlightNuevoEnEspera,
+      highlightUnoMenosEnEspera,
+      cantidadGente,
+    } = this.state;
+    if (sucursal == null) {
+      return <p>No posee sucursales a cargo</p>;
+    } else if (usuario != null) {
+      return (
+        <React.Fragment>
+          <div className="hero-body">
+            <p className="title">{"Hola " + usuario}</p>
+          </div>
+          <div
+            className="container"
+            style={{
+              flex: 1,
+              backgroundColor: "white",
+              padding: "20px",
+              borderRadius: "15px",
+              marginRight: "15px",
+              marginLeft: "15px",
+              marginBottom: "15px",
+            }}
+          >
+            <div className="columns">
+              <div className="column" style={{ alignSelf: "center" }}>
+                <div>
+                  <p className="title">{sucursal.nombre}</p>
+                  <p className="subtitle">{sucursal.direccion}</p>
+                </div>
               </div>
               <div
-                style={{
-                  backgroundColor: "whitesmoke",
-                  textAlign: "start",
-                  borderTopRightRadius: "500px",
-                  borderBottomRightRadius: "500px",
-                  width: "50%",
-                  padding: "10px",
-                  borderLeft: "dashed",
-                  borderColor: "#CCCCCC",
-                }}
+                className="column"
+                style={{ display: "flex", margin: "-10px" }}
               >
-                <p className="subtitle">{"Atendidos"}</p>
-                <p className="title">{"1"}</p>
+                <div
+                  className={`${
+                    highlightNuevoEnEspera
+                      ? "highlighted"
+                      : highlightUnoMenosEnEspera
+                      ? "highlighted-error"
+                      : "highlight-whitesmoke"
+                  }`}
+                  style={{
+                    //backgroundColor: 'whitesmoke',
+                    textAlign: "end",
+                    borderTopLeftRadius: "500px",
+                    borderBottomLeftRadius: "500px",
+                    width: "50%",
+                    padding: "10px",
+                    MozTransition: "all 0.5s ease-out",
+                    OTransition: "all 0.5s ease-out",
+                    WebkitTransition: "all 0.5s ease-out",
+                    transition: "all 0.5s ease-out",
+                  }}
+                >
+                  <p className="subtitle">{"En espera"}</p>
+                  <p className="title">{cantidadGente}</p>
+                </div>
+                <div
+                  style={{
+                    backgroundColor: "whitesmoke",
+                    textAlign: "start",
+                    borderTopRightRadius: "500px",
+                    borderBottomRightRadius: "500px",
+                    width: "50%",
+                    padding: "10px",
+                    borderLeft: "dashed",
+                    borderColor: "#CCCCCC",
+                  }}
+                >
+                  <p className="subtitle">{"Atendidos"}</p>
+                  <p className="title">{"1"}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          className="container"
-          style={{
-            flex: 1,
-            backgroundColor: "white",
-            padding: "20px",
-            borderRadius: "15px",
-            marginRight: "15px",
-            marginLeft: "15px",
-            marginBottom: "15px",
-            textAlign: "center",
-          }}
-        >
-          <div style={{ margin: -5 }}>
-            <button
-              className="button is-rounded is-black is-outlined"
-              style={{ margin: 5 }}
-            >
-              <span className="icon">
-                <FontAwesomeIcon icon={faQrcode} />
-              </span>
-              <span>Escanear código QR</span>
-            </button>
-            <NavLink
-              to={{ pathname: "/lista", sucursal: sucursal }}
-              onClick={() => this.getEspecialidades(sucursal.sucursalId)}
-              className="button is-rounded is-outlined"
-              exact={true}
-              activeClassName="button is-rounded is-outlined"
-              style={{ margin: 5 }}
-            >
-              <span className="icon">
-                <FontAwesomeIcon icon={faUsers} />
-              </span>
-              <span>Lista de espera</span>
-            </NavLink>
-            <NavLink
-              to={{ pathname: "/estadisticas", sucursal: sucursal }}
-              onClick={() => this.getEspecialidades(sucursal.sucursalId)}
-              className="button is-rounded is-outlined"
-              exact={true}
-              activeClassName="button is-rounded is-outlined"
-              style={{ margin: 5 }}
-            >
-              <span className="icon">
-                <FontAwesomeIcon icon={faChartPie} />
-              </span>
-              <span>Ver estadísticas</span>
-            </NavLink>
+          <div
+            className="container"
+            style={{
+              flex: 1,
+              backgroundColor: "white",
+              padding: "20px",
+              borderRadius: "15px",
+              marginRight: "15px",
+              marginLeft: "15px",
+              marginBottom: "15px",
+              textAlign: "center",
+            }}
+          >
+            <div style={{ margin: -5 }}>
+              <button
+                className="button is-rounded is-black is-outlined"
+                style={{ margin: 5 }}
+              >
+                <span className="icon">
+                  <FontAwesomeIcon icon={faQrcode} />
+                </span>
+                <span>Escanear código QR</span>
+              </button>
+              <NavLink
+                to={{ pathname: "/lista", sucursal: sucursal }}
+                onClick={() => this.getEspecialidades(sucursal.sucursalId)}
+                className="button is-rounded is-outlined"
+                exact={true}
+                activeClassName="button is-rounded is-outlined"
+                style={{ margin: 5 }}
+              >
+                <span className="icon">
+                  <FontAwesomeIcon icon={faUsers} />
+                </span>
+                <span>Lista de espera</span>
+              </NavLink>
+              <NavLink
+                to={{ pathname: "/estadisticas", sucursal: sucursal }}
+                onClick={() => this.getEspecialidades(sucursal.sucursalId)}
+                className="button is-rounded is-outlined"
+                exact={true}
+                activeClassName="button is-rounded is-outlined"
+                style={{ margin: 5 }}
+              >
+                <span className="icon">
+                  <FontAwesomeIcon icon={faChartPie} />
+                </span>
+                <span>Ver estadísticas</span>
+              </NavLink>
+            </div>
           </div>
-        </div>
-      </React.Fragment>
-    );
+        </React.Fragment>
+      );
+    } else {
+      return <p>Cargando...</p>;
+    }
   }
 }
 
@@ -226,6 +235,7 @@ const mapStateToProps = (state) => {
     tipoUsuario: state.user.tipoUsuario,
     sucursal: state.user.sucursal,
     cantidadGente: state.empleado.cantidadGente,
+    token: state.user.token,
   };
 };
 

@@ -14,7 +14,8 @@ class Sucursales extends React.Component {
     };
   }
   obtenerSucursales = async () => {
-    var sucursales = await getAllSucursales();
+    const { token } = this.props;
+    var sucursales = await getAllSucursales(token);
     this.setState({
       sucursales,
     });
@@ -26,59 +27,58 @@ class Sucursales extends React.Component {
   render() {
     const { sucursales } = this.state;
 
-		if (sucursales != null) {
-			if (sucursales.length === 0) {
-				return (
-					<div className="hero-body">
-						<p className="title">Sucursales</p>
-						<div className="container" style={{ textAlign: 'center' }}>
-							<p className="subtitle">No hay datos</p>
-						</div>
-					</div>
-				)
-			} else {
-				return (
-                <div>
-                     <div>
-                     <p className="title">Los botones todavia no funcionan</p>
-                    </div>
-					<div className="hero-body">
-						<p className="title">Sucursales</p>
-						<table className="ui red table">
-							<HeaderSucursales />
-							{
-								sucursales.map((suc, i) => (
-									<DatosSucursales sucursal={suc} refresh={() =>
-                                        this.obtenerSucursales()
-                                    }  />
-								))
-							}
-							<tfoot className="full-width">
-								<tr>
-									<th colspan="5" style={{ textAlign: 'center' }}>
-										<div className="ui pagination menu">
-											<a className="icon item">
-												<FontAwesomeIcon icon={faAngleLeft} />
-											</a>
-											<a className="item" style={{ fontFamily: 'Nunito' }}>1</a>
-											<a className="icon item">
-												<FontAwesomeIcon icon={faAngleRight} />
-											</a>
-										</div>
-									</th>
-								</tr>
-							</tfoot>
-						</table>
-					</div>
-                </div>
-				)
-			}
-		} else {
-			return (
-				<p>Cargando..</p>
-			)
-		}
-	}
+    if (sucursales != null) {
+      if (sucursales.length === 0) {
+        return (
+          <div className="hero-body">
+            <p className="title">Sucursales</p>
+            <div className="container" style={{ textAlign: "center" }}>
+              <p className="subtitle">No hay datos</p>
+            </div>
+          </div>
+        );
+      } else {
+        return (
+          <div>
+            <div>
+              <p className="title">Los botones todavia no funcionan</p>
+            </div>
+            <div className="hero-body">
+              <p className="title">Sucursales</p>
+              <table className="ui red table">
+                <HeaderSucursales />
+                {sucursales.map((suc, i) => (
+                  <DatosSucursales
+                    sucursal={suc}
+                    refresh={() => this.obtenerSucursales()}
+                  />
+                ))}
+                <tfoot className="full-width">
+                  <tr>
+                    <th colspan="5" style={{ textAlign: "center" }}>
+                      <div className="ui pagination menu">
+                        <a className="icon item">
+                          <FontAwesomeIcon icon={faAngleLeft} />
+                        </a>
+                        <a className="item" style={{ fontFamily: "Nunito" }}>
+                          1
+                        </a>
+                        <a className="icon item">
+                          <FontAwesomeIcon icon={faAngleRight} />
+                        </a>
+                      </div>
+                    </th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        );
+      }
+    } else {
+      return <p>Cargando..</p>;
+    }
+  }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -89,6 +89,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return {
     recepcionistas: state.empleado.recepcionistas,
+    token: state.user.token,
   };
 };
 
