@@ -42,8 +42,27 @@ class NuevaSucursal extends React.Component {
       );
   };
 
-  getLocalidades = async (idProvincia) => {
+  getLocalidades = async (nombreProvincia) => {
+    const { provincias } = this.state;
+
+    var idProvincia = null;
+
+    if (provincias !== null) {
+      provincias.map((provincia) => {
+        if (provincia.nombre === nombreProvincia) {
+          idProvincia = provincia.provinciaId;
+        }
+
+        return idProvincia;
+      });
+    }
+
     var url;
+
+    if (idProvincia === null) {
+      idProvincia = 2;
+    }
+
     url = URL_API + "/api/locacion/localidades/" + idProvincia;
 
     await fetch(url)
@@ -209,7 +228,7 @@ class NuevaSucursal extends React.Component {
 
   componentDidMount() {
     this.getProvincias();
-    this.getLocalidades(2);
+    this.getLocalidades();
   }
 
   render() {
@@ -264,13 +283,14 @@ class NuevaSucursal extends React.Component {
                       <div className="select is-fullwidth is-black">
                         <select
                           name="provincia"
-                          onChange={(e) => this.getLocalidades(e.target.id)}
+                          onChange={(e) => {
+                            this.getLocalidades(e.target.value);
+                          }}
                         >
                           {provincias.map((provincia, i) => {
                             return (
                               <option
                                 key={provincia.provinciaId}
-                                id={provincia.provinciaId}
                                 value={provincia.nombre}
                               >
                                 {provincia.nombre}
@@ -293,8 +313,7 @@ class NuevaSucursal extends React.Component {
                           {localidades.map((localidad, i) => {
                             return (
                               <option
-                                key={localidad.provinciaId}
-                                id={localidad.localidadId}
+                                key={localidad.localidadId}
                                 value={localidad.nombre}
                               >
                                 {localidad.nombre}
