@@ -48,6 +48,7 @@ class NuevaSucursal extends React.Component {
 
   getLocalidades = async (nombreProvincia) => {
     const { provincias } = this.state;
+    const { token } = this.props;
 
     var idProvincia = null;
 
@@ -69,7 +70,11 @@ class NuevaSucursal extends React.Component {
 
     url = URL_API + "/api/locacion/localidades/" + idProvincia;
 
-    await fetch(url)
+    await fetch(url, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
       .then(function (response) {
         return response.json();
       })
