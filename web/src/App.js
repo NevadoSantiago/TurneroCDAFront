@@ -9,6 +9,7 @@ import {
 } from "./constantes/tiposUsuarios";
 import NoAutorizado from "./sites/NoAutorizado";
 import Login from "./sites/Login";
+import Registrar from "./sites/Registrar";
 import Home from "./sites/Home";
 import NuevoTurno from "./sites/NuevoTurno";
 import EditarPersona from "./sites/EditarPersona";
@@ -32,6 +33,7 @@ class App extends React.Component {
         <div className="container">
           <Switch>
             <Route exact path="/login" component={Login}></Route>
+            <Route exact path="/registrar" component={Registrar}></Route>
             <Route path="/noAutorizado" component={NoAutorizado}></Route>
             <AuthRoutePrivate
               path="/sucursal/nuevo"

@@ -68,24 +68,24 @@ class Login extends React.Component {
         <p className="title">Iniciar sesión</p>
         <form onSubmit={this.login}>
           <div className="field">
+            <label className="label">Usuario</label>
             <div className="control">
               <input
-                className="input"
+                className="input is-black"
                 type="text"
                 placeholder="Usuario"
                 name="usuario"
-                autoComplete="login username"
               ></input>
             </div>
           </div>
           <div className="field">
+            <label className="label">Contraseña</label>
             <div className="control">
               <input
-                className="input"
+                className="input is-black"
                 type="password"
                 placeholder="Contraseña"
                 name="password"
-                autoComplete="login password"
               ></input>
             </div>
           </div>

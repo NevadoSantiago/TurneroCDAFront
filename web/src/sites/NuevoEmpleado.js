@@ -79,7 +79,7 @@ class NuevoEmpleado extends React.Component {
               marginBottom: "15px",
             }}
           >
-            <form onSubmit={this.editarDatos}>
+            <form onSubmit={this.createPersona}>
               <div className="field">
                 <label className="label">Nombre</label>
                 <div className="control">

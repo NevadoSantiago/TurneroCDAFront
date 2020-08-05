@@ -58,9 +58,16 @@ class NavNoAuth extends React.Component {
             <div className="navbar-item">
               <div className="buttons">
                 <NavLink
+                  to="/registrar"
+                  className="button is-primary"
+                  activeClassName="button is-danger"
+                >
+                  Registrarse
+                </NavLink>
+                <NavLink
                   to="/login"
                   className="button is-primary"
-                  activeClassName="button is-warning"
+                  activeClassName="button is-danger"
                 >
                   Iniciar sesión
                 </NavLink>

@@ -104,14 +104,14 @@ export const crearPersona = async (e, location, token) => {
   const { elements } = e.target;
   const { user } = location;
   e.preventDefault();
-  const nombre = validateData(elements.nombre.value, user.nombre);
-  const apellido = validateData(elements.apellido.value, user.apellido);
-  const rol = validateData(elements.rol.value, user.rol);
-  const sucursalId = validateData(elements.sucursal.value, user.sucursalId);
+  const nombre = validateData(elements.nombre.value);
+  const apellido = validateData(elements.apellido.value);
+  const rol = validateData(elements.rol.value);
+  const sucursalId = validateData(elements.sucursal.value);
   var respuesta;
   var url = URL_API_RESERVA + "/api/usuario/create/empleado";
   await fetch(url, {
-    method: "PUT",
+    method: "POST",
     headers: {
       Authorization: "Bearer " + token,
       "Access-Control-Allow-Methods": "POST",
@@ -120,13 +120,14 @@ export const crearPersona = async (e, location, token) => {
     },
 
     body: JSON.stringify({
-      idSucursal: sucursalId,
+      idSucursal: parseInt(sucursalId),
       nombre: nombre,
       apellido: apellido,
-      rol: parseInt(rol),
+      idRol: parseInt(rol),
     }),
   }).then((response) => {
     if (response.status === 200) {
+      console.log(response.json());
       respuesta = true;
     } else {
       respuesta = false;
