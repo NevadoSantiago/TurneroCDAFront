@@ -16,7 +16,8 @@ class NuevoEmpleado extends React.Component {
   }
 
   getRoles = async () => {
-    const roles = await getRolesDeUsuario();
+    const { token } = this.props;
+    const roles = await getRolesDeUsuario(token);
     this.setState({
       roles,
     });
@@ -27,8 +28,8 @@ class NuevoEmpleado extends React.Component {
   }
 
   createPersona = async (e) => {
-    const { location } = this.props;
-    const seEdito = await editarDatos(e, location);
+    const { location, token } = this.props;
+    const seEdito = await editarDatos(e, location, token);
     if (seEdito) {
       this.setState({
         correcto: "Se creó al empleado correctamente",
@@ -155,6 +156,7 @@ const mapStateToProps = (state) => {
     tipoUsuario: state.user.tipoUsuario,
     sucursal: state.user.sucursal,
     roles: state.empleado.roles,
+    token: state.user.token,
   };
 };
 
