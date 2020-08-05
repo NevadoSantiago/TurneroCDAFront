@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Error from "../servicios/alertas/Error";
 import Correcto from "../servicios/alertas/Correcto";
 import { getRolesDeUsuario } from "../servicios/EmpleadoServices";
-import { editarDatos } from "../servicios/AdminServices";
+import { crearPersona, getAllSucursales } from "../servicios/AdminServices";
 
 class NuevoEmpleado extends React.Component {
   constructor() {
@@ -12,6 +12,7 @@ class NuevoEmpleado extends React.Component {
       error: null,
       correcto: null,
       roles: null,
+      sucursales: null,
     };
   }
 
@@ -23,14 +24,23 @@ class NuevoEmpleado extends React.Component {
     });
   };
 
+  getSucursales = async () => {
+    const { token } = this.props;
+    const sucursales = await getAllSucursales(token);
+    this.setState({
+      sucursales,
+    });
+  };
+
   componentDidMount() {
     this.getRoles();
+    this.getSucursales();
   }
 
   createPersona = async (e) => {
     const { location, token } = this.props;
-    const seEdito = await editarDatos(e, location, token);
-    if (seEdito) {
+    const seCreo = await crearPersona(e, location, token);
+    if (seCreo) {
       this.setState({
         correcto: "Se creó al empleado correctamente",
       });
@@ -45,9 +55,9 @@ class NuevoEmpleado extends React.Component {
   };
 
   render() {
-    const { error, correcto, roles } = this.state;
+    const { error, correcto, roles, sucursales } = this.state;
 
-    if (roles !== null) {
+    if (roles !== null && sucursales !== null) {
       return (
         <div>
           <div className="hero-body">
@@ -93,14 +103,21 @@ class NuevoEmpleado extends React.Component {
                 </div>
               </div>
               <div className="field">
-                <label className="label">Correo electrónico</label>
-                <div className="control">
-                  <input
-                    className="input is-black"
-                    type="text"
-                    placeholder="Correo electrónico"
-                    name="mail"
-                  ></input>
+                <label className="label">Sucursal</label>
+                <div className="field-body">
+                  <div className="field">
+                    <div className="control">
+                      <div className="select is-fullwidth is-black">
+                        <select name="sucursal">
+                          {sucursales.map((s, i) => {
+                            return (
+                              <option value={s.sucursalId}>{s.nombre}</option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="field">
