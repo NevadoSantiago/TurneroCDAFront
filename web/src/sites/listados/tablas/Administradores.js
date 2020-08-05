@@ -45,10 +45,10 @@ class DatosAdministradores extends React.Component {
     return (
       <tbody>
         <tr>
-          <td>{admin.nombre}</td>
-          <td>{admin.apellido}</td>
-          <td>{admin.mail}</td>
-          <td className="right aligned" style={{ padding: 0 }}>
+          <td style={{ padding: "1rem" }}>{admin.nombre}</td>
+          <td style={{ padding: "1rem" }}>{admin.apellido}</td>
+          <td style={{ padding: "1rem" }}>{admin.mail}</td>
+          <td className="right aligned" style={{ padding: "7px 10px 0px 0px" }}>
             <button
               className="button is-danger is-outlined"
               onClick={() => this.eliminarAdministrador(admin)}

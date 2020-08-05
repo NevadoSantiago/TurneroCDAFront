@@ -12,6 +12,7 @@ import Login from "./sites/Login";
 import Home from "./sites/Home";
 import NuevoTurno from "./sites/NuevoTurno";
 import EditarPersona from "./sites/EditarPersona";
+import NuevoEmpleado from "./sites/NuevoEmpleado";
 import Recepcion from "./sites/listados/Recepcion";
 import ControlES from "./sites/listados/ControlES";
 import Sucursales from "./sites/listados/Sucursales";
@@ -20,6 +21,7 @@ import AuthRoutePrivate from "./sites/import/AuthRoute";
 import NavBar from "./sites/import/Navbar";
 import ListaEspera from "./sites/ListaEspera";
 import EditarSucursal from "./sites/EditarSucursal";
+import NuevaSucursal from "./sites/NuevaSucursal";
 import "./style.css";
 
 class App extends React.Component {
@@ -31,6 +33,22 @@ class App extends React.Component {
           <Switch>
             <Route exact path="/login" component={Login}></Route>
             <Route path="/noAutorizado" component={NoAutorizado}></Route>
+            <AuthRoutePrivate
+              path="/sucursal/nuevo"
+              component={NuevaSucursal}
+              autorizado={ADMIN_GENERAL}
+              autorizado2={null}
+              autorizado3={null}
+              autorizado4={null}
+            ></AuthRoutePrivate>
+            <AuthRoutePrivate
+              path="/empleado/nuevo"
+              component={NuevoEmpleado}
+              autorizado={ADMIN_GENERAL}
+              autorizado2={null}
+              autorizado3={null}
+              autorizado4={null}
+            ></AuthRoutePrivate>
             <AuthRoutePrivate
               path="/nuevo"
               component={NuevoTurno}

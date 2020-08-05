@@ -4,7 +4,7 @@ import "../../style.css";
 export default ({ message }) => (
   <aside>
     {message}
-    <style jsx>{`
+    <style jsx={true}>{`
       aside {
         padding: 1em;
         font-size: 14px;
