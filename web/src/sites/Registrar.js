@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import Error from "../servicios/alertas/Error";
+import Correcto from "../servicios/alertas/Correcto";
 import { INICIAR_SESION } from "../constantes/actionRedux";
 import { URL_API } from "../constantes/urlApi";
 
@@ -79,12 +80,8 @@ class Registrar extends React.Component {
       });
       return false;
     } else {
-      const url = URL_API + "/api/usuario/registrar";
-      console.log(usuario);
-      console.log(password);
-      console.log(dni);
-      console.log(mail);
-      console.log(codigo);
+      const url = URL_API + "/api/usuario/create";
+
       await fetch(url, {
         method: "POST",
         body: JSON.stringify({
@@ -96,17 +93,17 @@ class Registrar extends React.Component {
         }),
       }).then((response) => {
         if (response.status === 200) {
-          /*response.json().then((myJson) => {
-            iniciarSesion(myJson);
-          });*/
-          this.setState({
-            estaRegistrado: true,
+          response.text().then((myJson) => {
+            this.setState({
+              estaRegistrado: true,
+              mensaje: myJson,
+            });
           });
         } else {
-          this.setState({
-            error:
-              "No se pudo conectar con el servidor. Error " +
-              response.status.toString(),
+          response.text().then((myJson) => {
+            this.setState({
+              error: myJson,
+            });
           });
         }
       });
@@ -116,6 +113,7 @@ class Registrar extends React.Component {
   render() {
     const {
       error,
+      mensaje,
       mostrarFormulario,
       persona,
       confirmaIdentidad,
@@ -151,6 +149,7 @@ class Registrar extends React.Component {
               </div>
             </div>
             {error && <Error message={error} />}
+            {mensaje && <Correcto message={error} />}
           </form>
         </div>
       );
@@ -266,6 +265,7 @@ class Registrar extends React.Component {
                     </div>
                   </div>
                   {error && <Error message={error} />}
+                  {mensaje && <Correcto message={mensaje} />}
                 </form>
               </div>
             );
