@@ -24,8 +24,6 @@ import EditarSucursal from "./sites/EditarSucursal";
 import NuevaSucursal from "./sites/NuevaSucursal";
 import "./style.css";
 
-//PRUEBA PRETTTIEERRRRR SANTIadsdsddsdasd
-
 class App extends React.Component {
   render() {
     return (

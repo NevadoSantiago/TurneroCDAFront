@@ -16,7 +16,8 @@ class ControlES extends React.Component {
     };
   }
   getEmpleados = async (idSucursal, rol) => {
-    var controlES = await getEmpleadoBySucursalYRol(idSucursal, rol);
+    const { token } = this.props;
+    var controlES = await getEmpleadoBySucursalYRol(idSucursal, rol, token);
     this.setState({
       controlES,
     });
@@ -109,6 +110,7 @@ const mapStateToProps = (state) => {
   return {
     controlES: state.empleado.controlES,
     sucursal: state.user.sucursal,
+    token: state.user.token,
   };
 };
 

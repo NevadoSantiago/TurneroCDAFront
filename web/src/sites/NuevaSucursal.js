@@ -27,8 +27,12 @@ class NuevaSucursal extends React.Component {
   };
 
   getProvincias = async () => {
+    const { token } = this.props;
     await fetch(URL_API + "/api/locacion/provincias", {
       method: "GET",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     })
       .then(function (response) {
         return response.json();
@@ -80,6 +84,7 @@ class NuevaSucursal extends React.Component {
   };
 
   createSucursal = async (e) => {
+    const { token } = this.props;
     //const { locationresults } = this.state;
     e.preventDefault();
     const nombre = e.target.elements.nombre.value;
@@ -199,6 +204,9 @@ class NuevaSucursal extends React.Component {
           longitud,
         {
           method: "GET",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
           /*body: JSON.stringify({
             nombre: nombre,
             direccion: direccion,
@@ -375,7 +383,9 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    token: state.user.token,
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NuevaSucursal);

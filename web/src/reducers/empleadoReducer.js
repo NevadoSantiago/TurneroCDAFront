@@ -1,13 +1,15 @@
-
 import {
   SET_CONTROL_ES,
   SET_RECEPCIONISTAS,
   ELIMINAR_EMPLEADO,
   SET_ESPECIALIDADES,
   SET_CANTIDAD_GENTE,
-  ELIMINAR_ADMINISTRADOR
+  ELIMINAR_ADMINISTRADOR,
 } from "../constantes/actionRedux";
-import { eliminarEmpleadoServ,eliminarAdminDeSucursal } from "../servicios/AdminServices";
+import {
+  eliminarEmpleadoServ,
+  eliminarAdminDeSucursal,
+} from "../servicios/AdminServices";
 
 const initialState = {
   controlES: null,
@@ -28,23 +30,22 @@ const eliminarEmpleadoStore = (idEmpleado, state) => {
 };
 
 const EmpleadoReducer = (state = initialState, action) => {
-    var datos = action.data
-    switch(action.type){   
-    case SET_CONTROL_ES :{
-        return{
-            ...state,
-            controlES : datos        
-        }
-        
+  var datos = action.data;
+  switch (action.type) {
+    case SET_CONTROL_ES: {
+      return {
+        ...state,
+        controlES: datos,
+      };
     }
-    case ELIMINAR_EMPLEADO:{
-        const idEmpleado = action.data;     
-        if( eliminarEmpleadoServ(idEmpleado)){
-           eliminarEmpleadoStore(idEmpleado,state) 
-        }    
-        return{
-            ...state,
-        }
+    case ELIMINAR_EMPLEADO: {
+      const idEmpleado = action.data;
+      if (eliminarEmpleadoServ(idEmpleado, action.token)) {
+        eliminarEmpleadoStore(idEmpleado, state);
+      }
+      return {
+        ...state,
+      };
     }
 
     case SET_RECEPCIONISTAS: {
@@ -54,24 +55,24 @@ const EmpleadoReducer = (state = initialState, action) => {
       };
     }
     case SET_CANTIDAD_GENTE: {
-      debugger
+      debugger;
       return {
         ...state,
         cantidadGente: datos,
       };
     }
-    case ELIMINAR_ADMINISTRADOR:{
-        eliminarAdminDeSucursal(datos)
-        return{
-            ...state,
-        }
+    case ELIMINAR_ADMINISTRADOR: {
+      eliminarAdminDeSucursal(datos);
+      return {
+        ...state,
+      };
     }
-    
-    case SET_ESPECIALIDADES:{
-        return{
-            ...state,
-            especialidades : datos
-        }
+
+    case SET_ESPECIALIDADES: {
+      return {
+        ...state,
+        especialidades: datos,
+      };
     }
     default: {
       return {

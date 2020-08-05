@@ -19,7 +19,8 @@ class Sucursales extends React.Component {
     };
   }
   obtenerSucursales = async () => {
-    var sucursales = await getAllSucursales();
+    const { token } = this.props;
+    var sucursales = await getAllSucursales(token);
     this.setState({
       sucursales,
     });
@@ -142,6 +143,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return {
     recepcionistas: state.empleado.recepcionistas,
+    token: state.user.token,
   };
 };
 

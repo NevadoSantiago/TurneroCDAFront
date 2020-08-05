@@ -67,11 +67,12 @@ class ListaEspera extends React.Component {
   };
 
   getListaDeEsperaAgrupada = async () => {
-    const { location } = this.props;
+    const { location, token } = this.props;
     const { sucursal } = location;
 
     const listaDeEsperaAgrupada = await getListaDeEsperaAgrupada(
-      sucursal.sucursalId
+      sucursal.sucursalId,
+      token
     );
 
     this.setState({
@@ -324,6 +325,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return {
     especialidades: state.empleado.especialidades,
+    token: state.user.token,
   };
 };
 

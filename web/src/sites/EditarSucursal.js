@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Error from "../servicios/alertas/Error";
 import Correcto from "../servicios/alertas/Correcto";
+import { getAdminstradoresDeSucursal } from "../servicios/EmpleadoServices";
 import { editarDatos } from "../servicios/AdminServices";
 import Administradores from "../sites/listados/Administradores";
 
@@ -18,8 +19,8 @@ class EditarSucursal extends React.Component {
     return <option value={opcion.tipoId}>{opcion.detalle}</option>;
   };
   editarDatos = async (e) => {
-    const { location } = this.props;
-    const seEdito = await editarDatos(e, location);
+    const { location, token } = this.props;
+    const seEdito = await editarDatos(e, location, token);
     if (seEdito) {
       this.setState({
         correcto: "Se edito el usuario correctamente",
@@ -44,7 +45,7 @@ class EditarSucursal extends React.Component {
       return (
         <React.Fragment>
           <div className="hero-body">
-            <p className="title">{"Editar sucursal"}</p>
+            <p className="title">{"Editar Sucursal"}</p>
           </div>
           <div
             className="container"
@@ -116,6 +117,7 @@ const mapStateToProps = (state) => {
     usuario: state.user.usuario,
     tipoUsuario: state.user.tipoUsuario,
     roles: state.empleado.roles,
+    token: state.user.token,
   };
 };
 

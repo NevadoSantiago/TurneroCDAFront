@@ -15,8 +15,11 @@ class Administradores extends React.Component {
   }
 
   getAdmins = async () => {
-    const { sucursal } = this.props;
-    const admins = await getAdminstradoresDeSucursal(sucursal.sucursalId);
+    const { sucursal, token } = this.props;
+    const admins = await getAdminstradoresDeSucursal(
+      sucursal.sucursalId,
+      token
+    );
     this.setState({
       admins,
     });
@@ -103,6 +106,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return {
     recepcionistas: state.empleado.recepcionistas,
+    token: state.user.token,
   };
 };
 

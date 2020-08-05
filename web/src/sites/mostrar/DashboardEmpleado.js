@@ -26,15 +26,18 @@ class DashboardEmpleado extends React.Component {
   }
 
   getEspecialidades = async (idSucursal) => {
-    const { setEspecialidades } = this.props;
-    const especialidades = await getEspecialidadesPorSucursal(idSucursal);
+    const { setEspecialidades, token } = this.props;
+    const especialidades = await getEspecialidadesPorSucursal(
+      idSucursal,
+      token
+    );
     setEspecialidades(especialidades);
   };
 
   getCantidadDeGenteEnEspera = async () => {
-    const { sucursal, setCantidadDeGente, cantidadGente } = this.props;
+    const { sucursal, setCantidadDeGente, cantidadGente, token } = this.props;
     const cantActual = cantidadGente;
-    const cant = await getCantGenteEnSucursal(sucursal.sucursalId);
+    const cant = await getCantGenteEnSucursal(sucursal.sucursalId, token);
     if (cant !== cantActual) {
       if (cant > cantActual) {
         this.setState({
@@ -220,6 +223,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return {
     usuario: state.user.usuario,
+    token: state.user.token,
     tipoUsuario: state.user.tipoUsuario,
     sucursal: state.user.sucursal,
     cantidadGente: state.empleado.cantidadGente,

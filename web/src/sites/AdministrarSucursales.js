@@ -11,7 +11,8 @@ class AdministrarSucursales extends React.Component {
     };
   }
   obtenerSucursales = async () => {
-    const sucursales = await getAllSucursales();
+    const { token } = this.props;
+    const sucursales = await getAllSucursales(token);
     this.setState({
       sucursales,
     });
@@ -35,6 +36,7 @@ class AdministrarSucursales extends React.Component {
 const mapStateToProps = (state) => {
   return {
     tipoUsuario: state.user.tipoUsuario,
+    token: state.user.token,
   };
 };
 
