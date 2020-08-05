@@ -103,7 +103,11 @@ class Registrar extends React.Component {
             estaRegistrado: true,
           });
         } else {
-          this.setState({ error: "Datos incorrectos" });
+          this.setState({
+            error:
+              "No se pudo conectar con el servidor. Error " +
+              response.status.toString(),
+          });
         }
       });
     }
