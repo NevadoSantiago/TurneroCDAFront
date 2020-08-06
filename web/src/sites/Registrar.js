@@ -140,13 +140,21 @@ class Registrar extends React.Component {
       persona,
       confirmaIdentidad,
       continuar,
+      estaRegistrado,
     } = this.state;
     const { estaLogueado } = this.props;
 
-    if (estaLogueado) {
+    if (estaLogueado && estaRegistrado) {
       setTimeout(() => {
         this.props.history.push("/home");
       }, 3000);
+      this.setState({
+        estaRegistrado: false,
+      });
+    }
+
+    if (estaLogueado && !estaRegistrado) {
+      this.props.history.push("/home");
     }
 
     if (!mostrarFormulario) {
