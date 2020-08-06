@@ -13,6 +13,9 @@ class NuevoEmpleado extends React.Component {
       correcto: null,
       roles: null,
       sucursales: null,
+      nombre: null,
+      apellido: null,
+      codigo: null,
     };
   }
 
@@ -32,6 +35,16 @@ class NuevoEmpleado extends React.Component {
     });
   };
 
+  addElement(parentId, elementTag, elementId, html) {
+    // Adds an element to the document
+    var p = document.getElementById(parentId);
+    var newElement = document.createElement(elementTag);
+    newElement.setAttribute("id", elementId);
+    newElement.async = true;
+    newElement.innerHTML = html;
+    p.appendChild(newElement);
+  }
+
   componentDidMount() {
     this.getRoles();
     this.getSucursales();
@@ -40,13 +53,41 @@ class NuevoEmpleado extends React.Component {
   createPersona = async (e) => {
     const { location, token } = this.props;
     const seCreo = await crearPersona(e, location, token);
-    if (seCreo) {
+    var codigo = seCreo[1].shift();
+    var nombre = seCreo[2];
+    var apellido = seCreo[3];
+    if (seCreo[0]) {
       this.setState({
         correcto: "Se creó al empleado correctamente",
+        codigo,
+        nombre,
+        apellido,
       });
+
+      var minimodal = `
+      $(document).ready(function(){
+        $('.mini.modal').modal('show');
+      })
+      `;
+
+      if (document.getElementById("minimodal") !== null) {
+        var element = document.getElementById("minimodal");
+        element.parentNode.removeChild(element);
+      }
+
+      var modalsqty = Array.prototype.slice.call(
+        document.getElementsByClassName("modal"),
+        0
+      );
+
+      if (modalsqty.length > 1) {
+        modalsqty[1].remove();
+      }
+
+      this.addElement("scripts", "script", "minimodal", minimodal);
       setTimeout(() => {
         this.props.history.goBack();
-      }, 1500);
+      }, 3000);
     } else {
       this.setState({
         error: "Hubo un error al crear al empleado",
@@ -55,7 +96,15 @@ class NuevoEmpleado extends React.Component {
   };
 
   render() {
-    const { error, correcto, roles, sucursales } = this.state;
+    const {
+      error,
+      correcto,
+      roles,
+      sucursales,
+      codigo,
+      nombre,
+      apellido,
+    } = this.state;
 
     if (roles !== null && sucursales !== null) {
       return (
@@ -148,6 +197,40 @@ class NuevoEmpleado extends React.Component {
               {error && <Error message={error} />}
               {correcto && <Correcto message={correcto} />}
             </form>
+            <div
+              className="ui mini modal"
+              style={{ height: "fit-content", position: "relative" }}
+              id="uimodal"
+            >
+              <div className="header" style={{ textAlign: "center" }}>
+                <p style={{ fontFamily: "Nunito" }}>Código de seguridad</p>
+              </div>
+              <div
+                className="content is-info"
+                style={{ textAlign: "center", marginBottom: 0 }}
+              >
+                <div className="description is-family-primary">
+                  <p className="subtitle">
+                    {"El código de seguridad para " +
+                      nombre +
+                      " " +
+                      apellido +
+                      " es"}
+                  </p>
+                  <br />
+                  <p
+                    className="title"
+                    style={{ fontSize: "3.5rem" }}
+                    id="codigo"
+                  >
+                    {codigo}
+                  </p>
+                </div>
+              </div>
+              <div className="actions" style={{ padding: "15px !important" }}>
+                <button className="ui positive approve button">OK</button>
+              </div>
+            </div>
           </div>
         </div>
       );

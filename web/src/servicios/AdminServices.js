@@ -102,7 +102,6 @@ export const editarDatos = async (e, location, token) => {
 
 export const crearPersona = async (e, location, token) => {
   const { elements } = e.target;
-  const { user } = location;
   e.preventDefault();
   const nombre = validateData(elements.nombre.value);
   const apellido = validateData(elements.apellido.value);
@@ -110,6 +109,7 @@ export const crearPersona = async (e, location, token) => {
   const sucursalId = validateData(elements.sucursal.value);
   var respuesta;
   var url = URL_API_RESERVA + "/api/usuario/create/empleado";
+  var json = [];
   await fetch(url, {
     method: "POST",
     headers: {
@@ -125,13 +125,15 @@ export const crearPersona = async (e, location, token) => {
       apellido: apellido,
       idRol: parseInt(rol),
     }),
-  }).then((response) => {
+  }).then(async (response) => {
     if (response.status === 200) {
-      console.log(response.json());
+      //console.log(response.text());
+      var res = await response.text();
+      json.push(res);
       respuesta = true;
     } else {
       respuesta = false;
     }
   });
-  return respuesta;
+  return [respuesta, json, nombre, apellido];
 };
