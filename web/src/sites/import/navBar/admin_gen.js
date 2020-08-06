@@ -42,6 +42,7 @@ class NavAdminGeneral extends React.Component {
   }
 
   cerrarSesion = () => {
+    localStorage.removeItem("token");
     const { cerrarSesion } = this.props;
     cerrarSesion();
   };

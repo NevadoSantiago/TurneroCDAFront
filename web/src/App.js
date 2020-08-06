@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 /* import AdministrarPersonal from './sites/AdministrarPersonal' */
 import {
@@ -25,113 +26,110 @@ import EditarSucursal from "./sites/EditarSucursal";
 import NuevaSucursal from "./sites/NuevaSucursal";
 import "./style.css";
 
-class App extends React.Component {
-  render() {
-    return (
-      <Router>
-        <NavBar />
-        <div className="container">
-          <Switch>
-            <Route exact path="/login" component={Login}></Route>
-            <Route exact path="/registrar" component={Registrar}></Route>
-            <Route path="/noAutorizado" component={NoAutorizado}></Route>
-            <AuthRoutePrivate
-              path="/sucursal/nuevo"
-              component={NuevaSucursal}
-              autorizado={ADMIN_GENERAL}
-              autorizado2={null}
-              autorizado3={null}
-              autorizado4={null}
-            ></AuthRoutePrivate>
-            <AuthRoutePrivate
-              path="/empleado/nuevo"
-              component={NuevoEmpleado}
-              autorizado={ADMIN_GENERAL}
-              autorizado2={null}
-              autorizado3={null}
-              autorizado4={null}
-            ></AuthRoutePrivate>
-            <AuthRoutePrivate
-              path="/nuevo"
-              component={NuevoTurno}
-              autorizado={ADMIN_SUCURSAL}
-              autorizado2={CONTROL_ES}
-              autorizado3={RECEPCION}
-              autorizado4={null}
-            ></AuthRoutePrivate>
-            <AuthRoutePrivate
-              path="/lista"
-              exact
-              component={ListaEspera}
-              autorizado={ADMIN_SUCURSAL}
-              autorizado2={CONTROL_ES}
-              autorizado3={RECEPCION}
-              autorizado4={null}
-            ></AuthRoutePrivate>
-            <AuthRoutePrivate
-              path="/estadisticas"
-              component={EstadisticasSucursal}
-              autorizado={ADMIN_SUCURSAL}
-              autorizado2={CONTROL_ES}
-              autorizado3={RECEPCION}
-              autorizado4={null}
-            ></AuthRoutePrivate>
-            <AuthRoutePrivate
-              path="/editar"
-              component={EditarPersona}
-              autorizado={ADMIN_SUCURSAL}
-              autorizado2={CONTROL_ES}
-              autorizado3={RECEPCION}
-              autorizado4={null}
-            ></AuthRoutePrivate>
-            <AuthRoutePrivate
-              path="/listaES"
-              exact
-              component={ControlES}
-              autorizado={ADMIN_SUCURSAL}
-              autorizado2={null}
-              autorizado3={null}
-              autorizado4={null}
-            ></AuthRoutePrivate>
-            <AuthRoutePrivate
-              path="/listaRecepcion"
-              exact
-              component={Recepcion}
-              autorizado={ADMIN_SUCURSAL}
-              autorizado2={null}
-              autorizado3={null}
-              autorizado4={null}
-            ></AuthRoutePrivate>
-            <AuthRoutePrivate
-              path="/editarSucursal"
-              exact
-              component={EditarSucursal}
-              autorizado={ADMIN_SUCURSAL}
-              autorizado2={ADMIN_GENERAL}
-              autorizado3={null}
-              autorizado4={null}
-            ></AuthRoutePrivate>
-            <AuthRoutePrivate
-              path="/adminSucursales"
-              exact
-              component={Sucursales}
-              autorizado={ADMIN_GENERAL}
-              autorizado2={null}
-              autorizado3={null}
-              autorizado4={null}
-            ></AuthRoutePrivate>
-            <AuthRoutePrivate
-              path="/"
-              component={Home}
-              autorizado={ADMIN_SUCURSAL}
-              autorizado2={CONTROL_ES}
-              autorizado3={RECEPCION}
-              autorizado4={ADMIN_GENERAL}
-            ></AuthRoutePrivate>
-          </Switch>
-        </div>
-      </Router>
-    );
-  }
+export default function App() {
+  return (
+    <Router>
+      <NavBar />
+      <div className="container">
+        <Switch>
+          <Route exact path="/login" component={Login}></Route>
+          <Route exact path="/registrar" component={Registrar}></Route>
+          <Route path="/noAutorizado" component={NoAutorizado}></Route>
+          <AuthRoutePrivate
+            path="/sucursal/nuevo"
+            component={NuevaSucursal}
+            autorizado={ADMIN_GENERAL}
+            autorizado2={null}
+            autorizado3={null}
+            autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/empleado/nuevo"
+            component={NuevoEmpleado}
+            autorizado={ADMIN_GENERAL}
+            autorizado2={null}
+            autorizado3={null}
+            autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/nuevo"
+            component={NuevoTurno}
+            autorizado={ADMIN_SUCURSAL}
+            autorizado2={CONTROL_ES}
+            autorizado3={RECEPCION}
+            autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/lista"
+            exact
+            component={ListaEspera}
+            autorizado={ADMIN_SUCURSAL}
+            autorizado2={CONTROL_ES}
+            autorizado3={RECEPCION}
+            autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/estadisticas"
+            component={EstadisticasSucursal}
+            autorizado={ADMIN_SUCURSAL}
+            autorizado2={CONTROL_ES}
+            autorizado3={RECEPCION}
+            autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/editar"
+            component={EditarPersona}
+            autorizado={ADMIN_SUCURSAL}
+            autorizado2={CONTROL_ES}
+            autorizado3={RECEPCION}
+            autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/listaES"
+            exact
+            component={ControlES}
+            autorizado={ADMIN_SUCURSAL}
+            autorizado2={null}
+            autorizado3={null}
+            autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/listaRecepcion"
+            exact
+            component={Recepcion}
+            autorizado={ADMIN_SUCURSAL}
+            autorizado2={null}
+            autorizado3={null}
+            autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/editarSucursal"
+            exact
+            component={EditarSucursal}
+            autorizado={ADMIN_SUCURSAL}
+            autorizado2={ADMIN_GENERAL}
+            autorizado3={null}
+            autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/adminSucursales"
+            exact
+            component={Sucursales}
+            autorizado={ADMIN_GENERAL}
+            autorizado2={null}
+            autorizado3={null}
+            autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/"
+            component={Home}
+            autorizado={ADMIN_SUCURSAL}
+            autorizado2={CONTROL_ES}
+            autorizado3={RECEPCION}
+            autorizado4={ADMIN_GENERAL}
+          ></AuthRoutePrivate>
+        </Switch>
+      </div>
+    </Router>
+  );
 }
-export default App;

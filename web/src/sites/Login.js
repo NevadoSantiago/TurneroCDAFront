@@ -49,6 +49,7 @@ class Login extends React.Component {
         if (response.status === 200) {
           response.json().then((myJson) => {
             iniciarSesion(myJson);
+            localStorage.setItem("token", myJson.token);
           });
         } else {
           this.setState({ error: "Datos incorrectos" });
@@ -56,12 +57,38 @@ class Login extends React.Component {
       });
     }
   };
+  verificarExisteTokenAndLogueo = async () => {
+    const { iniciarSesion } = this.props;
+    const token = localStorage.getItem("token");
+    const url = URL_API + "/api/usuario/auth/token";
+    await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        token: token,
+      }),
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }).then((response) => {
+      if (response.status === 200) {
+        response.json().then((myJson) => {
+          iniciarSesion(myJson);
+        });
+      } else {
+        this.setState({ error: response.text() });
+      }
+    });
+  };
 
   render() {
     const { error } = this.state;
     const { estaLogueado } = this.props;
     if (estaLogueado) {
       this.props.history.push("/home");
+    }
+    if (localStorage.getItem("token")) {
+      this.verificarExisteTokenAndLogueo();
+      return <p>Cargando..</p>;
     }
     return (
       <div className="hero-body">

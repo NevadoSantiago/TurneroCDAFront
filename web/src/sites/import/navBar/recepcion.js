@@ -42,6 +42,7 @@ class NavRecepcion extends React.Component {
   }
 
   cerrarSesion = () => {
+    localStorage.removeItem("token");
     const { cerrarSesion } = this.props;
     cerrarSesion();
   };
