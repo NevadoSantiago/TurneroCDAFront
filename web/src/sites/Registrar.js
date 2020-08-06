@@ -96,8 +96,9 @@ class Registrar extends React.Component {
           response.text().then((myJson) => {
             this.setState({
               estaRegistrado: true,
-              mensaje: myJson,
+              mensaje: "Se ha registrado correctamente.",
             });
+            this.login(usuario, password);
           });
         } else {
           response.text().then((myJson) => {
@@ -110,6 +111,27 @@ class Registrar extends React.Component {
     }
   };
 
+  login = async (usuario, password) => {
+    const { iniciarSesion } = this.props;
+
+    const url = URL_API + "/api/usuario/auth";
+    await fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        usuario: usuario,
+        contrasena: password,
+      }),
+    }).then((response) => {
+      if (response.status === 200) {
+        response.json().then((myJson) => {
+          iniciarSesion(myJson);
+        });
+      } else {
+        this.setState({ error: "Datos incorrectos" });
+      }
+    });
+  };
+
   render() {
     const {
       error,
@@ -118,13 +140,23 @@ class Registrar extends React.Component {
       persona,
       confirmaIdentidad,
       continuar,
+      estaRegistrado,
     } = this.state;
-    const { estaRegistrado } = this.state;
-    if (estaRegistrado) {
-      setInterval(() => {
+    const { estaLogueado } = this.props;
+
+    if (estaLogueado && estaRegistrado) {
+      setTimeout(() => {
         this.props.history.push("/home");
       }, 3000);
+      this.setState({
+        estaRegistrado: false,
+      });
     }
+
+    if (estaLogueado && !estaRegistrado) {
+      this.props.history.push("/home");
+    }
+
     if (!mostrarFormulario) {
       return (
         <div className="hero-body">
