@@ -3,13 +3,17 @@ import { connect } from "react-redux";
 import { Pie, Bar, defaults } from "react-chartjs-2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilePdf } from "@fortawesome/free-solid-svg-icons";
-import { getListaDeEspera } from "../servicios/EmpleadoServices";
+import {
+  getListaDeEspera,
+  getTiempoDeEsperaPromedio,
+} from "../servicios/EmpleadoServices";
 
 class EstadisticasSucursal extends React.Component {
   constructor() {
     super();
     this.state = {
-      dataEspecialidades: null,
+      turnosSegunEspecialidad: null,
+      tiempoDeEsperaPromedio: null,
       listaDeEspera: null,
       loadingStats: true,
     };
@@ -24,6 +28,19 @@ class EstadisticasSucursal extends React.Component {
     });
 
     return listaDeEspera;
+  };
+
+  getTiempoDeEsperaPromedio = async (especialidad) => {
+    const { location, token } = this.props;
+    const { sucursal } = location;
+
+    const tiempoDeEspera = await getTiempoDeEsperaPromedio(
+      especialidad.especialidadId,
+      sucursal.sucursalId,
+      token
+    );
+
+    return tiempoDeEspera;
   };
 
   checkIfReservaHasEspecialidad = async (especialidad) => {
@@ -45,13 +62,30 @@ class EstadisticasSucursal extends React.Component {
 
   getDataEspecialidades = async () => {
     const { especialidades } = this.props;
-    const { dataEspecialidades, loadingStats } = this.state;
+    const {
+      turnosSegunEspecialidad,
+      tiempoDeEsperaPromedio,
+      loadingStats,
+    } = this.state;
 
-    var result = {
+    var _turnosSegunEspecialidad = {
       datasets: [
         {
           data: [],
           backgroundColor: [],
+        },
+      ],
+      labels: [],
+    };
+
+    var _tiempoDeEsperaPromedio = {
+      datasets: [
+        {
+          label: "Tiempo (s)",
+          data: [],
+          backgroundColor: [],
+          borderColor: [],
+          borderWidth: 1,
         },
       ],
       labels: [],
@@ -62,24 +96,46 @@ class EstadisticasSucursal extends React.Component {
       var length = Object.keys(especialidades).length;
 
       await especialidades.map(async (especialidad, i) => {
+        const tiempo = await this.getTiempoDeEsperaPromedio(especialidad);
+        //console.log(especialidad.nombre + " - " + tiempo + "s");
+
         const value = await this.checkIfReservaHasEspecialidad(
           especialidad.nombre
         );
-        console.log(especialidad.nombre + " - " + value);
-        result.datasets[0].data.push(value);
-        result.datasets[0].backgroundColor.push(
+
+        _tiempoDeEsperaPromedio.datasets[0].data.push(tiempo);
+        _tiempoDeEsperaPromedio.datasets[0].backgroundColor.push(
           "hsl(" +
             (length * i * 10).toString() +
             ", 50%, " +
             ((length - i + 6) * 8).toString() +
             "%)"
         );
-        result.labels.push(especialidad.nombre);
+        _tiempoDeEsperaPromedio.datasets[0].borderColor.push(
+          "hsl(" +
+            (length * i * 10).toString() +
+            ", 100%, " +
+            ((length - i + 6) * 8).toString() +
+            "%)"
+        );
+        _tiempoDeEsperaPromedio.labels.push(especialidad.nombre);
+
+        console.log(especialidad.nombre + " - " + value);
+        _turnosSegunEspecialidad.datasets[0].data.push(value);
+        _turnosSegunEspecialidad.datasets[0].backgroundColor.push(
+          "hsl(" +
+            (length * i * 10).toString() +
+            ", 50%, " +
+            ((length - i + 6) * 8).toString() +
+            "%)"
+        );
+        _turnosSegunEspecialidad.labels.push(especialidad.nombre);
       });
 
-      if (dataEspecialidades === null) {
+      if (turnosSegunEspecialidad === null || tiempoDeEsperaPromedio === null) {
         this.setState({
-          dataEspecialidades: result,
+          turnosSegunEspecialidad: _turnosSegunEspecialidad,
+          tiempoDeEsperaPromedio: _tiempoDeEsperaPromedio,
         });
       }
     }
@@ -126,7 +182,11 @@ class EstadisticasSucursal extends React.Component {
 
   render() {
     const { location, especialidades } = this.props;
-    const { dataEspecialidades, loadingStats } = this.state;
+    const {
+      turnosSegunEspecialidad,
+      tiempoDeEsperaPromedio,
+      loadingStats,
+    } = this.state;
 
     defaults.global.defaultFontFamily = "Nunito";
     defaults.global.defaultFontStyle = "bold";
@@ -136,7 +196,8 @@ class EstadisticasSucursal extends React.Component {
     if (
       location.sucursal != null &&
       especialidades != null &&
-      dataEspecialidades != null
+      turnosSegunEspecialidad != null &&
+      tiempoDeEsperaPromedio != null
     ) {
       const { sucursal } = location;
       if (loadingStats) {
@@ -269,7 +330,7 @@ class EstadisticasSucursal extends React.Component {
                       <b>{"Turnos según especialidad"}</b>
                     </p>
                     <Pie
-                      data={dataEspecialidades}
+                      data={turnosSegunEspecialidad}
                       width={10}
                       height={5}
                       options={{
@@ -305,10 +366,10 @@ class EstadisticasSucursal extends React.Component {
                 <div className="columns is-centered">
                   <div className="column is-9" style={{ textAlign: "center" }}>
                     <p className="subtitle">
-                      <b>{"Gráfico 3"}</b>
+                      <b>{"Tiempo de espera promedio por especialidad"}</b>
                     </p>
                     <Bar
-                      data={{
+                      /*data={{
                         labels: [
                           "Red",
                           "Blue",
@@ -340,7 +401,8 @@ class EstadisticasSucursal extends React.Component {
                             borderWidth: 1,
                           },
                         ],
-                      }}
+                      }}*/
+                      data={tiempoDeEsperaPromedio}
                       width={10}
                       height={5}
                       options={{

@@ -65,6 +65,35 @@ export const getListaDeEspera = async (sucursalId, token) => {
     });
   return listaDeEspera;
 };
+export const getTiempoDeEsperaPromedio = async (
+  especialidadId,
+  sucursalId,
+  token
+) => {
+  const url =
+    URL_API +
+    "/api/sucursal/tiempoPromedio/" +
+    especialidadId +
+    "/" +
+    sucursalId;
+  var tiempoDeEspera = null;
+  await fetch(url, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      if (response.status !== 500) {
+        tiempoDeEspera = response;
+      } else {
+        tiempoDeEspera = 0;
+      }
+    });
+  return tiempoDeEspera;
+};
 export const getListaDeEsperaAgrupada = async (sucursalId, token) => {
   const url = URL_API + "/api/sucursal/listadoAgrupado/espera/" + sucursalId;
   var listaDeEsperaAgrupada = null;
