@@ -47,7 +47,7 @@ export default function App() {
             path="/empleado/nuevo"
             component={NuevoEmpleado}
             autorizado={ADMIN_GENERAL}
-            autorizado2={null}
+            autorizado2={ADMIN_SUCURSAL}
             autorizado3={null}
             autorizado4={null}
           ></AuthRoutePrivate>

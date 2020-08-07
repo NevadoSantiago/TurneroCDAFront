@@ -4,6 +4,7 @@ import Error from "../servicios/alertas/Error";
 import Correcto from "../servicios/alertas/Correcto";
 import { getRolesDeUsuario } from "../servicios/EmpleadoServices";
 import { crearPersona, getAllSucursales } from "../servicios/AdminServices";
+import { ADMIN_SUCURSAL, ADMIN_GENERAL } from "../constantes/tiposUsuarios";
 
 class NuevoEmpleado extends React.Component {
   constructor() {
@@ -105,140 +106,278 @@ class NuevoEmpleado extends React.Component {
       nombre,
       apellido,
     } = this.state;
+    const { tipoUsuario, sucursal } = this.props;
 
     if (roles !== null && sucursales !== null) {
-      return (
-        <div>
-          <div className="hero-body">
-            <div className="columns is-mobile">
-              <div className="column">
-                <p className="title">Nuevo empleado</p>
+      if (tipoUsuario === ADMIN_GENERAL) {
+        return (
+          <div>
+            <div className="hero-body">
+              <div className="columns is-mobile">
+                <div className="column">
+                  <p className="title">Nuevo empleado</p>
+                </div>
               </div>
             </div>
-          </div>
-          <div
-            className="container"
-            style={{
-              flex: 1,
-              backgroundColor: "white",
-              padding: "20px",
-              borderRadius: "15px",
-              marginRight: "15px",
-              marginLeft: "15px",
-              marginBottom: "15px",
-            }}
-          >
-            <form onSubmit={this.createPersona}>
-              <div className="field">
-                <label className="label">Nombre</label>
-                <div className="control">
-                  <input
-                    className="input is-black"
-                    type="text"
-                    placeholder="Nombre"
-                    name="nombre"
-                  ></input>
-                </div>
-              </div>
-              <div className="field">
-                <label className="label">Apellido</label>
-                <div className="control">
-                  <input
-                    className="input is-black"
-                    type="text"
-                    placeholder="Apellido"
-                    name="apellido"
-                  ></input>
-                </div>
-              </div>
-              <div className="field">
-                <label className="label">Sucursal</label>
-                <div className="field-body">
-                  <div className="field">
-                    <div className="control">
-                      <div className="select is-fullwidth is-black">
-                        <select name="sucursal">
-                          {sucursales.map((s, i) => {
-                            return (
-                              <option value={s.sucursalId}>{s.nombre}</option>
-                            );
-                          })}
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="field">
-                <label className="label">Rol</label>
-                <div className="field-body">
-                  <div className="field">
-                    <div className="control">
-                      <div className="select is-fullwidth is-black">
-                        <select name="rol">
-                          {roles.map((r, i) => {
-                            if (
-                              r.detalle.includes("ADMIN") ||
-                              r.detalle.includes("admin")
-                            ) {
-                              return (
-                                <option value={r.tipoId}>{r.detalle}</option>
-                              );
-                            }
-                          })}
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="field is-grouped is-grouped-centered">
-                <div className="control">
-                  <button className="button is-primary" type="submit">
-                    Confirmar
-                  </button>
-                </div>
-              </div>
-              {error && <Error message={error} />}
-              {correcto && <Correcto message={correcto} />}
-            </form>
             <div
-              className="ui mini modal"
-              style={{ height: "fit-content", position: "relative" }}
-              id="uimodal"
+              className="container"
+              style={{
+                flex: 1,
+                backgroundColor: "white",
+                padding: "20px",
+                borderRadius: "15px",
+                marginRight: "15px",
+                marginLeft: "15px",
+                marginBottom: "15px",
+              }}
             >
-              <div className="header" style={{ textAlign: "center" }}>
-                <p style={{ fontFamily: "Nunito" }}>Código de seguridad</p>
-              </div>
-              <div
-                className="content is-info"
-                style={{ textAlign: "center", marginBottom: 0 }}
-              >
-                <div className="description is-family-primary">
-                  <p className="subtitle">
-                    {"El código de seguridad para " +
-                      nombre +
-                      " " +
-                      apellido +
-                      " es"}
-                  </p>
-                  <br />
-                  <p
-                    className="title"
-                    style={{ fontSize: "3.5rem" }}
-                    id="codigo"
-                  >
-                    {codigo}
-                  </p>
+              <form onSubmit={this.createPersona}>
+                <div className="field">
+                  <label className="label">Nombre</label>
+                  <div className="control">
+                    <input
+                      className="input is-black"
+                      type="text"
+                      placeholder="Nombre"
+                      name="nombre"
+                    ></input>
+                  </div>
                 </div>
-              </div>
-              <div className="actions" style={{ padding: "15px !important" }}>
-                <button className="ui positive approve button">OK</button>
+                <div className="field">
+                  <label className="label">Apellido</label>
+                  <div className="control">
+                    <input
+                      className="input is-black"
+                      type="text"
+                      placeholder="Apellido"
+                      name="apellido"
+                    ></input>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Sucursal</label>
+                  <div className="field-body">
+                    <div className="field">
+                      <div className="control">
+                        <div className="select is-fullwidth is-black">
+                          <select name="sucursal">
+                            {sucursales.map((s, i) => {
+                              return (
+                                <option value={s.sucursalId}>{s.nombre}</option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Rol</label>
+                  <div className="field-body">
+                    <div className="field">
+                      <div className="control">
+                        <div className="select is-fullwidth is-black">
+                          <select name="rol">
+                            {roles.map((r, i) => {
+                              if (
+                                r.detalle.includes("ADMIN") ||
+                                r.detalle.includes("admin")
+                              ) {
+                                return (
+                                  <option value={r.tipoId}>{r.detalle}</option>
+                                );
+                              }
+                            })}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="field is-grouped is-grouped-centered">
+                  <div className="control">
+                    <button className="button is-primary" type="submit">
+                      Confirmar
+                    </button>
+                  </div>
+                </div>
+                {error && <Error message={error} />}
+                {correcto && <Correcto message={correcto} />}
+              </form>
+              <div
+                className="ui mini modal"
+                style={{ height: "fit-content", position: "relative" }}
+                id="uimodal"
+              >
+                <div className="header" style={{ textAlign: "center" }}>
+                  <p style={{ fontFamily: "Nunito" }}>Código de seguridad</p>
+                </div>
+                <div
+                  className="content is-info"
+                  style={{ textAlign: "center", marginBottom: 0 }}
+                >
+                  <div className="description is-family-primary">
+                    <p className="subtitle">
+                      {"El código de seguridad para " +
+                        nombre +
+                        " " +
+                        apellido +
+                        " es"}
+                    </p>
+                    <br />
+                    <p
+                      className="title"
+                      style={{ fontSize: "3.5rem" }}
+                      id="codigo"
+                    >
+                      {codigo}
+                    </p>
+                  </div>
+                </div>
+                <div className="actions" style={{ padding: "15px !important" }}>
+                  <button className="ui positive approve button">OK</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      );
+        );
+      }
+      if (tipoUsuario === ADMIN_SUCURSAL) {
+        return (
+          <div>
+            <div className="hero-body">
+              <div className="columns is-mobile">
+                <div className="column">
+                  <p className="title">Nuevo empleado</p>
+                </div>
+              </div>
+            </div>
+            <div
+              className="container"
+              style={{
+                flex: 1,
+                backgroundColor: "white",
+                padding: "20px",
+                borderRadius: "15px",
+                marginRight: "15px",
+                marginLeft: "15px",
+                marginBottom: "15px",
+              }}
+            >
+              <form onSubmit={this.createPersona}>
+                <div className="field">
+                  <label className="label">Nombre</label>
+                  <div className="control">
+                    <input
+                      className="input is-black"
+                      type="text"
+                      placeholder="Nombre"
+                      name="nombre"
+                    ></input>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Apellido</label>
+                  <div className="control">
+                    <input
+                      className="input is-black"
+                      type="text"
+                      placeholder="Apellido"
+                      name="apellido"
+                    ></input>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Sucursal</label>
+                  <div className="field-body">
+                    <div className="field">
+                      <div className="control">
+                        <div className="select is-fullwidth is-black">
+                          <select name="sucursal">
+                            {sucursales.map((s, i) => {
+                              if (sucursal.direccion === s.direccion) {
+                                return (
+                                  <option value={s.sucursalId}>
+                                    {s.nombre}
+                                  </option>
+                                );
+                              }
+                            })}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="field">
+                  <label className="label">Rol</label>
+                  <div className="field-body">
+                    <div className="field">
+                      <div className="control">
+                        <div className="select is-fullwidth is-black">
+                          <select name="rol">
+                            {roles.map((r, i) => {
+                              if (!r.detalle.includes(ADMIN_GENERAL)) {
+                                return (
+                                  <option value={r.tipoId}>{r.detalle}</option>
+                                );
+                              }
+                            })}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="field is-grouped is-grouped-centered">
+                  <div className="control">
+                    <button className="button is-primary" type="submit">
+                      Confirmar
+                    </button>
+                  </div>
+                </div>
+                {error && <Error message={error} />}
+                {correcto && <Correcto message={correcto} />}
+              </form>
+              <div
+                className="ui mini modal"
+                style={{ height: "fit-content", position: "relative" }}
+                id="uimodal"
+              >
+                <div className="header" style={{ textAlign: "center" }}>
+                  <p style={{ fontFamily: "Nunito" }}>Código de seguridad</p>
+                </div>
+                <div
+                  className="content is-info"
+                  style={{ textAlign: "center", marginBottom: 0 }}
+                >
+                  <div className="description is-family-primary">
+                    <p className="subtitle">
+                      {"El código de seguridad para " +
+                        nombre +
+                        " " +
+                        apellido +
+                        " es"}
+                    </p>
+                    <br />
+                    <p
+                      className="title"
+                      style={{ fontSize: "3.5rem" }}
+                      id="codigo"
+                    >
+                      {codigo}
+                    </p>
+                  </div>
+                </div>
+                <div className="actions" style={{ padding: "15px !important" }}>
+                  <button className="ui positive approve button">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
     } else {
       return (
         <div className="hero-body">
