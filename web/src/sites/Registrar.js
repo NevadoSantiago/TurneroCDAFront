@@ -147,10 +147,10 @@ class Registrar extends React.Component {
     if (estaLogueado && estaRegistrado) {
       setTimeout(() => {
         this.props.history.push("/home");
+        this.setState({
+          estaRegistrado: false,
+        });
       }, 3000);
-      this.setState({
-        estaRegistrado: false,
-      });
     }
 
     if (estaLogueado && !estaRegistrado) {
