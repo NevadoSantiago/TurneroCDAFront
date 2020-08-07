@@ -20,8 +20,7 @@ class EstadisticasSucursal extends React.Component {
   }
 
   getListaDeEspera = async () => {
-    const { location, token } = this.props;
-    const { sucursal } = location;
+    const { token, sucursal } = this.props;
     const listaDeEspera = await getListaDeEspera(sucursal.sucursalId, token);
     this.setState({
       listaDeEspera,
@@ -31,8 +30,7 @@ class EstadisticasSucursal extends React.Component {
   };
 
   getTiempoDeEsperaPromedio = async (especialidad) => {
-    const { location, token } = this.props;
-    const { sucursal } = location;
+    const { token, sucursal } = this.props;
 
     const tiempoDeEspera = await getTiempoDeEsperaPromedio(
       especialidad.especialidadId,
@@ -44,8 +42,7 @@ class EstadisticasSucursal extends React.Component {
   };
 
   checkIfReservaHasEspecialidad = async (especialidad) => {
-    const { location, token } = this.props;
-    const { sucursal } = location;
+    const { token, sucursal } = this.props;
 
     const listaDeEspera = await getListaDeEspera(sucursal.sucursalId, token);
     var count = 0;
@@ -181,7 +178,7 @@ class EstadisticasSucursal extends React.Component {
   }
 
   render() {
-    const { location, especialidades } = this.props;
+    const { especialidades, sucursal } = this.props;
     const {
       turnosSegunEspecialidad,
       tiempoDeEsperaPromedio,
@@ -194,12 +191,11 @@ class EstadisticasSucursal extends React.Component {
     this.getDataEspecialidades();
 
     if (
-      location.sucursal != null &&
+      sucursal != null &&
       especialidades != null &&
       turnosSegunEspecialidad != null &&
       tiempoDeEsperaPromedio != null
     ) {
-      const { sucursal } = location;
       if (loadingStats) {
         return (
           <React.Fragment>
@@ -436,6 +432,7 @@ const mapStateToProps = (state) => {
   return {
     especialidades: state.empleado.especialidades,
     token: state.user.token,
+    sucursal: state.user.sucursal,
   };
 };
 
