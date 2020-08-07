@@ -177,9 +177,14 @@ class NuevoEmpleado extends React.Component {
                       <div className="select is-fullwidth is-black">
                         <select name="rol">
                           {roles.map((r, i) => {
-                            return (
-                              <option value={r.tipoId}>{r.detalle}</option>
-                            );
+                            if (
+                              r.detalle.includes("ADMIN") ||
+                              r.detalle.includes("admin")
+                            ) {
+                              return (
+                                <option value={r.tipoId}>{r.detalle}</option>
+                              );
+                            }
                           })}
                         </select>
                       </div>

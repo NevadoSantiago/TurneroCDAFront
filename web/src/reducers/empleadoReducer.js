@@ -55,7 +55,7 @@ const EmpleadoReducer = (state = initialState, action) => {
       };
     }
     case SET_CANTIDAD_GENTE: {
-      debugger;
+      //debugger;
       return {
         ...state,
         cantidadGente: datos,
