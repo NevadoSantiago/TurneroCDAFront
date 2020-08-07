@@ -86,6 +86,14 @@ class NavAdminGeneral extends React.Component {
           >
             Administrar sucursales
           </NavLink>
+          <NavLink
+            to="/no-registrados"
+            className="navbar-item"
+            exact={true}
+            activeClassName="navbar-item active"
+          >
+            Personas no registradas
+          </NavLink>
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">

@@ -137,3 +137,19 @@ export const crearPersona = async (e, location, token) => {
   });
   return [respuesta, json, nombre, apellido];
 };
+export const getAllEmpleadosNoRegistrados = async (token) => {
+  var empleados;
+  const url = URL_API + "/api/usuario/empleadosNoRegistrados";
+  await fetch(url, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((response) => {
+      empleados = response;
+    });
+  return empleados;
+};

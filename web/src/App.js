@@ -18,6 +18,7 @@ import NuevoEmpleado from "./sites/NuevoEmpleado";
 import Recepcion from "./sites/listados/Recepcion";
 import ControlES from "./sites/listados/ControlES";
 import Sucursales from "./sites/listados/Sucursales";
+import NoRegistrados from "./sites/listados/NoRegistrados";
 import EstadisticasSucursal from "./sites/EstadisticasSucursal";
 import AuthRoutePrivate from "./sites/import/AuthRoute";
 import NavBar from "./sites/import/Navbar";
@@ -82,7 +83,7 @@ export default function App() {
             autorizado={ADMIN_SUCURSAL}
             autorizado2={CONTROL_ES}
             autorizado3={RECEPCION}
-            autorizado4={null}
+            autorizado4={ADMIN_GENERAL}
           ></AuthRoutePrivate>
           <AuthRoutePrivate
             path="/listaES"
@@ -115,6 +116,15 @@ export default function App() {
             path="/adminSucursales"
             exact
             component={Sucursales}
+            autorizado={ADMIN_GENERAL}
+            autorizado2={null}
+            autorizado3={null}
+            autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/no-registrados"
+            exact
+            component={NoRegistrados}
             autorizado={ADMIN_GENERAL}
             autorizado2={null}
             autorizado3={null}
