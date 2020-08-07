@@ -33,13 +33,6 @@ class NoRegistrados extends React.Component {
     const { personas } = this.state;
 
     if (personas != null) {
-      // TESTEAR QUE NO HAYA SUCURSALES
-      /*setInterval( () => {
-        this.setState({
-          sucursales: []
-        })
-      }, 1000)*/
-      console.log(personas);
       if (personas.length === 0) {
         return (
           <div className="hero-body">
@@ -48,9 +41,17 @@ class NoRegistrados extends React.Component {
                 <p className="title">Personas no registradas</p>
               </div>
               <div className="column" style={{ textAlign: "end" }}>
-                <button className="button is-black is-rounded is-outlined">
-                  <FontAwesomeIcon icon={faPlus} /> &nbsp; Nuevo empleado
-                </button>
+                <NavLink
+                  to="/empleado/nuevo"
+                  className="button is-black is-rounded is-outlined"
+                  exact={true}
+                  activeClassName="button is-black is-rounded is-outlined"
+                >
+                  <span className="icon">
+                    <FontAwesomeIcon icon={faPlus} />
+                  </span>
+                  <span>Nuevo empleado</span>
+                </NavLink>
               </div>
             </div>
             <div className="container" style={{ textAlign: "center" }}>
@@ -131,7 +132,13 @@ class NoRegistrados extends React.Component {
         );
       }
     } else {
-      return <p>Cargando..</p>;
+      return (
+        <div className="hero-body">
+          <div className="container" style={{ textAlign: "center" }}>
+            <p className="subtitle">Cargando...</p>
+          </div>
+        </div>
+      );
     }
   }
 }

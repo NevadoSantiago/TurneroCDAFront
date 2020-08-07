@@ -5,10 +5,12 @@ import {
   SET_ESPECIALIDADES,
   SET_CANTIDAD_GENTE,
   ELIMINAR_ADMINISTRADOR,
+  ELIMINAR_SUCURSAL,
 } from "../constantes/actionRedux";
 import {
   eliminarEmpleadoServ,
   eliminarAdminDeSucursal,
+  eliminarSucursal,
 } from "../servicios/AdminServices";
 
 const initialState = {
@@ -47,7 +49,13 @@ const EmpleadoReducer = (state = initialState, action) => {
         ...state,
       };
     }
-
+    case ELIMINAR_SUCURSAL: {
+      const idSucursal = action.data;
+      eliminarSucursal(idSucursal, action.token);
+      return {
+        ...state,
+      };
+    }
     case SET_RECEPCIONISTAS: {
       return {
         ...state,

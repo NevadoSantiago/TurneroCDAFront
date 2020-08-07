@@ -153,3 +153,12 @@ export const getAllEmpleadosNoRegistrados = async (token) => {
     });
   return empleados;
 };
+
+export const eliminarSucursal = async (idSucursal, token) => {
+  const url = URL_API + "/api/sucursal/borrar/" + idSucursal;
+  await fetch(url, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+};

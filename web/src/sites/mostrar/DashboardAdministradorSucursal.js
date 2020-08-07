@@ -74,8 +74,14 @@ class DashboardAdministradorSucursal extends React.Component {
   };
 
   componentDidMount() {
-    this.getCantidadDeGenteEnEspera();
-    this.interval = setInterval(() => this.getCantidadDeGenteEnEspera(), 10000);
+    const { sucursal } = this.props;
+    if (sucursal !== null) {
+      this.getCantidadDeGenteEnEspera();
+      this.interval = setInterval(
+        () => this.getCantidadDeGenteEnEspera(),
+        10000
+      );
+    }
   }
 
   componentWillUnmount() {
@@ -90,7 +96,33 @@ class DashboardAdministradorSucursal extends React.Component {
       cantidadGente,
     } = this.state;
     if (sucursal == null) {
-      return <p>No posee sucursales a cargo</p>;
+      return (
+        <div className="hero-body">
+          <div
+            className="container"
+            style={{
+              flex: 1,
+              backgroundColor: "white",
+              padding: "20px",
+              borderRadius: "15px",
+              marginRight: "15px",
+              marginLeft: "15px",
+              marginBottom: "15px",
+              textAlign: "center",
+            }}
+          >
+            <p className="title">Usted no posee sucursales a cargo</p>
+            <span
+              role="img"
+              aria-label="sad"
+              className="title"
+              style={{ fontSize: "xxx-large" }}
+            >
+              😭
+            </span>
+          </div>
+        </div>
+      );
     } else if (usuario != null) {
       return (
         <React.Fragment>

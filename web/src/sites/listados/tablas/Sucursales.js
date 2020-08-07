@@ -8,7 +8,10 @@ import {
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
-import { ELIMINAR_EMPLEADO } from "../../../constantes/actionRedux";
+import {
+  ELIMINAR_EMPLEADO,
+  ELIMINAR_SUCURSAL,
+} from "../../../constantes/actionRedux";
 
 export const HeaderSucursales = () => {
   return (
@@ -30,7 +33,7 @@ class DatosSucursales extends React.Component {
   }
 
   eliminarEmpleado = () => {
-    const { eliminarEmpleado, empleado } = this.props;
+    const { eliminarEmpleado, empleado, token } = this.props;
     if (
       window.confirm(
         "Seguro que desea eliminar a " +
@@ -40,20 +43,19 @@ class DatosSucursales extends React.Component {
           "?"
       )
     ) {
-      eliminarEmpleado(empleado.idEmpleado);
+      eliminarEmpleado(empleado.idEmpleado, token);
       this.props.refresh();
     }
   };
 
   eliminarSucursal = (sucursal) => {
-    //const { eliminarSucursal } = this.props;
+    const { eliminarSucursal, token } = this.props;
     if (
       window.confirm(
         "Seguro que desea eliminar a la sucursal " + sucursal.nombre + "?"
       )
     ) {
-      //  eliminarEmpleado(sucursal.sucursalId)
-
+      eliminarSucursal(sucursal.sucursalId, token);
       this.props.refresh();
     }
   };
@@ -111,12 +113,17 @@ class DatosSucursales extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    eliminarEmpleado: (id) => dispatch({ type: ELIMINAR_EMPLEADO, data: id }),
+    eliminarEmpleado: (id, token) =>
+      dispatch({ type: ELIMINAR_EMPLEADO, data: id, token: token }),
+    eliminarSucursal: (id, token) =>
+      dispatch({ type: ELIMINAR_SUCURSAL, data: id, token: token }),
   };
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    token: state.user.token,
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DatosSucursales);

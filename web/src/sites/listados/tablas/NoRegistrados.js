@@ -1,12 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
-import {
-  faEdit,
-  faTrash,
-  faTimes,
-  faCheck,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { ELIMINAR_EMPLEADO } from "../../../constantes/actionRedux";
 
@@ -53,11 +48,11 @@ class DatosNoRegistrados extends React.Component {
         <tr>
           <td style={{ padding: "1rem" }}>{persona.nombre}</td>
           <td style={{ padding: "1rem" }}>{persona.apellido}</td>
-          <td style={{ padding: "1rem", width: "220px" }}>
-            {persona.nombreSucursal}
-          </td>
+          <td style={{ padding: "1rem" }}>{persona.nombreSucursal}</td>
           <td style={{ padding: "1rem" }}>{persona.rol}</td>
-          <td style={{ padding: "1rem" }}>{persona.codigo}</td>
+          <td style={{ padding: "1rem" }}>
+            <b>{persona.codigo}</b>
+          </td>
           <td className="right aligned" style={{ display: "flex" }}>
             <button
               className="button is-danger is-outlined"

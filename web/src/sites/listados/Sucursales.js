@@ -130,7 +130,13 @@ class Sucursales extends React.Component {
         );
       }
     } else {
-      return <p>Cargando..</p>;
+      return (
+        <div className="hero-body">
+          <div className="container" style={{ textAlign: "center" }}>
+            <p className="subtitle">Cargando...</p>
+          </div>
+        </div>
+      );
     }
   }
 }
