@@ -44,6 +44,39 @@ html {
   scrollbar-width: none; /* Firefox */
 }
 
+.image.is-256x256 {
+  height: 256;
+  width: 256;
+}
+
+@media only screen and (max-width: 768px) {
+  .mobile-description {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    padding-right: 0px !important;
+    margin-bottom: 30px;
+  }
+  center {
+    padding-right: 0px !important;
+  }
+  .column {
+    margin-top: 0;
+    text-align: center;
+  }
+  .input {
+    padding: 0;
+    text-align: center;
+  }
+}
+
+.black-placeholder::placeholder {
+  color: #363636 !important;
+}
+
+$input-focus-border-color: #363636;
+$input-focus-box-shadow-color: transparent;
+
 @import "../node_modules/bulma/sass/utilities/_all.sass";
 @import "../node_modules/bulma/sass/base/_all.sass";
 @import "../node_modules/bulma/sass/elements/_all.sass";

@@ -2,7 +2,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import "../../../style.css";
 import { connect } from "react-redux";
-import { faUser, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faAngleDown,
+  faAddressCard,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   SET_CONTROL_ES,
   SET_RECEPCIONISTAS,
@@ -136,6 +140,14 @@ class NavAdminSucursal extends React.Component {
                       role="menu"
                     >
                       <div className="dropdown-content">
+                        <NavLink
+                          to="/perfil"
+                          className="dropdown-item"
+                          activeClassName="dropdown-item"
+                        >
+                          <FontAwesomeIcon icon={faAddressCard} /> &nbsp;
+                          <span>{"Mi perfil"}</span>
+                        </NavLink>
                         <p className="dropdown-item">{tipoUsuario}</p>
                         <hr className="dropdown-divider" />
                         <p
@@ -218,6 +230,14 @@ class NavAdminSucursal extends React.Component {
                       role="menu"
                     >
                       <div className="dropdown-content">
+                        <NavLink
+                          to="/perfil"
+                          className="dropdown-item"
+                          activeClassName="dropdown-item"
+                        >
+                          <FontAwesomeIcon icon={faAddressCard} /> &nbsp;
+                          <span>{"Mi perfil"}</span>
+                        </NavLink>
                         <p className="dropdown-item">{tipoUsuario}</p>
                         <hr className="dropdown-divider" />
                         <p

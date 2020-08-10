@@ -25,6 +25,7 @@ import NavBar from "./sites/import/Navbar";
 import ListaEspera from "./sites/ListaEspera";
 import EditarSucursal from "./sites/EditarSucursal";
 import NuevaSucursal from "./sites/NuevaSucursal";
+import Perfil from "./sites/Perfil";
 import "./style.css";
 
 export default function App() {
@@ -129,6 +130,14 @@ export default function App() {
             autorizado2={null}
             autorizado3={null}
             autorizado4={null}
+          ></AuthRoutePrivate>
+          <AuthRoutePrivate
+            path="/perfil"
+            component={Perfil}
+            autorizado={ADMIN_SUCURSAL}
+            autorizado2={CONTROL_ES}
+            autorizado3={RECEPCION}
+            autorizado4={ADMIN_GENERAL}
           ></AuthRoutePrivate>
           <AuthRoutePrivate
             path="/"

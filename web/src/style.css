@@ -26,6 +26,36 @@ html {
   /* Firefox */
 }
 
+.image.is-256x256 {
+  height: 256;
+  width: 256;
+}
+
+@media only screen and (max-width: 768px) {
+  .mobile-description {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    padding-right: 0px !important;
+    margin-bottom: 30px;
+  }
+  center {
+    padding-right: 0px !important;
+  }
+  .column {
+    margin-top: 0;
+    text-align: center;
+  }
+  .input {
+    padding: 0;
+    text-align: center;
+  }
+}
+
+.black-placeholder::placeholder {
+  color: #363636 !important;
+}
+
 @keyframes spinAround {
   from {
     transform: rotate(0deg);
@@ -3063,8 +3093,8 @@ a.tag:hover {
 .is-active.input,
 .is-active.textarea,
 .select select.is-active {
-  border-color: #0474ba;
-  box-shadow: 0 0 0 0.125em rgba(4, 116, 186, 0.25);
+  border-color: #363636;
+  box-shadow: 0 0 0 0.125em transparent;
 }
 .input[disabled],
 .textarea[disabled],
