@@ -100,6 +100,40 @@ export const editarDatos = async (e, location, token) => {
   return respuesta;
 };
 
+export const editarDatosNoRegistrado = async (e, location, token) => {
+  const { elements } = e.target;
+  const { user } = location;
+  e.preventDefault();
+  const nombre = validateData(elements.nombre.value, user.nombre);
+  const apellido = validateData(elements.apellido.value, user.apellido);
+  const rol = validateData(elements.rol.value, user.rol);
+  var respuesta;
+  var url = URL_API_RESERVA + "/api/usuario/editar";
+  await fetch(url, {
+    method: "PUT",
+    headers: {
+      Authorization: "Bearer " + token,
+      "Access-Control-Allow-Methods": "POST",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Origin": "http://localhost:3000",
+    },
+
+    body: JSON.stringify({
+      idEmpleado: user.idEmpleado,
+      nombre: nombre,
+      apellido: apellido,
+      rol: parseInt(rol),
+    }),
+  }).then((response) => {
+    if (response.status === 200) {
+      respuesta = true;
+    } else {
+      respuesta = false;
+    }
+  });
+  return respuesta;
+};
+
 export const crearPersona = async (e, location, token) => {
   const { elements } = e.target;
   e.preventDefault();

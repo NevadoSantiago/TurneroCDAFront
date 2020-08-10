@@ -112,14 +112,6 @@ class DashboardAdministradorSucursal extends React.Component {
             }}
           >
             <p className="title">Usted no posee sucursales a cargo</p>
-            <span
-              role="img"
-              aria-label="sad"
-              className="title"
-              style={{ fontSize: "xxx-large" }}
-            >
-              😭
-            </span>
           </div>
         </div>
       );

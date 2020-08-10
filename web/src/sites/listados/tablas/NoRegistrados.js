@@ -53,10 +53,11 @@ class DatosNoRegistrados extends React.Component {
           <td style={{ padding: "1rem" }}>
             <b>{persona.codigo}</b>
           </td>
-          <td className="right aligned" style={{ display: "flex" }}>
+          <td className="right aligned">
             <button
               className="button is-danger is-outlined"
               onClick={() => this.eliminarEmpleado(persona)}
+              style={{ marginBottom: "10px" }}
             >
               <span className="icon">
                 <FontAwesomeIcon icon={faTrash} />
