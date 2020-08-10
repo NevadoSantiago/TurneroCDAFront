@@ -70,7 +70,7 @@ class Perfil extends React.Component {
                     marginBottom: "15px",
                   }}
                 >
-                  <div className="field">
+                  <div className="field" style={{ marginBottom: "5px" }}>
                     <p className="control">
                       <input
                         className="input black-placeholder"
@@ -100,7 +100,7 @@ class Perfil extends React.Component {
                         style={{
                           backgroundColor: "transparent",
                           fontSize: "1.5rem",
-                          paddingTop: "10px",
+                          paddingTop: "15px",
                           paddingBottom: "20px",
                           paddingLeft: 0,
                           paddingRight: 0,
